@@ -19,29 +19,31 @@
         { name = "kickass-geese"; target = "kickass-flounder.pikapod.net"; }
       ];
       
-      generateARecord = name: ''
-        ${name}:
-          type: cloudflare:Record
-          properties:
-            zoneId: ''${zoneId}
-            name: ${name}
-            type: A
-            content: ${aRecordIP}
-            ttl: 1
-            proxied: false
-      '';
+      indent = str: "    " + builtins.replaceStrings ["\n"] ["\n    "] str;
       
-      generateCNAMERecord = { name, target }: ''
-        ${name}:
-          type: cloudflare:Record
-          properties:
-            zoneId: ''${zoneId}
-            name: ${name}
-            type: CNAME
-            content: ${target}
-            ttl: 1
-            proxied: false
-      '';
+      generateARecord = name: lib.concatStringsSep "\n" [
+        "${name}:"
+        "  type: cloudflare:Record"
+        "  properties:"
+        "    zoneId: \${zoneId}"
+        "    name: ${name}"
+        "    type: A"
+        "    content: ${aRecordIP}"
+        "    ttl: 1"
+        "    proxied: false"
+      ];
+      
+      generateCNAMERecord = { name, target }: lib.concatStringsSep "\n" [
+        "${name}:"
+        "  type: cloudflare:Record"
+        "  properties:"
+        "    zoneId: \${zoneId}"
+        "    name: ${name}"
+        "    type: CNAME"
+        "    content: ${target}"
+        "    ttl: 1"
+        "    proxied: false"
+      ];
       
       allARecords = lib.concatMapStringsSep "\n" generateARecord aRecords;
       allCNAMERecords = lib.concatMapStringsSep "\n" generateCNAMERecord cnameRecords;
@@ -58,10 +60,10 @@
 
           resources:
             # A Records
-          ${allARecords}
+          ${indent allARecords}
 
             # CNAME Records
-          ${allCNAMERecords}
+          ${indent allCNAMERecords}
         '';
       };
     in
@@ -71,21 +73,22 @@
           runtimeInputs = [pkgs.pulumi-bin];
           text = ''
             # Write the generated Pulumi.yaml to the current directory
-            cat > Pulumi.yaml << 'EOF'
-            ${pulumiYaml}
-            EOF
+            cat ${pulumiYaml} > Pulumi.yaml
 
             echo "Generated Pulumi.yaml"
             echo "Running pulumi preview..."
             
             # Run pulumi preview
             pulumi preview "$@"
+
+            echo "Removing Pulumi.yaml..."
+            rm Pulumi.yaml
           '';
         };
 
-        apps.pulumi-dns-gen = {
-          type = "app";
-          program = "${pkgs.lib.getExe pkgs.self.packages.pulumi-dns-gen}";
-        };
+        # apps.pulumi-dns-gen = {
+        #   type = "app";
+        #   program = "${pkgs.lib.getExe inputs.self.packages.pulumi-dns-gen}";
+        # };
     };
 }
