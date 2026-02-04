@@ -82,5 +82,10 @@
             pulumi preview "$@"
           '';
         };
+
+        apps.pulumi-dns-gen = {
+          type = "app";
+          program = "${pkgs.lib.getExe pkgs.self.packages.pulumi-dns-gen}";
+        };
     };
 }
