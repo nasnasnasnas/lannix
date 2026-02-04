@@ -1,0 +1,186 @@
+name: lannix
+description: Lannix Cloudflare
+runtime: yaml
+description: DNS configuration for LANNix
+
+config:
+  cloudflare:apiToken:
+    type: string
+    secret: true
+
+variables:
+  # Replace with your actual Cloudflare Zone ID for szpunar.cloud
+  zoneId: "1ebe2bc9ef4bee4a5f6d9f12b15ba8f0"
+
+resources:
+  # A Records
+  bazarr:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: bazarr
+      type: A
+      content: 10.177.177.117
+      ttl: 1
+      proxied: false
+
+  grafana:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: grafana
+      type: A
+      content: 10.177.177.117
+      ttl: 1
+      proxied: false
+
+  lidarr:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: lidarr
+      type: A
+      content: 10.177.177.117
+      ttl: 1
+      proxied: false
+
+  mylar:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: mylar
+      type: A
+      content: 10.177.177.117
+      ttl: 1
+      proxied: false
+
+  nzbdav:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: nzbdav
+      type: A
+      content: 10.177.177.117
+      ttl: 1
+      proxied: false
+
+  prowlarr:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: prowlarr
+      type: A
+      content: 10.177.177.117
+      ttl: 1
+      proxied: false
+
+  pyroscope:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: pyroscope
+      type: A
+      content: 10.177.177.117
+      ttl: 1
+      proxied: false
+
+  radarr:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: radarr
+      type: A
+      content: 10.177.177.117
+      ttl: 1
+      proxied: false
+
+  request:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: request
+      type: A
+      content: 10.177.177.117
+      ttl: 1
+      proxied: false
+
+  sabnzbd:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: sabnzbd
+      type: A
+      content: 10.177.177.117
+      ttl: 1
+      proxied: false
+
+  sonarr:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: sonarr
+      type: A
+      content: 10.177.177.117
+      ttl: 1
+      proxied: false
+
+  stream:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: stream
+      type: A
+      content: 10.177.177.117
+      ttl: 1
+      proxied: false
+
+  termix:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: termix
+      type: A
+      content: 10.177.177.117
+      ttl: 1
+      proxied: false
+
+  victorialogs:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: victorialogs
+      type: A
+      content: 10.177.177.117
+      ttl: 1
+      proxied: false
+
+  victoriametrics:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: victoriametrics
+      type: A
+      content: 10.177.177.117
+      ttl: 1
+      proxied: false
+
+  # CNAME Records
+  budget:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: budget
+      type: CNAME
+      content: kickass-flounder.pikapod.net
+      ttl: 1
+      proxied: false
+
+  kickass-geese:
+    type: cloudflare:Record
+    properties:
+      zoneId: ${zoneId}
+      name: kickass-geese
+      type: CNAME
+      content: kickass-flounder.pikapod.net
+      ttl: 1
+      proxied: false
