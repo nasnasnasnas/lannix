@@ -1,8 +1,4 @@
-{
-  inputs,
-  ...
-}:
-{
+{inputs, ...}: {
   flake-file.inputs = {
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";

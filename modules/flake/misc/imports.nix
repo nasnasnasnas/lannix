@@ -1,8 +1,4 @@
-{
-  inputs,
-  ...
-}:
-{
+{inputs, ...}: {
   flake-file.inputs = {
     arion = {
       url = "github:hercules-ci/arion";
@@ -16,8 +12,7 @@
     };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
-     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
 
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
@@ -32,7 +27,7 @@
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
   };
 
-  # imports = [ 
+  # imports = [
   #   inputs.arion.flakeModules.arion
   #   inputs.zen-browser.flakeModules.zen-browser
   #   inputs["nix-flatpak"].flakeModules.nix-flatpak

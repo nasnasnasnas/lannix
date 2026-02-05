@@ -1,8 +1,4 @@
-{
-  inputs,
-  ...
-}:
-{
+{inputs, ...}: {
   flake-file.inputs = {
     arion = {
       url = "github:hercules-ci/arion";

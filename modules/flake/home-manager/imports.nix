@@ -1,8 +1,4 @@
-{
-  inputs,
-  ...
-}:
-{
+{inputs, ...}: {
   # Manage a user environment using Nix
   # https://github.com/nix-community/home-manager
 
@@ -17,7 +13,7 @@
     };
   };
 
-  imports = [ 
+  imports = [
     #inputs.home-manager.flakeModules.home-manager
     #inputs.home-manager-unstable.flakeModules.home-manager
   ];
