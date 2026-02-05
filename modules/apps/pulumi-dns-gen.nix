@@ -79,7 +79,9 @@
             echo "Running pulumi preview..."
             
             # Run pulumi preview
-            pulumi preview "$@"
+            pulumi login -l
+            pulumi stack select cloudflare --create
+            pulumi preview --stack=cloudflare "$@"
 
             echo "Removing Pulumi.yaml..."
             rm Pulumi.yaml
