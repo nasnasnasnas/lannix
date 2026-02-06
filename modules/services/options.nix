@@ -76,6 +76,7 @@
       name,
       networks ? [],
       services,
+      secretsEnvPath ? "/home/magicbox/config/caddy/secrets.env",
     }: let
       servicesWithDomains = builtins.filter (s: (s.domains or []) != []) services;
       hasCaddyServices = servicesWithDomains != [];
@@ -95,7 +96,7 @@
 
       caddyServiceDef = config.flake.services.caddy {
         networks = [caddyNetworkName];
-        inherit caddyfilePath;
+        inherit caddyfilePath secretsEnvPath;
       };
 
       addCaddyNetwork = s:
