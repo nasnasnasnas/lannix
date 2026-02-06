@@ -1,111 +1,50 @@
-{...}: {
-  perSystem = {
-    pkgs,
-    lib,
-    ...
-  }: let
-    # Configuration
-    zoneDomain = "szpunar.cloud";
-    zoneId = "1ebe2bc9ef4bee4a5f6d9f12b15ba8f0";
+{config, lib, ...}: {
+  options.flake.dnsRecords = lib.mkOption {
+    type = lib.types.attrsOf (lib.types.listOf (lib.types.submodule {
+      options = {
+        name = lib.mkOption {type = lib.types.str;};
+        type = lib.mkOption {type = lib.types.str;};
+        content = lib.mkOption {type = lib.types.str;};
+        ttl = lib.mkOption {
+          type = lib.types.int;
+          default = 1;
+        };
+        proxied = lib.mkOption {
+          type = lib.types.bool;
+          default = false;
+        };
+      };
+    }));
+    default = {};
+  };
+  
 
-    aRecords = [
-      "bazarr"
-      "grafana"
-      "lidarr"
-      "mylar"
-      "nzbdav"
-      "prowlarr"
-      "pyroscope"
-      "radarr"
-      "request"
-      "sabnzbd"
-      "sonarr"
-      "stream"
-      "termix"
-      "victorialogs"
-      "victoriametrics"
-    ];
-
-    aRecordIP = "10.177.177.117";
-
-    cnameRecords = [
-      {
-        name = "budget";
-        target = "kickass-flounder.pikapod.net";
-      }
-      {
-        name = "kickass-geese";
-        target = "kickass-flounder.pikapod.net";
-      }
-    ];
-
-    indent = str: "    " + builtins.replaceStrings ["\n"] ["\n    "] str;
-
-    generateARecord = name:
-      lib.concatStringsSep "\n" [
-        "${name}:"
-        "  type: cloudflare:Record"
-        "  properties:"
-        "    zoneId: \${zoneId}"
-        "    name: ${name}"
-        "    type: A"
-        "    content: ${aRecordIP}"
-        "    ttl: 1"
-        "    proxied: false"
-      ];
-
-    generateCNAMERecord = {
-      name,
-      target,
-    }:
-      lib.concatStringsSep "\n" [
-        "${name}:"
-        "  type: cloudflare:Record"
-        "  properties:"
-        "    zoneId: \${zoneId}"
-        "    name: ${name}"
-        "    type: CNAME"
-        "    content: ${target}"
-        "    ttl: 1"
-        "    proxied: false"
-      ];
-
-    allARecords = lib.concatMapStringsSep "\n" generateARecord aRecords;
-    allCNAMERecords = lib.concatMapStringsSep "\n" generateCNAMERecord cnameRecords;
-
-    pulumiYaml = pkgs.writeTextFile {
-      name = "Pulumi.yaml";
-      text = ''
-        name: cloudflare-dns-${zoneDomain}
-        runtime: yaml
-        description: DNS configuration for ${zoneDomain}
-
-        variables:
-          zoneId: "${zoneId}"
-
-        resources:
-          # A Records
-        ${indent allARecords}
-
-          # CNAME Records
-        ${indent allCNAMERecords}
-      '';
+  config.perSystem = {pkgs, ...}: let
+    dnsConfig = builtins.toJSON {
+      domains =
+        lib.mapAttrs (_domain: records:
+          map (r: {inherit (r) name type content ttl proxied;}) records)
+        config.flake.dnsRecords;
     };
+
+    dnsConfigHeader = pkgs.writeText "dns-config.ts" "const DNS_CONFIG = ${dnsConfig};\n";
+    generateScript = ./pulumi-dns-gen/generate.ts;
   in {
     packages.pulumi-dns-gen = pkgs.writeShellApplication {
       name = "pulumi-dns-gen";
-      runtimeInputs = [pkgs.pulumi-bin];
+      runtimeInputs = [pkgs.pulumi-bin pkgs.bun];
       text = ''
-        # Write the generated Pulumi.yaml to the current directory
-        cat ${pulumiYaml} > Pulumi.yaml
+        TMPFILE=$(mktemp --suffix=.ts)
+        trap 'rm -f "$TMPFILE"' EXIT
+
+        cat ${dnsConfigHeader} ${generateScript} > "$TMPFILE"
+        bun run "$TMPFILE" > Pulumi.yaml
 
         echo "Generated Pulumi.yaml"
-        echo "Running pulumi preview..."
-
-        # Run pulumi preview
+        echo "Running pulumi up..."
         pulumi login -l
         pulumi stack select cloudflare --create
-        pulumi preview --stack=cloudflare "$@"
+        pulumi up --refresh --yes --stack=cloudflare "$@"
 
         echo "Removing Pulumi.yaml..."
         rm Pulumi.yaml
