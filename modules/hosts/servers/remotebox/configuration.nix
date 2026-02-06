@@ -51,7 +51,7 @@
     services.openssh.settings = {
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
-      PermitRootLogin = true;
+      PermitRootLogin = "prohibit-password";
     };
 
     # Tailscale
