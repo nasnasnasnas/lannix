@@ -38,7 +38,7 @@
     mkCaddyfile = entries: let
       mkBlocks = _name: entry: let
         httpsDomains = builtins.filter (d: lib.hasPrefix "https://" d) entry.domains;
-        httpDomains = builtins.filter (d: lib.hasPrefix "http://" d) entry.domains;
+        httpDomains = builtins.filter (d: !lib.hasPrefix "https://" d) entry.domains;
         reverseProxy = "reverse_proxy ${entry.container_name}:${toString entry.port}";
         httpsBlock = lib.optionalString (httpsDomains != []) ''
           ${lib.concatStringsSep ", " httpsDomains} {

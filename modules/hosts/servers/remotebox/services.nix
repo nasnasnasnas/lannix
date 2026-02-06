@@ -8,7 +8,7 @@
       name = "remotebox";
       networks = [];
       services = [
-        (inputs.self.services.helloworld {domains = ["http://localhost:8080"];})
+        (inputs.self.services.helloworld {domains = ["localhost"];})
       ];
     };
   };
