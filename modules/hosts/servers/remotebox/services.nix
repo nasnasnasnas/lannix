@@ -1,15 +1,8 @@
 {inputs, ...}: {
-  flake.modules.nixos.remotebox = {...}: {
-    imports = [
-      inputs.self.modules.nixos.arion
+  flake.modules.nixos.remotebox = inputs.self.lib.mkHostServices {
+    publicIP = "45.8.201.111";
+    services = with inputs.self.services; [
+      (helloworld {domains = ["https://helloworld.szpunar.cloud"];})
     ];
-
-    virtualisation.arion.projects.magicbox = inputs.self.lib.mkArionProject {
-      name = "remotebox";
-      networks = [];
-      services = [
-        (inputs.self.services.helloworld {domains = ["localhost"];})
-      ];
-    };
   };
 }

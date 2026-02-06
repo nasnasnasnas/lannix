@@ -90,7 +90,8 @@ function buildResource(
     },
   };
 
-  if (existingId) {
+  const enableImport = process.env.ENABLE_IMPORT === "1";
+  if (enableImport && existingId) {
     resource.options = { import: `${zoneId}/${existingId}` };
   }
 

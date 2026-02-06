@@ -1,0 +1,1 @@
+nixos-rebuild switch --flake .#remotebox --target-host root@remotebox --use-substitutes --option extra-trusted-public-keys cache.flakehub.com-3:hJuILl5sVK4iKm86JzgdXW12Y2Hwd5G07qKtHTOcDCM= --option extra-substituters https://install.determinate.systems --show-trace

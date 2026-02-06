@@ -1,8 +1,11 @@
 {
   lib,
   config,
+  inputs,
   ...
-}: {
+}: let
+  flakeConfig = config;
+in {
   options.flake.services = lib.mkOption {
     type = lib.types.attrsOf lib.types.unspecified;
     default = {};
@@ -10,6 +13,11 @@
   };
 
   config.flake.lib = {
+    # Extract all Caddy domain URLs from a list of instantiated service definitions.
+    # e.g. extractCaddyDomains [ (helloworld { domains = ["https://hw.example.com"]; }) ] -> ["https://hw.example.com"]
+    extractCaddyDomains = services:
+      lib.concatMap (s: s.domains or []) services;
+
     # Convert a simplified service definition to Arion service format by removing meta keys and moving service.out to out.service.
     mkArionService = serviceDef: let
       metaKeys = ["caddy_port" "domains" "out"];
@@ -72,6 +80,37 @@
     #       (inputs.self.services.sonarr { domains = [ "https://sonarr.example.com" ]; })
     #     ];
     #   }
+    # Factory that returns a NixOS module setting host.caddyDomains and
+    # virtualisation.arion.projects from a list of services.
+    # The project name defaults to the host's networking.hostName.
+    #
+    # Example:
+    #   flake.modules.nixos.myhost = inputs.self.lib.mkHostServices {
+    #     publicIP = "1.2.3.4";
+    #     services = with inputs.self.services; [
+    #       (jellyfin { domains = [ "https://stream.example.com" ]; })
+    #     ];
+    #   };
+    mkHostServices = {
+      services ? [],
+      networks ? [],
+      name ? null,
+      publicIP ? null,
+      secretsEnvPath ? "/home/magicbox/config/caddy/secrets.env",
+    }: {config, ...}: let
+      projectName = if name != null then name else config.networking.hostName;
+    in {
+      imports = [inputs.self.modules.nixos.arion];
+
+      host.caddyDomains = lib.concatMap (s: s.domains or []) services;
+      host.publicIP = lib.mkIf (publicIP != null) publicIP;
+
+      virtualisation.arion.projects.${projectName} = flakeConfig.flake.lib.mkArionProject {
+        name = projectName;
+        inherit networks services secretsEnvPath;
+      };
+    };
+
     mkArionProject = {
       name,
       networks ? [],
