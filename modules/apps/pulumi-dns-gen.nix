@@ -36,19 +36,18 @@
       name = if subdomain == "" then "@" else subdomain;
     };
 
-    # Auto-generate A records from host.caddyDomains + host.publicIP in each nixosConfiguration
+    # Auto-generate A records from host.caddyDomains + host.publicIPs in each nixosConfiguration.
+    # Each domain gets one A record per IP.
     autoRecords = let
       perHost = lib.mapAttrsToList (_hostName: nixosConfig: let
         hostCfg = nixosConfig.config;
-        ip = hostCfg.host.publicIP or null;
+        ips = hostCfg.host.publicIPs or [];
         domains = hostCfg.host.caddyDomains or [];
-      in 
-        if ip == null
-        then []
-        else
-          map (d: let
-            parsed = parseCaddyDomain d;
-          in {
+      in
+        lib.concatMap (d: let
+          parsed = parseCaddyDomain d;
+        in
+          map (ip: {
             zone = parsed.zone;
             record = {
               name = parsed.name;
@@ -56,7 +55,8 @@
               content = ip;
             };
           })
-          domains)
+          ips)
+        domains)
       config.flake.nixosConfigurations;
 
       allRecords = lib.concatLists perHost;

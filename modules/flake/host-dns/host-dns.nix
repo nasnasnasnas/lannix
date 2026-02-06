@@ -1,10 +1,10 @@
 {...}: {
   flake.modules.nixos.host-dns = {lib, ...}: {
     options.host = {
-      publicIP = lib.mkOption {
-        type = lib.types.nullOr lib.types.str;
-        default = null;
-        description = "Public IP address for this host, used for DNS A record generation.";
+      publicIPs = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [];
+        description = "Public IP addresses for this host, used for DNS A record generation. Each Caddy domain gets an A record per IP.";
       };
       caddyDomains = lib.mkOption {
         type = lib.types.listOf lib.types.str;

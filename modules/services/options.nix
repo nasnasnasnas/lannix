@@ -86,7 +86,7 @@ in {
     #
     # Example:
     #   flake.modules.nixos.myhost = inputs.self.lib.mkHostServices {
-    #     publicIP = "1.2.3.4";
+    #     publicIPs = [ "1.2.3.4" "5.6.7.8" ];
     #     services = with inputs.self.services; [
     #       (jellyfin { domains = [ "https://stream.example.com" ]; })
     #     ];
@@ -95,7 +95,7 @@ in {
       services ? [],
       networks ? [],
       name ? null,
-      publicIP ? null,
+      publicIPs ? [],
       secretsEnvPath ? "/home/magicbox/config/caddy/secrets.env",
     }: {config, ...}: let
       projectName = if name != null then name else config.networking.hostName;
@@ -103,7 +103,7 @@ in {
       imports = [inputs.self.modules.nixos.arion];
 
       host.caddyDomains = lib.concatMap (s: s.domains or []) services;
-      host.publicIP = lib.mkIf (publicIP != null) publicIP;
+      host.publicIPs = publicIPs;
 
       virtualisation.arion.projects.${projectName} = flakeConfig.flake.lib.mkArionProject {
         name = projectName;

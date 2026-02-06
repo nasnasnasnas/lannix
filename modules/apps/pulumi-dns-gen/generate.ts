@@ -66,10 +66,11 @@ function findRecordId(
   existing: CloudflareRecord[],
   name: string,
   type: string,
+  content: string,
   domain: string,
 ): string | undefined {
   const fullName = name.includes(".") ? name : `${name}.${domain}`;
-  return existing.find((r) => r.name === fullName && r.type === type)?.id;
+  return existing.find((r) => r.name === fullName && r.type === type && r.content === content)?.id;
 }
 
 function buildResource(
@@ -130,9 +131,11 @@ async function main() {
         existingRecords,
         record.name,
         record.type,
+        record.content,
         domain,
       );
-      const resourceKey = `${record.name}-${domain.replace(/\./g, "-")}`;
+      const contentSlug = record.content.replace(/[\.:]/g, "-");
+      const resourceKey = `${record.name}-${domain.replace(/\./g, "-")}-${contentSlug}`;
       resources[resourceKey] = buildResource(
         record,
         zoneVarRef,
