@@ -1,4 +1,8 @@
-{config, lib, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
   options.flake.dnsRecords = lib.mkOption {
     type = lib.types.attrsOf (lib.types.listOf (lib.types.submodule {
       options = {
@@ -17,14 +21,12 @@
     }));
     default = {};
   };
-  
 
   config.perSystem = {pkgs, ...}: let
     dnsConfig = builtins.toJSON {
-      domains =
-        lib.mapAttrs (_domain: records:
-          map (r: {inherit (r) name type content ttl proxied;}) records)
-        config.flake.dnsRecords;
+      domains = lib.mapAttrs (_domain: records:
+        map (r: {inherit (r) name type content ttl proxied;}) records)
+      config.flake.dnsRecords;
     };
 
     dnsConfigHeader = pkgs.writeText "dns-config.ts" "const DNS_CONFIG = ${dnsConfig};\n";

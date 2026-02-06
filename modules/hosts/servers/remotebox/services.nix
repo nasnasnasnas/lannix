@@ -1,7 +1,5 @@
 {inputs, ...}: {
-  flake.modules.nixos.remotebox = {
-    ...
-  }: {
+  flake.modules.nixos.remotebox = {...}: {
     imports = [
       inputs.self.modules.nixos.arion
     ];
@@ -10,7 +8,7 @@
       name = "remotebox";
       networks = [];
       services = [
-        (inputs.self.services.helloworld { domains = ["http://localhost:8080"]; })
+        (inputs.self.services.helloworld {domains = ["http://localhost:8080"];})
       ];
     };
   };

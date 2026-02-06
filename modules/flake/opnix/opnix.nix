@@ -1,7 +1,4 @@
-{
-  inputs,
-  ...
-}: {
+{inputs, ...}: {
   flake.modules.nixos.opnix = {
     imports = [
       inputs.opnix.nixosModules.default

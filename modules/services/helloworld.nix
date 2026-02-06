@@ -1,8 +1,8 @@
-{ ... }: {
+{...}: {
   flake.services.helloworld = {
     domains ? [],
     networks ? [],
-    image ? "crccheck/hello-world"
+    image ? "crccheck/hello-world",
   }: {
     container_name = "helloworld";
     inherit image;

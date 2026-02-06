@@ -1,4 +1,4 @@
-{ ... }: {
+{...}: {
   flake.services.jellyfin = {
     domains,
     configDir ? "/home/magicbox/config/jellyfin",

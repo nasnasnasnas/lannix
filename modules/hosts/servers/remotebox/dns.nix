@@ -42,23 +42,22 @@
       type = "A";
       content = aRecordIP;
     };
-  in
-    (map mkA [
-      "bazarr"
-      "grafana"
-      "lidarr"
-      "mylar"
-      "nzbdav"
-      "prowlarr"
-      "pyroscope"
-      "radarr"
-      "request"
-      "sabnzbd"
-      "sonarr"
-      "stream"
-      "termix"
-      "victorialogs"
-      "victoriametrics"
-      "test"
-    ]);
+  in (map mkA [
+    "bazarr"
+    "grafana"
+    "lidarr"
+    "mylar"
+    "nzbdav"
+    "prowlarr"
+    "pyroscope"
+    "radarr"
+    "request"
+    "sabnzbd"
+    "sonarr"
+    "stream"
+    "termix"
+    "victorialogs"
+    "victoriametrics"
+    "test"
+  ]);
 }

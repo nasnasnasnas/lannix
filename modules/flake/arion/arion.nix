@@ -1,7 +1,4 @@
-{
-  inputs,
-  ...
-}: {
+{inputs, ...}: {
   flake.modules.nixos.arion = {
     imports = [
       inputs.arion.nixosModules.arion
