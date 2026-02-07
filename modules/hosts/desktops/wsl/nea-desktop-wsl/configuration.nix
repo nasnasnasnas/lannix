@@ -1,7 +1,9 @@
-{self, ...}: {
+{inputs, ...}: {
   flake.modules.nixos.nea-desktop-wsl = {pkgs, ...}: {
-    imports = [
-      self.inputs.nixos-wsl.nixosModules.default
+    imports = with inputs.self.modules.nixos; [
+      inputs.nixos-wsl.nixosModules.default
+      home-manager
+      # leah (adds leah user + home manager config)
     ];
 
     wsl.enable = true;
