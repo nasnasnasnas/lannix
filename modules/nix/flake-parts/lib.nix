@@ -17,7 +17,7 @@
           inputs.self.modules.nixos.${name}
           inputs.self.modules.nixos.host-dns
           {nixpkgs.hostPlatform = lib.mkDefault system;}
-          ({...}: {
+          ({pkgs, ...}: {
             networking.hostName = name;
 
             # TODO: move these to somewhere that isn't here
