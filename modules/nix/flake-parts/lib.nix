@@ -32,6 +32,10 @@
             ];
 
             nixpkgs.config.allowUnfree = true;
+            nixpkgs.config.nvidia.acceptLicense = true;
+            nixpkgs.config.permittedInsecurePackages = [
+              "olm-3.2.16"
+            ];
           })
         ];
       };
