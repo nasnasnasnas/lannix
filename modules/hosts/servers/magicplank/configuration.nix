@@ -29,7 +29,7 @@
     programs.nix-ld = {
       enable = true;
     };
-    
+
     # Set your time zone.
     time.timeZone = "America/Indiana/Indianapolis";
 
