@@ -29,6 +29,9 @@
     programs.nix-ld = {
       enable = true;
     };
+    
+    # Set your time zone.
+    time.timeZone = "America/Indiana/Indianapolis";
 
     # modules.fd.enable = true; # Enable fd file search
 
