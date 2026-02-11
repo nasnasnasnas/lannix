@@ -1,6 +1,6 @@
 {...}: {
   config.flake.lib.mkPostgresPuppy = {pkgs, databases}: let
-    postgresPuppyScript = ./postgres-puppy/index.js;
+    postgresPuppyScript = ../../../postgres-puppy;
     databasesJson = builtins.toJSON (map (name: {inherit name;}) databases);
   in
     pkgs.writeShellApplication {
@@ -11,7 +11,10 @@
         OP_SERVICE_ACCOUNT_TOKEN=$(cat /etc/op-token)
         export OP_SERVICE_ACCOUNT_TOKEN
 
-        bun run ${postgresPuppyScript} ${builtins.toJSON databasesJson}
+        cd ${postgresPuppyScript}
+
+        bun install
+        bun run index.ts ${builtins.toJSON databasesJson}
       '';
     };
 }
