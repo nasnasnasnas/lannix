@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "bun build ./index.ts --target bun --outdir ../modules/apps/postgres-puppy --banner \"// GENERATED, do not edit\" --define __dirname=\"'./'\" && cp ./node_modules/@1password/sdk-core/nodejs/core_bg.wasm ../modules/apps/postgres-puppy/core_bg.wasm"
+    "build": "bun build ./index.ts --target bun --outdir ../modules/apps/postgres-puppy --banner \"// GENERATED, do not edit\" --external @1password/sdk"
   },
   "devDependencies": {
     "@types/bun": "latest"
