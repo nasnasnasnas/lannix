@@ -7,6 +7,9 @@
     container_name = "postgres";
     inherit image networks;
     restart = "always";
+    environment = [
+      "POSTGRES_PASSWORD=password"
+    ];
     volumes = [
       "${dataDir}:/var/lib/postgresql"
     ];
