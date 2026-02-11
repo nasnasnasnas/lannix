@@ -93,7 +93,13 @@ for (let postgresDatabase of input) {
 
   console.log(`Creating database ${postgresDatabase.name} if it doesn't exist`)
 
-  const sql = `CREATE USER IF NOT EXISTS ${postgresDatabase.name};
+  const sql = `DO $$
+BEGIN
+  IF NOT EXISTS (SELECT FROM pg_catalog.pg_user WHERE usename = '${postgresDatabase.name}') THEN
+    CREATE USER ${postgresDatabase.name};
+  END IF;
+END
+$$;
 ALTER USER ${postgresDatabase.name} WITH PASSWORD '${databasePassword}';
 SELECT 'CREATE DATABASE ${postgresDatabase.name} OWNER ${postgresDatabase.name}'
 WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '${postgresDatabase.name}')\\gexec`;
