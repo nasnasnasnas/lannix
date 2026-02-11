@@ -104,7 +104,7 @@ in {
 
       host.caddyDomains = lib.concatMap (s: s.domains or []) services;
       host.publicIPs = publicIPs;
-      puppy-postgres.databases = lib.concatMap (s: if s.postgres then [s.container_name] else []) services;
+      postgres-puppy.databases = lib.concatMap (s: if s.postgres then [s.container_name] else []) services;
 
       virtualisation.arion.projects.${projectName} = flakeConfig.flake.lib.mkArionProject {
         name = projectName;

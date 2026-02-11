@@ -7,7 +7,7 @@ in {
     pkgs,
     ...
   }: {
-    options.puppy-postgres = {
+    options.postgres-puppy = {
       databases = lib.mkOption {
         type = lib.types.listOf lib.types.str;
         default = [];
@@ -15,7 +15,7 @@ in {
       };
     };
 
-    config = lib.mkIf (config.puppy-postgres.databases != []) {
+    config = lib.mkIf (config.postgres-puppy.databases != []) {
       systemd.services.postgres-puppy = {
         description = "Postgres Puppy database provisioning";
         after = ["docker.service"];
@@ -24,7 +24,7 @@ in {
           Type = "oneshot";
           ExecStart = "${flakeConfig.flake.lib.mkPostgresPuppy {
             inherit pkgs;
-            databases = config.puppy-postgres.databases;
+            databases = config.postgres-puppy.databases;
           }}/bin/postgres-puppy";
         };
       };
