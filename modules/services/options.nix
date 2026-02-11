@@ -20,7 +20,7 @@ in {
 
     # Convert a simplified service definition to Arion service format by removing meta keys and moving service.out to out.service.
     mkArionService = serviceDef: let
-      metaKeys = ["caddy_port" "domains" "out"];
+      metaKeys = ["caddy_port" "domains" "out" "postgres"];
       serviceAttrs = builtins.removeAttrs serviceDef metaKeys;
       outAttrs = serviceDef.out or {};
     in {
@@ -104,6 +104,7 @@ in {
 
       host.caddyDomains = lib.concatMap (s: s.domains or []) services;
       host.publicIPs = publicIPs;
+      puppy-postgres.databases = lib.concatMap (s: if s.postgres then [s.container_name] else []) services;
 
       virtualisation.arion.projects.${projectName} = flakeConfig.flake.lib.mkArionProject {
         name = projectName;
@@ -116,6 +117,7 @@ in {
       networks ? [],
       services,
       secretsEnvPath ? "/home/magicbox/config/caddy/secrets.env",
+      postgresDir ? "/home/magicbox/data/postgres",
     }: let
       servicesWithDomains = builtins.filter (s: (s.domains or []) != []) services;
       hasCaddyServices = servicesWithDomains != [];
@@ -129,6 +131,9 @@ in {
           };
         })
         servicesWithDomains);
+      servicesWithPostgres = builtins.filter (s: s.postgres) services;
+      hasPostgresServices = servicesWithPostgres != [];
+      postgresNetworkName = "${name}-postgres-network";
 
       caddyfileContent = config.flake.lib.mkCaddyfile caddyEntries;
       caddyfilePath = builtins.toFile "Caddyfile" caddyfileContent;
@@ -143,8 +148,15 @@ in {
         then s // {networks = (s.networks or []) ++ [caddyNetworkName];}
         else s;
 
+      postgresServiceDef = config.flake.services.postgres {
+        networks = [postgresNetworkName];
+        dataDir = postgresDir;
+      };
+
       processedServices = map addCaddyNetwork services;
-      allServicesList = processedServices ++ (lib.optional hasCaddyServices caddyServiceDef);
+      allServicesList = processedServices
+        ++ (lib.optional hasCaddyServices caddyServiceDef)
+        ++ (lib.optional hasPostgresServices postgresServiceDef);
 
       arionServices = builtins.listToAttrs (map (s: {
           name = s.container_name;

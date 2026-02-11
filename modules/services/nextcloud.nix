@@ -8,6 +8,7 @@
   }: {
     inherit domains;
     container_name = "nextcloud";
+    postgres = true;
     inherit image;
     restart = "unless-stopped";
     caddy_port = 80;

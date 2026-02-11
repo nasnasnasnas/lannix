@@ -21,6 +21,13 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM+9gEtoUZS0D6LAu7Jz8WnIRrKNna2zfH6F7QxzaeZa"
     ];
 
+    users.users.leah = {
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+      ];
+    };
+
     services.openssh.enable = true;
     services.openssh.settings = {
       PasswordAuthentication = false;
@@ -40,7 +47,7 @@
 
     networking.networkmanager.enable = true;
     networking.networkmanager.wifi.backend = "iwd";
-    networking.networkmanager.wifi.powersave = false;
+    networking.networkmanager.wifi.powersave = true;
 
     # Set your time zone.
     time.timeZone = "America/Indiana/Indianapolis";

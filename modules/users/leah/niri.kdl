@@ -646,6 +646,9 @@ binds {
     Mod+V { spawn "noctalia-shell" "ipc" "call" "launcher" "clipboard"; }
     Mod+C { spawn "noctalia-shell" "ipc" "call" "launcher" "calculator"; }
     Mod+L { spawn "noctalia-shell" "ipc" "call" "lockScreen" "lock"; }
+
+    Mod+Shift+Space { spawn "1password" "--quick-access"; }
+    Ctrl+Shift+Space { spawn "1password" "--quick-access"; }
 }
 
 clipboard {
