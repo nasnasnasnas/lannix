@@ -93,12 +93,12 @@ for (let postgresDatabase of input) {
 
 	console.log(`Creating database ${postgresDatabase.name} if it doesn't exist`)
 
-	await $`docker exec -i postgres psql -U postgres <<SQL
-		CREATE USER IF NOT EXISTS ${postgresDatabase.name};
-		ALTER USER ${postgresDatabase.name} WITH PASSWORD '${databasePassword}';
-		SELECT 'CREATE DATABASE ${postgresDatabase.name} OWNER ${postgresDatabase.name}'
-            WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '${postgresDatabase.name}')\\gexec
-	SQL`
+	const sql = `CREATE USER IF NOT EXISTS ${postgresDatabase.name};
+ALTER USER ${postgresDatabase.name} WITH PASSWORD '${databasePassword}';
+SELECT 'CREATE DATABASE ${postgresDatabase.name} OWNER ${postgresDatabase.name}'
+WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '${postgresDatabase.name}')\\gexec`;
+
+	await $`echo ${sql} | docker exec -i postgres psql -U postgres`
 }
 
 console.log("All Postgres databases updated")
