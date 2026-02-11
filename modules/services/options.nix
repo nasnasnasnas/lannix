@@ -153,7 +153,12 @@ in {
         dataDir = postgresDir;
       };
 
-      processedServices = map addCaddyNetwork services;
+      addPostgresNetwork = s:
+        if s.postgres
+        then s // {networks = (s.networks or []) ++ [postgresNetworkName];}
+        else s;
+
+      processedServices = map addPostgresNetwork (map addCaddyNetwork services);
       allServicesList = processedServices
         ++ (lib.optional hasCaddyServices caddyServiceDef)
         ++ (lib.optional hasPostgresServices postgresServiceDef);
@@ -172,7 +177,10 @@ in {
       caddyNetworks = lib.optionalAttrs hasCaddyServices {
         ${caddyNetworkName} = {name = caddyNetworkName;};
       };
-      allNetworks = userNetworks // caddyNetworks;
+      postgresNetworks = lib.optionalAttrs hasPostgresServices {
+        ${postgresNetworkName} = {name = postgresNetworkName;};
+      };
+      allNetworks = userNetworks // caddyNetworks // postgresNetworks;
     in {
       serviceName = name;
       settings = {
