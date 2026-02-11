@@ -11,7 +11,7 @@
         OP_SERVICE_ACCOUNT_TOKEN=$(cat /etc/op-token)
         export OP_SERVICE_ACCOUNT_TOKEN
         bun i @1password/sdk
-        bun run ${postgresPuppyScript} ${builtins.toJSON databasesJson}
+        bun run ${postgresPuppyScript} ${builtins.toJSON databasesJson} ${pkgs.docker}
       '';
     };
 }
