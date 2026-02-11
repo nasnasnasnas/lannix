@@ -22,6 +22,7 @@ in {
         requires = ["docker.service"];
         serviceConfig = {
           Type = "oneshot";
+          RemainAfterExit = true;
           ExecStart = "${flakeConfig.flake.lib.mkPostgresPuppy {
             inherit pkgs;
             databases = config.postgres-puppy.databases;
