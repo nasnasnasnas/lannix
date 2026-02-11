@@ -1,6 +1,6 @@
 {...}: {
   config.flake.lib.mkPostgresPuppy = {pkgs, databases}: let
-    postgresPuppyScript = ./postgres-puppy/index.js;
+    postgresPuppyScript = ./postgres-puppy/index.ts;
     databasesJson = builtins.toJSON (map (name: {inherit name;}) databases);
   in
     pkgs.writeShellApplication {
