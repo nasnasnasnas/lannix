@@ -17,6 +17,7 @@
 
         OP_SERVICE_ACCOUNT_TOKEN=$(cat /etc/op-token)
         export OP_SERVICE_ACCOUNT_TOKEN
+        export OP_CONFIG_DIR=$(mktemp -d)
 
         INPUT=${builtins.toJSON databasesJson}
 
