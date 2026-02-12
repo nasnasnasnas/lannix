@@ -1,22 +1,88 @@
 {...}: {
   config.flake.lib.mkPostgresPuppy = {pkgs, databases}: let
-    postgresPuppyScript = ./postgres-puppy/index.ts;
     databasesJson = builtins.toJSON (map (name: {inherit name;}) databases);
     docker = "${pkgs.docker}/bin/docker";
   in
     pkgs.writeShellApplication {
       name = "postgres-puppy";
-      runtimeInputs = [pkgs.bun];
+      runtimeInputs = [pkgs._1password-cli pkgs.jq];
       text = ''
+        VAULT_ID="q63632lctm4by3clskcul4gmf4"
+        TAG="MagicBox Postgres"
+
         until ${docker} exec postgres pg_isready -U postgres; do
           echo "waiting for postgres..."
           sleep 2
         done
 
-        # set the OP_SERVICE_ACCOUNT_TOKEN env to contents of /etc/op-token
         OP_SERVICE_ACCOUNT_TOKEN=$(cat /etc/op-token)
         export OP_SERVICE_ACCOUNT_TOKEN
-        bun i @1password/sdk
-        bun run ${postgresPuppyScript} ${builtins.toJSON databasesJson} ${docker}'';
+
+        INPUT=${builtins.toJSON databasesJson}
+
+        # Fetch all existing postgres items from 1Password
+        ITEM_IDS=$(op item list --vault "$VAULT_ID" --categories Database --tags "$TAG" --format json | jq -r '.[].id')
+
+        # Build lookup: fetch full details for each existing item
+        ALL_ITEMS="[]"
+        for item_id in $ITEM_IDS; do
+          ITEM=$(op item get "$item_id" --vault "$VAULT_ID" --format json)
+          ALL_ITEMS=$(echo "$ALL_ITEMS" | jq --argjson item "$ITEM" '. + [$item]')
+        done
+
+        # Process each requested database
+        for db_name in $(echo "$INPUT" | jq -r '.[].name'); do
+          # Find existing item by database field value
+          ITEM=$(echo "$ALL_ITEMS" | jq -r --arg name "$db_name" \
+            '[.[] | select(.fields[]? | select(.id == "database" and .value == $name))] | first // empty')
+
+          if [ "$ITEM" = "" ] || [ "$ITEM" = "null" ]; then
+            # Create new 1Password item with generated password
+            echo "Creating 1Password item for $db_name"
+            ITEM=$(op item create \
+              --category Database \
+              --vault "$VAULT_ID" \
+              --tags "$TAG" \
+              --title "''${db_name} Postgres" \
+              --generate-password='20,letters,digits,symbols' \
+              "type=postgresql" \
+              "database=$db_name" \
+              "username=$db_name" \
+              --format json)
+          fi
+
+          PASSWORD=$(echo "$ITEM" | jq -r '.fields[] | select(.id == "password") | .value // empty')
+
+          if [ -z "$PASSWORD" ]; then
+            # Existing item has no password — generate one
+            echo "Adding password to existing item for $db_name"
+            ITEM_ID=$(echo "$ITEM" | jq -r '.id')
+            op item edit "$ITEM_ID" --vault "$VAULT_ID" \
+              --generate-password='20,letters,digits,symbols' > /dev/null
+            PASSWORD=$(op item get "$ITEM_ID" --vault "$VAULT_ID" --format json \
+              | jq -r '.fields[] | select(.id == "password") | .value')
+          fi
+
+          echo "Creating database $db_name if it doesn't exist"
+
+          SQL=$(cat <<EOSQL
+        DO \$\$
+        BEGIN
+          IF NOT EXISTS (SELECT FROM pg_catalog.pg_user WHERE usename = '$db_name') THEN
+            CREATE USER $db_name;
+          END IF;
+        END
+        \$\$;
+        ALTER USER $db_name WITH PASSWORD '$PASSWORD';
+        SELECT 'CREATE DATABASE $db_name OWNER $db_name'
+        WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '$db_name')\gexec
+        EOSQL
+          )
+
+          echo "$SQL" | ${docker} exec -i postgres psql -U postgres
+        done
+
+        echo "All Postgres databases updated"
+      '';
     };
 }
