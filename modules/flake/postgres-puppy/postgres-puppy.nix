@@ -24,6 +24,8 @@ in {
         '';
       };
 
+      networking.firewall.interfaces."docker0".allowedTCPPorts = [5432];
+
       systemd.services.postgres-puppy = {
         description = "Postgres Puppy database provisioning";
         after = ["postgresql.service"];
