@@ -24,7 +24,12 @@ in {
         '';
       };
 
-      networking.firewall.interfaces."docker0".allowedTCPPorts = [5432];
+      networking.firewall.extraCommands = ''
+        iptables -I nixos-fw -p tcp -s 172.16.0.0/12 --dport 5432 -j nixos-fw-accept
+      '';
+      networking.firewall.extraStopCommands = ''
+        iptables -D nixos-fw -p tcp -s 172.16.0.0/12 --dport 5432 -j nixos-fw-accept || true
+      '';
 
       systemd.services.postgres-puppy = {
         description = "Postgres Puppy database provisioning";
