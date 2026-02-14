@@ -115,6 +115,7 @@ in {
           name = "${s.container_name}PostgresPassword";
           value = {
             reference = "op://${vaultId}/${s.container_name} Postgres/password";
+            path = "/var/lib/opnix/secrets/${s.container_name}/db_password";
           };
         }) postgresServices);
       };
@@ -177,17 +178,17 @@ in {
           portVar = pgEnv.port or "DATABASE_PORT";
           databaseVar = pgEnv.database or "DATABASE_NAME";
           userVar = pgEnv.user or "DATABASE_USER";
-          secretPath = "/var/lib/opnix/secrets/${s.container_name}PostgresPassword";
-          containerSecretPath = "/run/secrets/db_password";
+          secretsDir = "/var/lib/opnix/secrets/${s.container_name}";
+          containerSecretsDir = "/run/secrets";
         in
           s
           // {
-            volumes = (s.volumes or []) ++ ["${secretPath}:${containerSecretPath}:ro"];
+            volumes = (s.volumes or []) ++ ["${secretsDir}:${containerSecretsDir}:ro"];
             extra_hosts = (s.extra_hosts or []) ++ ["host.docker.internal:host-gateway"];
             environment =
               (s.environment or {})
               // {
-                ${passwordFileVar} = containerSecretPath;
+                ${passwordFileVar} = "${containerSecretsDir}/db_password";
                 ${hostVar} = "host.docker.internal";
                 ${portVar} = "5432";
                 ${databaseVar} = s.container_name;
