@@ -13,7 +13,7 @@
     tz ? "America/Indiana/Indianapolis",
     dataDir ? "/var/lib/grafana"
   }: let
-    parts = builtins.split ":" user;
+    parts = builtins.split ":" user; # TODO: this wont work lol
     uid = builtins.elemAt parts 0;
     gid = builtins.elemAt parts 1;
   in 
