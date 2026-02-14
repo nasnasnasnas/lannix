@@ -124,7 +124,7 @@ in {
           after = ["postgres-puppy.service"];
           wants = ["postgres-puppy.service"];
         };
-        "arion-${projectName}" = {
+        ${projectName} = {
           after = ["opnix-secrets.service"];
           wants = ["opnix-secrets.service"];
         };
