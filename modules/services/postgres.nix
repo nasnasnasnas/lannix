@@ -8,7 +8,7 @@
     inherit image networks;
     restart = "always";
     environment = {
-      POSTGRES_PASSWORD = "password";
+      APACHE_SERVER_NAME = "next.szpunar.cloud";
     };
     volumes = [
       "${dataDir}:/var/lib/postgresql"
