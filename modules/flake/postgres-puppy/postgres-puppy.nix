@@ -16,10 +16,18 @@ in {
     };
 
     config = lib.mkIf (config.postgres-puppy.databases != []) {
+      services.postgresql = {
+        enable = true;
+        enableTCPIP = true;
+        authentication = lib.mkAfter ''
+          host all all 172.16.0.0/12 md5
+        '';
+      };
+
       systemd.services.postgres-puppy = {
         description = "Postgres Puppy database provisioning";
-        after = ["docker.service"];
-        requires = ["docker.service"];
+        after = ["postgresql.service"];
+        requires = ["postgresql.service"];
         wantedBy = ["multi-user.target"];
         serviceConfig = {
           Type = "oneshot";

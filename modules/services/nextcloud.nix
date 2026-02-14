@@ -9,6 +9,12 @@
     inherit domains;
     container_name = "nextcloud";
     postgres = true;
+    postgresEnv = {
+      host = "POSTGRES_HOST";
+      database = "POSTGRES_DB";
+      user = "POSTGRES_USER";
+      passwordFile = "POSTGRES_PASSWORD_FILE";
+    };
     inherit image;
     restart = "unless-stopped";
     caddy_port = 80;

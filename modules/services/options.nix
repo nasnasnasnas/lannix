@@ -5,6 +5,7 @@
   ...
 }: let
   flakeConfig = config;
+  vaultId = "q63632lctm4by3clskcul4gmf4";
 in {
   options.flake.services = lib.mkOption {
     type = lib.types.attrsOf lib.types.unspecified;
@@ -20,7 +21,7 @@ in {
 
     # Convert a simplified service definition to Arion service format by removing meta keys and moving service.out to out.service.
     mkArionService = serviceDef: let
-      metaKeys = ["caddy_port" "domains" "out" "postgres"];
+      metaKeys = ["caddy_port" "domains" "out" "postgres" "postgresEnv"];
       serviceAttrs = builtins.removeAttrs serviceDef metaKeys;
       outAttrs = serviceDef.out or {};
     in {
@@ -68,21 +69,18 @@ in {
     in
       lib.concatStringsSep "\n" (lib.attrValues (lib.mapAttrs mkBlocks entries));
 
-    # Create an Arion project from a name, list of networks, and list of instantiated service definitions.
-    # Automatically adds a caddy service and caddy network if any services have domains defined.
-    #
-    # Example:
-    #   virtualization.arion.projects.myproject = inputs.self.lib.mkArionProject {
-    #     name = "myproject";
-    #     networks = [ "myproject-network" ];
-    #     services = [
-    #       (inputs.self.services.jellyfin { domains = [ "https://stream.example.com" ]; })
-    #       (inputs.self.services.sonarr { domains = [ "https://sonarr.example.com" ]; })
-    #     ];
-    #   }
     # Factory that returns a NixOS module setting host.caddyDomains and
     # virtualisation.arion.projects from a list of services.
     # The project name defaults to the host's networking.hostName.
+    #
+    # Services with postgres = true automatically get:
+    #   - DATABASE_PASSWORD_FILE env var pointing to an opnix-managed secret file
+    #   - DATABASE_HOST, DATABASE_PORT, DATABASE_NAME, DATABASE_USER env vars
+    #   - extra_hosts entry for host.docker.internal
+    #   - Volume mount for the password file
+    #
+    # Customize env var names per service with postgresEnv:
+    #   (myapp { postgres = true; postgresEnv.passwordFile = "MY_DB_PASS_FILE"; })
     #
     # Example:
     #   flake.modules.nixos.myhost = inputs.self.lib.mkHostServices {
@@ -99,12 +97,38 @@ in {
       secretsEnvPath ? "/home/magicbox/config/caddy/secrets.env",
     }: {config, ...}: let
       projectName = if name != null then name else config.networking.hostName;
+      postgresServices = builtins.filter (s: s.postgres) services;
+      hasPostgresServices = postgresServices != [];
     in {
-      imports = [inputs.self.modules.nixos.arion];
+      imports =
+        [inputs.self.modules.nixos.arion]
+        ++ lib.optional hasPostgresServices inputs.self.modules.nixos.opnix;
 
       host.caddyDomains = lib.concatMap (s: s.domains or []) services;
       host.publicIPs = publicIPs;
       postgres-puppy.databases = lib.concatMap (s: if s.postgres then [s.container_name] else []) services;
+
+      services.onepassword-secrets = lib.mkIf hasPostgresServices {
+        enable = true;
+        tokenFile = "/etc/op-token";
+        secrets = builtins.listToAttrs (map (s: {
+          name = "${s.container_name}PostgresPassword";
+          value = {
+            reference = "op://${vaultId}/${s.container_name} Postgres/password";
+          };
+        }) postgresServices);
+      };
+
+      systemd.services = lib.mkIf hasPostgresServices {
+        opnix-secrets = {
+          after = ["postgres-puppy.service"];
+          wants = ["postgres-puppy.service"];
+        };
+        "arion-${projectName}" = {
+          after = ["opnix-secrets.service"];
+          wants = ["opnix-secrets.service"];
+        };
+      };
 
       virtualisation.arion.projects.${projectName} = flakeConfig.flake.lib.mkArionProject {
         name = projectName;
@@ -117,7 +141,6 @@ in {
       networks ? [],
       services,
       secretsEnvPath ? "/home/magicbox/config/caddy/secrets.env",
-      postgresDir ? "/home/magicbox/data/postgres",
     }: let
       servicesWithDomains = builtins.filter (s: (s.domains or []) != []) services;
       hasCaddyServices = servicesWithDomains != [];
@@ -131,9 +154,6 @@ in {
           };
         })
         servicesWithDomains);
-      servicesWithPostgres = builtins.filter (s: s.postgres) services;
-      hasPostgresServices = servicesWithPostgres != [];
-      postgresNetworkName = "${name}-postgres-network";
 
       caddyfileContent = config.flake.lib.mkCaddyfile caddyEntries;
       caddyfilePath = builtins.toFile "Caddyfile" caddyfileContent;
@@ -148,20 +168,38 @@ in {
         then s // {networks = (s.networks or []) ++ [caddyNetworkName];}
         else s;
 
-      postgresServiceDef = config.flake.services.postgres {
-        networks = [postgresNetworkName];
-        dataDir = postgresDir;
-      };
-
-      addPostgresNetwork = s:
+      addPostgresEnv = s:
         if s.postgres
-        then s // {networks = (s.networks or []) ++ [postgresNetworkName];}
+        then let
+          pgEnv = s.postgresEnv or {};
+          passwordFileVar = pgEnv.passwordFile or "DATABASE_PASSWORD_FILE";
+          hostVar = pgEnv.host or "DATABASE_HOST";
+          portVar = pgEnv.port or "DATABASE_PORT";
+          databaseVar = pgEnv.database or "DATABASE_NAME";
+          userVar = pgEnv.user or "DATABASE_USER";
+          secretPath = "/var/lib/opnix/secrets/${s.container_name}PostgresPassword";
+          containerSecretPath = "/run/secrets/db_password";
+        in
+          s
+          // {
+            volumes = (s.volumes or []) ++ ["${secretPath}:${containerSecretPath}:ro"];
+            extra_hosts = (s.extra_hosts or []) ++ ["host.docker.internal:host-gateway"];
+            environment =
+              (s.environment or {})
+              // {
+                ${passwordFileVar} = containerSecretPath;
+                ${hostVar} = "host.docker.internal";
+                ${portVar} = "5432";
+                ${databaseVar} = s.container_name;
+                ${userVar} = s.container_name;
+              };
+          }
         else s;
 
-      processedServices = map addPostgresNetwork (map addCaddyNetwork services);
-      allServicesList = processedServices
-        ++ (lib.optional hasCaddyServices caddyServiceDef)
-        ++ (lib.optional hasPostgresServices postgresServiceDef);
+      processedServices = map addPostgresEnv (map addCaddyNetwork services);
+      allServicesList =
+        processedServices
+        ++ (lib.optional hasCaddyServices caddyServiceDef);
 
       arionServices = builtins.listToAttrs (map (s: {
           name = s.container_name;
@@ -177,10 +215,7 @@ in {
       caddyNetworks = lib.optionalAttrs hasCaddyServices {
         ${caddyNetworkName} = {name = caddyNetworkName;};
       };
-      postgresNetworks = lib.optionalAttrs hasPostgresServices {
-        ${postgresNetworkName} = {name = postgresNetworkName;};
-      };
-      allNetworks = userNetworks // caddyNetworks // postgresNetworks;
+      allNetworks = userNetworks // caddyNetworks;
     in {
       serviceName = name;
       settings = {

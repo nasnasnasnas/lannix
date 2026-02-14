@@ -1,7 +1,9 @@
 {...}: {
   config.flake.lib.mkPostgresPuppy = {pkgs, databases}: let
     databasesJson = builtins.toJSON (map (name: {inherit name;}) databases);
-    docker = "${pkgs.docker}/bin/docker";
+    psql = "${pkgs.postgresql}/bin/psql";
+    pg_isready = "${pkgs.postgresql}/bin/pg_isready";
+    runuser = "${pkgs.util-linux}/bin/runuser";
   in
     pkgs.writeShellApplication {
       name = "postgres-puppy";
@@ -10,7 +12,7 @@
         VAULT_ID="q63632lctm4by3clskcul4gmf4"
         TAG="MagicBox Postgres"
 
-        until ${docker} exec postgres pg_isready -U postgres; do
+        until ${runuser} -u postgres -- ${pg_isready}; do
           echo "waiting for postgres..."
           sleep 2
         done
@@ -81,7 +83,7 @@
         EOSQL
           )
 
-          echo "$SQL" | ${docker} exec -i postgres psql -U postgres
+          echo "$SQL" | ${runuser} -u postgres -- ${psql}
         done
 
         echo "All Postgres databases updated"
