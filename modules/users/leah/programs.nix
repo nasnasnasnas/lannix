@@ -54,10 +54,10 @@ in {
       seahorse
       (catppuccin-sddm.override {
         flavor = "mocha";
-        #        accent = "lavender";
+        accent = "lavender";
         font = "Noto Sans";
         fontSize = "13";
-        #        background = "${./wallpaper.png}";
+          background = "${./nas-flag-wallpaper.png}";
         loginBackground = true;
       })
 
@@ -114,12 +114,14 @@ in {
 
       zulu25
 
-      claude-code
+      unstable.claude-code-bin
 
       unstable.jetbrains.webstorm
       unstable.jetbrains.idea
+      unstable.jetbrains.rider
+      unstable.antigravity-fhs
 
-      # inputs.fresh.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.fresh.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 
     programs.zsh.enable = true;

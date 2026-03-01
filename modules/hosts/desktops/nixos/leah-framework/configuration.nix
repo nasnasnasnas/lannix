@@ -42,6 +42,14 @@
     boot.loader.efi.canTouchEfiVariables = true;
 
     boot.initrd.kernelModules = ["amdgpu"];
+    boot.kernelParams = [ "quiet" "splash" ];
+    
+    boot.plymouth = {
+      enable = true;
+      theme = "bgrt";
+    };
+    
+    boot.initrd.systemd.enable = true;
 
     boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -102,12 +110,12 @@
     services.xserver.enable = true;
     services.xserver.xkb.options = "terminate:";
     services.displayManager.sddm = {
-      theme = "breeze"; # -lavender";
-      enable = false;
+      theme = "catppuccin-mocha-lavender"; # -lavender";
+      enable = true;
       enableHidpi = true;
       wayland.enable = true;
     };
-    services.displayManager.cosmic-greeter.enable = true;
+    # services.displayManager.cosmic-greeter.enable = true;
 
     services.tailscale = {
       enable = true;
@@ -159,6 +167,7 @@
       greetd.enableGnomeKeyring = true;
       greetd-password.enableGnomeKeyring = true;
       login.enableGnomeKeyring = true;
+      sddm.enableGnomeKeyring = true;
     };
     security.pam.services.swaylock = {};
     programs.seahorse.enable = true;
@@ -199,6 +208,8 @@
     services.hardware.bolt.enable = true;
 
     networking.firewall.enable = false;
+    
+    virtualisation.docker.enable = true;
 
     services.nextdns = {
       enable = true;

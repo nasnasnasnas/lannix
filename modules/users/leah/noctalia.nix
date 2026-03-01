@@ -17,11 +17,15 @@ in {
 
     programs.noctalia-shell.enable = true;
     programs.noctalia-shell.settings = {
-      settingsVersion = 26;
+      settingsVersion = 53;
 
       general = {
         avatarImage = ./pfp.jpg;
+        lockScreenAnimations = true;
         showHibernateOnLockScreen = true;
+        autoStartAuth = true;
+        allowPasswordWithFprintd = true;
+        passwordChars = true;
       };
 
       ui = {
@@ -36,33 +40,7 @@ in {
         showWeekNumberInCalendar = true;
       };
 
-      calendar = {
-        cards = [
-          {
-            enabled = true;
-            id = "calendar-header-card";
-          }
-          {
-            enabled = true;
-            id = "calendar-month-card";
-          }
-          {
-            enabled = true;
-            id = "timer-card";
-          }
-          {
-            enabled = true;
-            id = "weather-card";
-          }
-        ];
-      };
-
-      screenRecorder = {
-        directory = "/home/leah/Videos";
-      };
-
       wallpaper = {
-        enabled = true;
         overviewEnabled = true;
         directory = "/home/leah/Pictures/Wallpapers";
         fillColor = "#b89cff";
@@ -98,25 +76,26 @@ in {
         ];
       };
 
-      systemMonitor = {
-        networkPollingInterval = 1500;
-      };
-
       dock = {
-        enabled = true;
-        displayMode = "auto_hide";
         floatingRatio = 1.5;
         size = 1.35;
-        onlySameOutput = true;
         monitors = ["eDP-1"];
         pinnedApps = ["com.mitchellh.ghostty"];
       };
 
       osd = {
+        location = "bottom";
         autoHideMs = 2500;
         backgroundOpacity = 0.5;
-        location = "bottom";
         enabledTypes = [0 1 2 3];
+      };
+
+      audio = {
+        visualizerType = "wave";
+      };
+
+      brightness = {
+        enableDdcSupport = true;
       };
 
       colorSchemes = {
@@ -125,6 +104,21 @@ in {
         schedulingMode = "location";
         matugenSchemeType = "scheme-content";
         generateTemplatesForPredefined = true;
+      };
+
+      nightLight = {
+        enabled = true;
+        nightTemp = "4525";
+      };
+
+      plugins = {
+        autoUpdate = true;
+      };
+
+      idle = {
+        enabled = true;
+        screenOffTimeout = 300;
+        lockTimeout = 360;
       };
 
       bar = {
@@ -139,37 +133,37 @@ in {
               leftClickExec = "noctalia-shell ipc call launcher toggle";
             }
             {
-              colorizeIcons = false;
+              focusedColor = "secondary";
               hideUnoccupied = true;
-              id = "TaskbarGrouped";
+              iconScale = 0.9;
+              id = "Workspace";
               labelMode = "index";
-              showLabelsOnlyWhenOccupied = false;
+              pillSize = 0.6;
+              showLabelsOnlyWhenOccupied = true;
             }
             {
-              diskPath = "/";
+              compactMode = false;
+              iconColor = "secondary";
               id = "SystemMonitor";
+              showCpuFreq = true;
               showCpuTemp = true;
               showCpuUsage = true;
               showDiskUsage = true;
-              showMemoryAsPercent = false;
+              showLoadAverage = true;
               showMemoryUsage = true;
               showNetworkStats = true;
-              usePrimaryColor = true;
-              compactMode = false;
-              showLoadAverage = true;
+              textColor = "secondary";
+              useMonospaceFont = true;
             }
             {
-              colorizeIcons = false;
               hideMode = "hidden";
               id = "ActiveWindow";
               maxWidth = 250;
               scrollingMode = "hover";
               showIcon = true;
-              useFixedWidth = false;
             }
             {
               hideMode = "hidden";
-              hideWhenIdle = false;
               id = "MediaMini";
               maxWidth = 200;
               scrollingMode = "hover";
@@ -177,12 +171,10 @@ in {
               showArtistFirst = true;
               showProgressRing = true;
               showVisualizer = true;
-              useFixedWidth = false;
               visualizerType = "linear";
             }
           ];
           right = [
-            {id = "ScreenRecorder";}
             {
               blacklist = [];
               colorizeIcons = false;
@@ -196,15 +188,15 @@ in {
               showUnreadBadge = true;
             }
             {
-              deviceNativePath = "";
               displayMode = "alwaysShow";
+              hideIfNotDetected = true;
               id = "Battery";
-              warningThreshold = 30;
             }
             {id = "PowerProfile";}
             {
               displayMode = "alwaysShow";
               id = "Volume";
+              middleClickCommand = "pwvucontrol || pavucontrol";
             }
             {
               displayMode = "alwaysShow";
@@ -214,15 +206,11 @@ in {
               formatHorizontal = "h:mm:ss AP";
               formatVertical = "HH mm - dd MM";
               id = "Clock";
-              useCustomFont = false;
-              usePrimaryColor = false;
             }
             {
               formatHorizontal = "ddd, MMM dd";
               formatVertical = "HH mm - dd MM";
               id = "Clock";
-              useCustomFont = false;
-              usePrimaryColor = false;
             }
             {
               colorizeDistroLogo = false;
@@ -233,15 +221,11 @@ in {
               id = "ControlCenter";
               useDistroLogo = true;
             }
+            {id = "plugin:model-usage";}
+            {id = "plugin:privacy-indicator";}
           ];
           center = [];
         };
-      };
-
-      nightLight = {
-        enabled = true;
-        autoSchedule = true;
-        nightTemp = "4525";
       };
     };
   };
