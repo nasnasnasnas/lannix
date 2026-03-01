@@ -7,7 +7,7 @@
   in
     pkgs.writeShellApplication {
       name = "postgres-puppy";
-      runtimeInputs = [pkgs._1password-cli pkgs.jq];
+      runtimeInputs = [pkgs._1password-cli pkgs.jq pkgs.openssl];
       text = ''
         VAULT_ID="q63632lctm4by3clskcul4gmf4"
         TAG="MagicBox Postgres"
@@ -43,13 +43,14 @@
           if [ "$ITEM" = "" ] || [ "$ITEM" = "null" ]; then
             # Create new 1Password item with generated password
             echo "Creating 1Password item for $db_name"
+            GEN_PASS=$(openssl rand -base64 20)
             ITEM=$(op item create \
               --category Database \
               --vault "$VAULT_ID" \
               --tags "$TAG" \
               --title "''${db_name} Postgres" \
-              --generate-password='20,letters,digits,symbols' \
               "type=postgresql" \
+              "password=$GEN_PASS" \
               "database=$db_name" \
               "username=$db_name" \
               --format json)
