@@ -1,6 +1,5 @@
 {inputs, ...}: {
   flake.modules.nixos.magicplank = {pkgs, config, ...}: {
-    imports = [ inputs.self.modules.nixos.opnix ];
     services.onepassword-secrets = {
       enable = true;
       tokenFile = "/etc/opnix-token";
