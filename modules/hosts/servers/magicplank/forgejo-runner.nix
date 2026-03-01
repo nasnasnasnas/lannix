@@ -11,18 +11,26 @@
       };
     };
 
-    system.activationScripts.forgejo-runner-token-env = {
-      deps = [ "opnix-secrets" ];
-      text = ''
-        install -Dm 0640 /dev/null /var/lib/opnix/secrets/forgejo-runner/token-env
-        echo "TOKEN=$(cat /var/lib/opnix/secrets/forgejo-runner/token)" \
-          > /var/lib/opnix/secrets/forgejo-runner/token-env
-      '';
+    systemd.services.forgejo-runner-token-env = {
+      description = "Prepare forgejo runner token env file";
+      after = [ "opnix-secrets.service" ];
+      requires = [ "opnix-secrets.service" ];
+      before = [ "gitea-runner-forgejo.service" ];
+      wantedBy = [ "gitea-runner-forgejo.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = pkgs.writeShellScript "forgejo-runner-token-env" ''
+          install -Dm 0640 /dev/null /var/lib/opnix/secrets/forgejo-runner/token-env
+          printf 'TOKEN=%s' "$(cat /var/lib/opnix/secrets/forgejo-runner/token)" \
+            > /var/lib/opnix/secrets/forgejo-runner/token-env
+        '';
+      };
     };
 
     services.gitea-actions-runner = {
       package = pkgs.forgejo-runner;
-      instances.forgejo-instance = {
+      instances.forgejo = {
         enable = true;
         name = "forgejo-runner-magicplank";
         tokenFile = "/var/lib/opnix/secrets/forgejo-runner/token-env";
