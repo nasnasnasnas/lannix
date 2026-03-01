@@ -4,7 +4,7 @@
       enable = true;
       secrets = {
         forgejoRunnerToken = {
-          path = "/var/lib/opnix/secrets/forgejo-runner/token";
+          # path = "/var/lib/opnix/secrets/forgejo-runner/token";
           reference = "op://Secrets/Forgejo Runner Registration Token/password";
           mode = "0644";
         };
