@@ -2,7 +2,6 @@
   flake.modules.nixos.magicplank = {pkgs, config, ...}: {
     services.onepassword-secrets = {
       enable = true;
-      tokenFile = "/etc/opnix-token";
       secrets = {
         forgejoRunnerToken = {
           path = "/var/lib/opnix/secrets/forgejo-runner/token";
