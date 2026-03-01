@@ -13,12 +13,13 @@
       host = "FORGEJO__database__HOST";
       database = "FORGEJO__database__NAME";
       user = "FORGEJO__database__USER";
-      passwordFile = "FORGEJO__database__PASSWD_URI";
+#      passwordFile = "FORGEJO__database__PASSWD_URI";
     };
     environment = {
       USER_UID = 1000;
       USER_GID = 1000;
       FORGEJO__database__DB_TYPE = "postgres";
+      FORGEJO__database__PASSWD_URI = "file:/run/secrets/db_password";
     };
     inherit image;
     restart = "unless-stopped";

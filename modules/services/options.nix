@@ -97,16 +97,15 @@ in {
       secretsEnvPath ? "/home/magicbox/config/caddy/secrets.env",
     }: {config, ...}: let
       projectName = if name != null then name else config.networking.hostName;
-      postgresServices = builtins.filter (s: s.postgres) services;
+      postgresServices = builtins.filter (s: s.postgres or false) services;
       hasPostgresServices = postgresServices != [];
     in {
       imports =
-        [inputs.self.modules.nixos.arion]
-        ++ lib.optional hasPostgresServices inputs.self.modules.nixos.opnix;
+        [inputs.self.modules.nixos.arion inputs.self.modules.nixos.opnix];
 
       host.caddyDomains = lib.concatMap (s: s.domains or []) services;
       host.publicIPs = publicIPs;
-      postgres-puppy.databases = lib.concatMap (s: if s.postgres then [s.container_name] else []) services;
+      postgres-puppy.databases = lib.concatMap (s: if s.postgres or false then [s.container_name] else []) services;
 
       services.onepassword-secrets = lib.mkIf hasPostgresServices {
         enable = true;
