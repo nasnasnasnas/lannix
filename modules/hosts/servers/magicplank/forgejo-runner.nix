@@ -16,7 +16,7 @@
       instances.forgejo-instance = {
         enable = true;
         name = "forgejo-runner-magicplank";
-        tokenFile = "/var/lib/opnix/secrets/forgejo-runner/token";
+        token = builtins.readFile config.services.onepassword-secrets.secretPaths.forgejoRunnerToken;
         url = "https://git.szpunar.cloud/";
         labels = [
           "node-22:docker://node:22-bookworm"
