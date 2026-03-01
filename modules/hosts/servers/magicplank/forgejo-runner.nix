@@ -6,8 +6,7 @@
         forgejoRunnerToken = {
           path = "/var/lib/opnix/secrets/forgejo-runner/token";
           reference = "op://Secrets/Forgejo Runner Registration Token/password";
-          owner = 1001;
-          group = 1001;
+          mode = "0644";
         };
       };
     };
