@@ -39,6 +39,8 @@
           "node-22:docker://node:22-bookworm"
           "nixos-latest:docker://nixos/nix"
           "bun-latest:docker://oven/bun:latest"
+          "debian-latest:docker://debian:latest"
+          "ubuntu-latest:docker://ubuntu:latest"
         ];
         # settings = { ... };
       };
