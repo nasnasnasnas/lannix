@@ -122,6 +122,8 @@ in {
       unstable.antigravity-fhs
 
       inputs.fresh.packages.${pkgs.stdenv.hostPlatform.system}.default
+
+      btop
     ];
 
     programs.zsh.enable = true;

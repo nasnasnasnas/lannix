@@ -54,6 +54,7 @@
         ];
         settings = {
           runner = {
+            capacity = 10;
             envs = {
               DOCKER_HOST = "tcp://forgejo-dind.docker.internal:2375";
             };
