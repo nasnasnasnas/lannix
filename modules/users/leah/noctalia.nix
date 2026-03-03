@@ -140,6 +140,7 @@ in {
               labelMode = "index";
               pillSize = 0.6;
               showLabelsOnlyWhenOccupied = true;
+              showApplications = true;
             }
             {
               compactMode = false;
