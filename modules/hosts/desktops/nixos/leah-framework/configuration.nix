@@ -51,7 +51,8 @@
     
     boot.initrd.systemd.enable = true;
 
-    boot.kernelPackages = pkgs.linuxPackages_latest;
+    nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
+    boot.kernelPackages = pkgs.cachyosKernels."linuxPackages-cachyos-latest-lto-zen4";
 
     networking.networkmanager.enable = true;
     networking.networkmanager.wifi.backend = "iwd";

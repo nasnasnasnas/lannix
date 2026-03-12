@@ -1,4 +1,4 @@
-{...}: {
+{inputs, ...}: {
   flake.modules.nixos.magicplank = {pkgs, ...}: {
     # imports = with inputs.self.modules.nixos; [
     #   system-cli
@@ -29,6 +29,9 @@
     programs.nix-ld = {
       enable = true;
     };
+
+    nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
+    boot.kernelPackages = pkgs.cachyosKernels."linuxPackages-cachyos-latest-lto-zen4";
 
     # Set your time zone.
     time.timeZone = "America/Indiana/Indianapolis";

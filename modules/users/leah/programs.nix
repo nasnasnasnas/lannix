@@ -34,7 +34,7 @@ in {
       wget
       git
       gh
-      bun
+      unstable.bun
       unstable.nodejs_24
       vscode-fhs
       ghostty

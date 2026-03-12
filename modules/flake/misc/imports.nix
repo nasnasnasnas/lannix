@@ -27,6 +27,7 @@
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
     fresh.url = "github:sinelaw/fresh";
+    lazyvim.url = "github:pfassina/lazyvim-nix";
   };
 
   # imports = [

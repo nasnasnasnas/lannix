@@ -30,6 +30,7 @@
       url = "github:homebrew/homebrew-core";
     };
     import-tree.url = "github:vic/import-tree";
+    lazyvim.url = "github:pfassina/lazyvim-nix";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nix-darwin = {
       inputs.nixpkgs.follows = "nixpkgs";
