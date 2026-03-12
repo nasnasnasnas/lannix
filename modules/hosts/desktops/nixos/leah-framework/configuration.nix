@@ -175,12 +175,8 @@
     security.polkit.enable = true;
 
     services.tlp.enable = false;
-    services.tuned = {
-      enable = true;
-      ppdSupport = true;
-    };
 
-    services.cpupower-gui.enable = true;
+    # services.cpupower-gui.enable = true;
 
     hardware.logitech.wireless = {
       enable = true;
