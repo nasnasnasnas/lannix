@@ -53,7 +53,7 @@
 
     services.openssh.enable = true;
     services.openssh.settings = {
-      PasswordAuthentication = false;
+    PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "prohibit-password";
     };
@@ -66,6 +66,7 @@
     };
 
     services.tlp.enable = false;
+    powerManagement.cpuFreqGovernor = "performance";
 
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
