@@ -24,6 +24,7 @@
     inherit image;
     restart = "unless-stopped";
     caddy_port = 3000;
+    ports = [ "2222:22" ];
     inherit networks;
     volumes = volumes ++ [ "${dataDir}:/data" "/etc/localtime:/etc/localtime:ro" ];
   };
