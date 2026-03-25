@@ -56,7 +56,7 @@
 
     services.openssh.enable = true;
     services.openssh.settings = {
-    PasswordAuthentication = false;
+      PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "prohibit-password";
     };
