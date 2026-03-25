@@ -134,6 +134,7 @@ in {
       unstable.jetbrains.webstorm
       unstable.jetbrains.idea
       unstable.jetbrains.rider
+      unstable.jetbrains.rust-rover
       unstable.antigravity-fhs
 
       inputs.fresh.packages.${pkgs.stdenv.hostPlatform.system}.default
