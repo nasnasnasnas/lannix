@@ -23,7 +23,7 @@ in {
         avatarImage = ./pfp.jpg;
         lockScreenAnimations = true;
         showHibernateOnLockScreen = true;
-        autoStartAuth = true;
+        autoStartAuth = false;
         allowPasswordWithFprintd = true;
         passwordChars = true;
       };
