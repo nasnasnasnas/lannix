@@ -1,40 +1,38 @@
 # DO-NOT-EDIT. This file was auto-generated using github:vic/flake-file.
 # Use `nix run .#write-flake` to regenerate it.
 {
-
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
 
   inputs = {
     arion = {
-      inputs.nixpkgs.follows = "nixpkgs";
       url = "github:hercules-ci/arion";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
     flake-file.url = "github:vic/flake-file";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    fresh.url = "github:sinelaw/fresh";
     home-manager = {
-      inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-community/home-manager/release-25.11";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager-unstable = {
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
       url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     homebrew-cask = {
-      flake = false;
       url = "github:homebrew/homebrew-cask";
+      flake = false;
     };
     homebrew-core = {
-      flake = false;
       url = "github:homebrew/homebrew-core";
+      flake = false;
     };
     import-tree.url = "github:vic/import-tree";
     lazyvim.url = "github:pfassina/lazyvim-nix";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nix-darwin = {
-      inputs.nixpkgs.follows = "nixpkgs";
       url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
     nix-homebrew.url = "github:zhaofengli/nix-homebrew";
@@ -43,18 +41,17 @@
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     noctalia = {
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
       url = "github:noctalia-dev/noctalia-shell";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     opnix.url = "github:brizzbuzz/opnix";
     winapps = {
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
       url = "github:winapps-org/winapps";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     zen-browser = {
-      inputs.nixpkgs.follows = "nixpkgs";
       url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-
 }

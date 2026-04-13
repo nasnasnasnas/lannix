@@ -135,11 +135,16 @@ in {
       unstable.jetbrains.idea
       unstable.jetbrains.rider
       unstable.jetbrains.rust-rover
+      unstable.jetbrains.clion
       unstable.antigravity-fhs
 
-      inputs.fresh.packages.${pkgs.stdenv.hostPlatform.system}.default
+      fresh-editor
+      # inputs.fresh.packages.${pkgs.stdenv.hostPlatform.system}.default # replaced by above
 
       btop
+      unstable.typst
+      unstable.tinymist
+      unstable.typstyle
     ];
 
     programs.zsh.enable = true;
