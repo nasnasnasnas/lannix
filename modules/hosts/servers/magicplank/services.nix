@@ -4,6 +4,7 @@
     services = with inputs.self.services; [
       (nextcloud {domains = ["https://next.szpunar.cloud"];})
       (forgejo {domains = ["https://git.szpunar.cloud"];})
+      (gomuks {domains = ["https://leah.gomuks.szpunar.cloud"]; dataDir = "/home/magicbox/gomuks-leah";})
     ];
   };
 }
