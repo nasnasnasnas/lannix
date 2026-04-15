@@ -169,7 +169,7 @@ in {
         else s;
 
       addPostgresEnv = s:
-        if s.postgres
+        if s.postgres or false
         then let
           pgEnv = s.postgresEnv or {};
           passwordFileVar = pgEnv.passwordFile or "DATABASE_PASSWORD_FILE";
