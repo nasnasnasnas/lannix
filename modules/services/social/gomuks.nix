@@ -17,6 +17,6 @@
     inherit networks;
     caddy_port = port;
     inherit environment;
-    volumes = volumes ++ [ "${dataDir}:/app/data" ];
+    volumes = volumes ++ [ "${dataDir}:/data" ];
   };
 }
