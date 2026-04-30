@@ -111,10 +111,10 @@ in {
         enable = true;
         tokenFile = "/etc/op-token";
         secrets = builtins.listToAttrs (map (s: {
-          name = "${s.container_name}PostgresPassword";
+          name = "${s.postgresEnv.overrideDatabase or s.container_name}PostgresPassword";
           value = {
-            reference = "op://${vaultId}/${s.container_name} Postgres/password";
-            path = "/var/lib/opnix/secrets/${s.container_name}/db_password";
+            reference = "op://${vaultId}/${s.postgresEnv.overrideDatabase or s.container_name} Postgres/password";
+            path = "/var/lib/opnix/secrets/${s.postgresEnv.overrideDatabase or s.container_name}/db_password";
           };
         }) postgresServices);
       };
@@ -190,8 +190,8 @@ in {
                 ${passwordFileVar} = "${containerSecretsDir}/db_password";
                 ${hostVar} = "host.docker.internal";
                 ${portVar} = "5432";
-                ${databaseVar} = s.container_name;
-                ${userVar} = s.container_name;
+                ${databaseVar} = pgEnv.overrideDatabase or s.container_name;
+                ${userVar} = pgEnv.overrideDatabase or s.container_name;
               };
           }
         else s;
