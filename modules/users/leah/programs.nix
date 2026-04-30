@@ -129,7 +129,7 @@ in {
 
       zulu25
 
-      unstable.claude-code-bin
+      unstable.claude-code
 
       unstable.jetbrains.webstorm
       unstable.jetbrains.idea

@@ -6,7 +6,7 @@
     dataDir ? "/home/magicbox/data/nextcloud"
   }: {
     container_name = "nextcloud-cron";
-    entrypoint = "./cron.sh";
+    entrypoint = "/cron.sh";
     postgres = true;
     postgresEnv = {
       host = "POSTGRES_HOST";
