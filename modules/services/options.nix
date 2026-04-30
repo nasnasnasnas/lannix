@@ -105,7 +105,7 @@ in {
 
       host.caddyDomains = lib.concatMap (s: s.domains or []) services;
       host.publicIPs = publicIPs;
-      postgres-puppy.databases = lib.concatMap (s: if s.postgres or false then [s.container_name] else []) services;
+      postgres-puppy.databases = lib.concatMap (s: if s.postgres or false then [s.postgresEnv.overrideDatabase or s.container_name] else []) services;
 
       services.onepassword-secrets = lib.mkIf hasPostgresServices {
         enable = true;
@@ -177,7 +177,7 @@ in {
           portVar = pgEnv.port or "DATABASE_PORT";
           databaseVar = pgEnv.database or "DATABASE_NAME";
           userVar = pgEnv.user or "DATABASE_USER";
-          secretsDir = "/var/lib/opnix/secrets/${s.container_name}";
+          secretsDir = "/var/lib/opnix/secrets/${pgEnv.overrideDatabase or s.container_name}";
           containerSecretsDir = "/run/secrets";
         in
           s

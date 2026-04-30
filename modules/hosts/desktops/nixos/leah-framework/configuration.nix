@@ -51,7 +51,7 @@
     
     boot.initrd.systemd.enable = true;
 
-    nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
+    nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.default ];
     boot.kernelPackages = pkgs.cachyosKernels."linuxPackages-cachyos-latest-lto-zen4";
 
     networking.networkmanager.enable = true;

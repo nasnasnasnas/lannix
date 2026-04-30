@@ -138,7 +138,7 @@ in {
       unstable.jetbrains.clion
       unstable.antigravity-fhs
 
-      fresh-editor
+      unstable.fresh-editor
       # inputs.fresh.packages.${pkgs.stdenv.hostPlatform.system}.default # replaced by above
 
       btop
