@@ -2,7 +2,7 @@
   flake.services.nextcloud = {
     domains ? [],
     networks ? [],
-    image ? "nextcloud:latest",
+    image ? "nextcloud:33.0.2",
     volumes ? [],
     dataDir ? "/home/magicbox/data/nextcloud"
   }: {
