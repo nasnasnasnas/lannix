@@ -28,6 +28,7 @@ in {
       ];
     };
     programs.kdeconnect.enable = true;
+    programs.localsend.enable = true;
 
     environment.etc = {
       "1password/custom_allowed_browsers" = {
@@ -145,6 +146,7 @@ in {
       unstable.typst
       unstable.tinymist
       unstable.typstyle
+      zotero
     ];
 
     programs.zsh.enable = true;
