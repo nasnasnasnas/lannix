@@ -147,6 +147,8 @@ in {
       unstable.tinymist
       unstable.typstyle
       zotero
+
+      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.radaromega
     ];
 
     programs.zsh.enable = true;
