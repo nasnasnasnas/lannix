@@ -121,8 +121,9 @@ in {
       flyctl
 
       inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
+      gpu-screen-recorder
       whitesur-icon-theme
-      flameshot
+      unstable.flameshot
       easyeffects
 
       nextdns
@@ -137,6 +138,7 @@ in {
       unstable.jetbrains.rider
       unstable.jetbrains.rust-rover
       unstable.jetbrains.clion
+      unstable.jetbrains.phpstorm
       unstable.antigravity-fhs
 
       unstable.fresh-editor
@@ -149,6 +151,13 @@ in {
       zotero
 
       inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.radaromega
+      (unstable.vivaldi.override {
+          enableWidevine = true;
+          proprietaryCodecs = true;
+          inherit widevine-cdm vivaldi-ffmpeg-codecs;
+      })
+
+      unstable.obsidian
     ];
 
     programs.zsh.enable = true;

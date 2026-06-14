@@ -15,8 +15,8 @@ in {
       };
     };
 
-    programs.noctalia-shell.enable = true;
-    programs.noctalia-shell.settings = {
+    programs.noctalia.enable = true;
+    programs.noctalia.settings = {
       settingsVersion = 53;
 
       general = {

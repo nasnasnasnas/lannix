@@ -29,6 +29,11 @@
                   inherit (final) config;
                   system = pkgs.stdenv.hostPlatform.system;
                 };
+                
+                master = import inputs.nixpkgs-master {
+                  inherit (final) config;
+                  system = pkgs.stdenv.hostPlatform.system;
+                };
               })
             ];
 

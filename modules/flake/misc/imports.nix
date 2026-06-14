@@ -27,6 +27,10 @@
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
     lazyvim.url = "github:pfassina/lazyvim-nix";
+
+    solaar = {
+      url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz";
+    };
   };
 
   # imports = [

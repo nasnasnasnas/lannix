@@ -7,6 +7,7 @@
       home-manager
       leah # (adds leah user + home manager config)
       inputs.nix-flatpak.nixosModules.nix-flatpak
+      inputs.solaar.nixosModules.default
     ];
 
     environment.systemPackages = with pkgs; [
@@ -150,7 +151,7 @@
       ];
       dates = "04:00";
       randomizedDelaySec = "45min";
-      allowReboot = true;
+      # allowReboot = true;
     };
 
     nix.gc = {
@@ -182,6 +183,8 @@
       enable = true;
       enableGraphical = true;
     };
+    services.solaar.enable = true;
+    hardware.keyboard.qmk.enable = true;
 
     services.geoclue2 = {
       submitData = true;
@@ -206,7 +209,7 @@
 
     networking.firewall.enable = false;
     
-    virtualisation.docker.enable = true;
+    virtualisation.docker.enable = false;
 
     services.nextdns = {
       enable = true;
