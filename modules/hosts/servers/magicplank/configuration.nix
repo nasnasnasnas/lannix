@@ -22,6 +22,7 @@
       bun
       htop
       dua
+      unstable.fresh-editor
     ];
 
     nix.settings.trusted-users = ["magicbox"];
