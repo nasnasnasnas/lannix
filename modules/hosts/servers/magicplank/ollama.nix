@@ -10,5 +10,6 @@
       "gemma4:26b"
       "gemma4:31b"
     ];
+    networking.firewall.allowedTCPPorts = [ 11434 ];
   };
 }
