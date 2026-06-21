@@ -62,6 +62,12 @@
       PermitRootLogin = "prohibit-password";
     };
 
+    nix.gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+
     # Tailscale
     networking.firewall.checkReversePath = "loose";
     services.tailscale = {
