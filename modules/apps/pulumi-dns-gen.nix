@@ -33,7 +33,10 @@
       subdomain = lib.concatStringsSep "." (lib.take (len - 2) parts);
     in {
       inherit zone;
-      name = if subdomain == "" then "@" else subdomain;
+      name =
+        if subdomain == ""
+        then "@"
+        else subdomain;
     };
 
     # Auto-generate A records from host.caddyDomains + host.publicIPs in each nixosConfiguration.
@@ -68,10 +71,9 @@
 
     perSystem = {pkgs, ...}: let
       dnsConfig = builtins.toJSON {
-        domains =
-          lib.mapAttrs (_domain: records:
-            map (r: {inherit (r) name type content ttl proxied;}) records)
-          config.flake.dnsRecords;
+        domains = lib.mapAttrs (_domain: records:
+          map (r: {inherit (r) name type content ttl proxied;}) records)
+        config.flake.dnsRecords;
       };
 
       dnsConfigHeader = pkgs.writeText "dns-config.ts" "const DNS_CONFIG = ${dnsConfig};\n";
@@ -81,8 +83,9 @@
         name = "pulumi-dns-gen";
         runtimeInputs = [pkgs.pulumi-bin pkgs.bun];
         text = ''
-          TMPFILE=$(mktemp --suffix=.ts)
-          trap 'rm -f "$TMPFILE"' EXIT
+          TMPDIR=$(mktemp -d)
+          TMPFILE="$TMPDIR/generate.ts"
+          trap 'rm -rf "$TMPDIR" Pulumi.yaml' EXIT
 
           # Generate Pulumi.yaml first (needed for pulumi stack commands)
           cat ${dnsConfigHeader} ${generateScript} > "$TMPFILE"
@@ -106,9 +109,6 @@
 
           echo "Running pulumi up..."
           pulumi up --refresh --yes "$@"
-
-          echo "Removing Pulumi.yaml..."
-          rm Pulumi.yaml
         '';
       };
 
