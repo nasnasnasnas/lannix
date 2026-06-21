@@ -139,6 +139,7 @@ in {
       unstable.jetbrains.rust-rover
       unstable.jetbrains.clion
       unstable.jetbrains.phpstorm
+      unstable.jetbrains-toolbox
       unstable.antigravity-fhs
 
       unstable.fresh-editor
@@ -166,6 +167,7 @@ in {
 
     # Enable the COSMIC desktop environment
     services.desktopManager.cosmic.enable = true;
+    environment.cosmic.excludePackages = [ pkgs.networkmanagerapplet ];
     programs.niri.enable = true;
 
     programs.direnv.enable = true;

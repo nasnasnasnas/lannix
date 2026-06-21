@@ -8,6 +8,7 @@
       leah # (adds leah user + home manager config)
       inputs.nix-flatpak.nixosModules.nix-flatpak
       inputs.solaar.nixosModules.default
+      inputs.noctalia-greeter.nixosModules.default
     ];
 
     environment.systemPackages = with pkgs; [
@@ -113,11 +114,23 @@
     services.xserver.xkb.options = "terminate:";
     services.displayManager.sddm = {
       theme = "catppuccin-mocha-lavender"; # -lavender";
-      enable = true;
+      enable = false;
       enableHidpi = true;
       wayland.enable = true;
     };
     # services.displayManager.cosmic-greeter.enable = true;
+    programs.noctalia-greeter = {
+      enable = true;
+      package = inputs.noctalia-greeter.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
+      # Optional configuration
+      greeter-args = "";
+      settings.cursor = {
+        theme = "Adwaita";
+        size = 24;
+        package = pkgs.adwaita-icon-theme;
+      };
+    };
 
     services.tailscale = {
       enable = true;
@@ -209,7 +222,7 @@
 
     networking.firewall.enable = false;
     
-    virtualisation.docker.enable = false;
+    virtualisation.docker.enable = true;
 
     services.nextdns = {
       enable = true;
