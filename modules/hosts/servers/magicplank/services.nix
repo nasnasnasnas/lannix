@@ -6,6 +6,7 @@
       (nextcloud-cron {})
       (forgejo {domains = ["https://git.szpunar.cloud"];})
       (gomuks {domains = ["https://leah.gomuks.szpunar.cloud"]; dataDir = "/home/magicbox/data/gomuks-leah";})
+      (open-webui {domains = ["https://ai.szpunar.cloud"];})
     ];
   };
 }
