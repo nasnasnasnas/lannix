@@ -5,7 +5,7 @@
     networks = ["magicbox-network" "zurg"];
     services = with inputs.self.services; [
       (termix {
-        domains = ["https://termix.szpunar.cloud"];
+        domains = ["https://termix.szpunar.cloud" "https://termix.nea.rip"];
         networks = ["magicbox-network"];
         dataDir = "/home/magicbox/data/termix";
       })
@@ -27,7 +27,7 @@
       })
 
       (nzbdav {
-        domains = ["https://nzbdav.szpunar.cloud"];
+        domains = ["https://nzbdav.szpunar.cloud" "https://nzbdav.nea.rip"];
         networks = ["magicbox-network"];
         configDir = "/home/magicbox/config/nzbdav";
         volumes = [
@@ -45,7 +45,7 @@
       })
 
       (jellyfin {
-        domains = ["https://stream.szpunar.cloud"];
+        domains = ["https://stream.szpunar.cloud" "https://stream.nea.rip" "https://jf.nea.rip"];
         networks = ["magicbox-network"];
         nvidia = true;
         depends_on = ["zurg" "rclone"];
@@ -60,13 +60,13 @@
       })
 
       (prowlarr {
-        domains = ["https://prowlarr.szpunar.cloud"];
+        domains = ["https://prowlarr.szpunar.cloud" "https://prowlarr.nea.rip"];
         networks = ["magicbox-network"];
         configDir = "/home/magicbox/config/prowlarr";
       })
 
       (sonarr {
-        domains = ["https://sonarr.szpunar.cloud"];
+        domains = ["https://sonarr.szpunar.cloud" "https://sonarr.nea.rip"];
         networks = ["magicbox-network"];
         configDir = "/home/magicbox/config/sonarr";
         volumes = [
@@ -76,7 +76,7 @@
       })
 
       (radarr {
-        domains = ["https://radarr.szpunar.cloud"];
+        domains = ["https://radarr.szpunar.cloud" "https://radarr.nea.rip"];
         networks = ["magicbox-network"];
         configDir = "/home/magicbox/config/radarr";
         volumes = [
@@ -86,7 +86,7 @@
       })
 
       (lidarr {
-        domains = ["https://lidarr.szpunar.cloud"];
+        domains = ["https://lidarr.szpunar.cloud" "https://lidarr.nea.rip"];
         networks = ["magicbox-network"];
         configDir = "/home/magicbox/config/lidarr";
         volumes = [
@@ -96,7 +96,7 @@
       })
 
       (mylar {
-        domains = ["https://mylar.szpunar.cloud"];
+        domains = ["https://mylar.szpunar.cloud" "https://mylar.nea.rip"];
         networks = ["magicbox-network"];
         configDir = "/home/magicbox/config/mylar";
         volumes = [
@@ -106,7 +106,7 @@
       })
 
       (bazarr {
-        domains = ["https://bazarr.szpunar.cloud"];
+        domains = ["https://bazarr.szpunar.cloud" "https://bazarr.nea.rip"];
         networks = ["magicbox-network"];
         configDir = "/home/magicbox/config/bazarr";
         ports = ["6767:6767"];
@@ -117,7 +117,7 @@
       })
 
       (sabnzbd {
-        domains = ["https://sabnzbd.szpunar.cloud"];
+        domains = ["https://sabnzbd.szpunar.cloud" "https://sabnzbd.nea.rip"];
         networks = ["magicbox-network"];
         configDir = "/home/magicbox/config/sabnzbd";
         volumes = [
@@ -126,7 +126,7 @@
       })
 
       (grafana {
-        domains = ["https://grafana.szpunar.cloud"];
+        domains = ["https://grafana.szpunar.cloud" "https://grafana.nea.rip"];
         networks = ["magicbox-network"];
         dataDir = "/home/magicbox/data/grafana";
         adminPassword = null;
@@ -140,19 +140,19 @@
       })
 
       (victoriametrics {
-        domains = ["https://victoriametrics.szpunar.cloud"];
+        domains = ["https://victoriametrics.szpunar.cloud" "https://victoriametrics.nea.rip"];
         networks = ["magicbox-network"];
         dataDir = "/home/magicbox/data/victoriametrics";
       })
 
       (victorialogs {
-        domains = ["https://victorialogs.szpunar.cloud"];
+        domains = ["https://victorialogs.szpunar.cloud" "https://victorialogs.nea.rip"];
         networks = ["magicbox-network"];
         dataDir = "/home/magicbox/data/victorialogs";
       })
 
       (pyroscope {
-        domains = ["https://pyroscope.szpunar.cloud"];
+        domains = ["https://pyroscope.szpunar.cloud" "https://pyroscope.nea.rip"];
         networks = ["magicbox-network"];
         dataDir = "/home/magicbox/data/pyroscope";
       })

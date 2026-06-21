@@ -13,21 +13,7 @@
     };
   in
     (map mkA [
-      "bazarr"
-      "grafana"
-      "lidarr"
-      "mylar"
-      "nzbdav"
-      "prowlarr"
-      "pyroscope"
-      "radarr"
       "request"
-      "sabnzbd"
-      "sonarr"
-      "stream"
-      "termix"
-      "victorialogs"
-      "victoriametrics"
       "test"
     ])
     ++ [
@@ -43,21 +29,7 @@
       content = aRecordIP;
     };
   in (map mkA [
-    "bazarr"
-    "grafana"
-    "lidarr"
-    "mylar"
-    "nzbdav"
-    "prowlarr"
-    "pyroscope"
-    "radarr"
     "request"
-    "sabnzbd"
-    "sonarr"
-    "stream"
-    "termix"
-    "victorialogs"
-    "victoriametrics"
     "test"
   ]);
 }

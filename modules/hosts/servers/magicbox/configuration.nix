@@ -113,9 +113,35 @@
       };
     };
 
+    systemd.services.magicbox-stale-mount-cleanup = {
+      description = "Clean up stale Magicbox rclone mountpoints";
+      before = ["magicbox.service"];
+      wantedBy = ["magicbox.service"];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = pkgs.writeShellScript "magicbox-stale-mount-cleanup" ''
+          cleanup_mount() {
+            local mountpoint="$1"
+
+            if ${pkgs.util-linux}/bin/mountpoint -q "$mountpoint" && ! ${pkgs.coreutils}/bin/stat "$mountpoint" >/dev/null 2>&1; then
+              ${pkgs.util-linux}/bin/umount -l "$mountpoint" || true
+            fi
+
+            ${pkgs.coreutils}/bin/mkdir -p "$mountpoint"
+            ${pkgs.coreutils}/bin/chown 1000:100 "$mountpoint" || true
+            ${pkgs.coreutils}/bin/chmod 755 "$mountpoint" || true
+          }
+
+          cleanup_mount /mnt/nzbdav
+          cleanup_mount /mnt/zurg
+        '';
+      };
+    };
+
     systemd.services.magicbox = {
-      after = ["magicbox-secret-env.service"];
-      wants = ["magicbox-secret-env.service"];
+      after = ["magicbox-secret-env.service" "magicbox-stale-mount-cleanup.service"];
+      wants = ["magicbox-secret-env.service" "magicbox-stale-mount-cleanup.service"];
     };
 
     services.alloy.enable = true;
