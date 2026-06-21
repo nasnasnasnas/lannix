@@ -87,7 +87,7 @@
         };
         grafanaAdminPassword = {
           path = "/var/lib/opnix/secrets/magicbox/grafana_admin_password";
-          reference = "op://Secrets/Magicbox Grafana/newPassword";
+          reference = "op://Secrets/Magicbox Grafana/password";
           mode = "0400";
         };
       };
