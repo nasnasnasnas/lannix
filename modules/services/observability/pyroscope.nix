@@ -12,25 +12,26 @@
     plugins ? [],
     tz ? "America/Indiana/Indianapolis",
     command ? [],
-    dataDir ? "/var/lib/pyroscope"
+    dataDir ? "/var/lib/pyroscope",
   }: let
-    parts = builtins.split ":" user;
+    parts = builtins.match "([^:]+):([^:]+)" user;
     uid = builtins.elemAt parts 0;
     gid = builtins.elemAt parts 1;
-  in 
-  {
+  in {
     inherit domains;
     inherit container_name;
     inherit image;
     inherit restart;
     inherit networks;
     caddy_port = port;
-    environment = {
-      PUID = uid;
-      PGID = gid;
-      TZ = tz;
-    } // environment;
-    volumes = volumes ++ [ "${dataDir}:/var/lib/pyroscope:rw" ];
+    environment =
+      {
+        PUID = uid;
+        PGID = gid;
+        TZ = tz;
+      }
+      // environment;
+    volumes = volumes ++ ["${dataDir}:/var/lib/pyroscope:rw"];
     inherit command;
   };
 }

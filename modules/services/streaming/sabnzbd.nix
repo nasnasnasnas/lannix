@@ -11,7 +11,7 @@
     volumes ? [],
     configDir,
   }: let
-    parts = builtins.split ":" user;
+    parts = builtins.match "([^:]+):([^:]+)" user;
     uid = builtins.elemAt parts 0;
     gid = builtins.elemAt parts 1;
   in {
@@ -21,11 +21,13 @@
     inherit restart;
     inherit networks;
     caddy_port = port;
-    environment = {
-      PUID = uid;
-      PGID = gid;
-      TZ = "America/Indiana/Indianapolis";
-    } // environment;
-    volumes = volumes ++ [ "${configDir}:/config" ];
+    environment =
+      {
+        PUID = uid;
+        PGID = gid;
+        TZ = "America/Indiana/Indianapolis";
+      }
+      // environment;
+    volumes = volumes ++ ["${configDir}:/config"];
   };
 }

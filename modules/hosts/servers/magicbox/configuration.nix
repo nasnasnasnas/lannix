@@ -1,0 +1,153 @@
+{...}: {
+  flake.modules.nixos.magicbox = {pkgs, ...}: {
+    environment.systemPackages = with pkgs; [
+      git
+      wget
+      curl
+      btop
+      fastfetch
+      hyfetch
+      nixd
+      ripgrep
+      htop
+      ffmpeg-full
+      dua
+      fd
+      damon
+    ];
+
+    nix.settings.trusted-users = ["nixos" "nea" "magicbox"];
+
+    programs.nix-ld.enable = true;
+
+    system.activationScripts.directoryConfig.text = ''
+      # Ensure bind-mount and mountpoint directories exist
+      mkdir -p \
+        /home/magicbox/config/{bazarr,jellyfin,lidarr,mylar,nzbdav,postgres,prowlarr,radarr,rclone-nzbdav,sabnzbd,sonarr,zurg-testing} \
+        /home/magicbox/data/{caddy,grafana,jellyfin,postgres,pyroscope,termix,victorialogs,victoriametrics,zurg-testing} \
+        /home/magicbox/media/usenet \
+        /home/magicbox/manual-media \
+        /mnt/{extra,nzbdav,windows,zurg}
+
+      # Set ownership for local directories
+      chown -R 1000:100 /home/magicbox/config || true
+      chown -R 1000:100 /home/magicbox/data || true
+      chown -R 1000:100 /home/magicbox/media || true
+      chown -R 1000:100 /home/magicbox/manual-media || true
+      chmod -R 755 /home/magicbox/config || true
+      chmod -R 755 /home/magicbox/data || true
+      chmod -R 755 /home/magicbox/media || true
+      chmod -R 755 /home/magicbox/manual-media || true
+
+      chown -R 1000:100 /mnt/zurg || true
+      chmod -R 755 /mnt/zurg || true
+      chown -R 1000:100 /mnt/nzbdav || true
+      chmod -R 755 /mnt/nzbdav || true
+      chown -R 1000:100 /mnt/extra || true
+      chmod -R 755 /mnt/extra || true
+      chown -R 1000:100 /mnt/windows || true
+      chmod -R 755 /mnt/windows || true
+    '';
+
+    users.users.magicbox = {
+      isNormalUser = true;
+      description = "magicbox";
+      extraGroups = ["networkmanager" "wheel" "docker"];
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM+9gEtoUZS0D6LAu7Jz8WnIRrKNna2zfH6F7QxzaeZa"
+      ];
+    };
+
+    users.users.root.openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM+9gEtoUZS0D6LAu7Jz8WnIRrKNna2zfH6F7QxzaeZa"
+    ];
+
+    services.openssh.enable = true;
+    services.openssh.settings.PermitRootLogin = "yes";
+
+    networking.firewall.checkReversePath = "loose";
+    services.tailscale = {
+      enable = true;
+      useRoutingFeatures = "server";
+    };
+
+    programs.fuse.enable = true;
+    programs.fuse.userAllowOther = true;
+
+    networking.firewall.allowedTCPPorts = [22 80 443 5432 6767];
+
+    services.onepassword-secrets = {
+      enable = true;
+      tokenFile = "/etc/op-token";
+      secrets = {
+        caddyCloudflareToken = {
+          path = "/var/lib/opnix/secrets/magicbox/caddy_cloudflare_token";
+          reference = "op://Secrets/Caddy Cloudflare Token for HTTPS/password";
+          mode = "0400";
+        };
+        grafanaAdminPassword = {
+          path = "/var/lib/opnix/secrets/magicbox/grafana_admin_password";
+          reference = "op://Secrets/Magicbox Grafana/newPassword";
+          mode = "0400";
+        };
+      };
+    };
+
+    systemd.services.magicbox-secret-env = {
+      description = "Prepare Magicbox container secret env files";
+      after = ["opnix-secrets.service"];
+      requires = ["opnix-secrets.service"];
+      before = ["magicbox.service"];
+      wantedBy = ["magicbox.service"];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = pkgs.writeShellScript "magicbox-secret-env" ''
+          install -d -m 0700 /var/lib/opnix/secrets/magicbox
+          umask 0077
+          printf 'CF_API_TOKEN=%s\n' "$(cat /var/lib/opnix/secrets/magicbox/caddy_cloudflare_token)" \
+            > /var/lib/opnix/secrets/magicbox/caddy.env
+          printf 'GF_SECURITY_ADMIN_PASSWORD=%s\n' "$(cat /var/lib/opnix/secrets/magicbox/grafana_admin_password)" \
+            > /var/lib/opnix/secrets/magicbox/grafana.env
+        '';
+      };
+    };
+
+    systemd.services.magicbox = {
+      after = ["magicbox-secret-env.service"];
+      wants = ["magicbox-secret-env.service"];
+    };
+
+    services.alloy.enable = true;
+    environment.etc."alloy/config.alloy".text = ''
+      prometheus.exporter.self "default" {
+
+      }
+
+      prometheus.scrape "metamonitoring" {
+        targets    = prometheus.exporter.self.default.targets
+        forward_to = [prometheus.remote_write.default.receiver]
+      }
+
+      prometheus.remote_write "default" {
+        endpoint {
+          url = "https://victoriametrics.szpunar.cloud/prometheus/api/v1/write"
+        }
+      }
+
+      logging {
+      //   level    = "<LOG_LEVEL>"
+      //   format   = "<LOG_FORMAT>"
+        write_to = [loki.write.default.receiver]
+      }
+
+      loki.write "default" {
+        endpoint {
+          url = "https://victorialogs.szpunar.cloud/insert/loki/api/v1/push"
+        }
+      }
+    '';
+
+    system.stateVersion = "25.05";
+  };
+}
