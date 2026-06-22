@@ -10,6 +10,9 @@
       "gemma4:26b-it-qat"
       "gemma4:31b-it-qat"
     ];
+    services.ollama.environmentVariables = {
+      OLLAMA_JINA = "true";
+    };
     networking.firewall.allowedTCPPorts = [ 11434 ];
   };
 }
