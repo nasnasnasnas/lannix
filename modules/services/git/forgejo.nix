@@ -2,7 +2,7 @@
   flake.services.forgejo = {
     domains ? [],
     networks ? [],
-    image ? "codeberg.org/forgejo/forgejo:14",
+    image ? "codeberg.org/forgejo/forgejo:15",
     volumes ? [],
     dataDir ? "/home/magicbox/data/forgejo",
   }: {
