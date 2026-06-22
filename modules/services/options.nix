@@ -79,7 +79,7 @@ in {
       s
       // lib.optionalAttrs hasEnvSecrets {
         environment = environmentWithoutSecrets;
-        env_file = (s.env_file or []) ++ [config.flake.lib.envFilePath serviceName];
+        env_file = (s.env_file or []) ++ [(config.flake.lib.envFilePath serviceName)];
       }
       // lib.optionalAttrs hasFileSecrets {
         volumes = (s.volumes or []) ++ fileSecretVolumes;
