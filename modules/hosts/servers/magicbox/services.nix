@@ -1,7 +1,11 @@
 {inputs, ...}: {
   flake.modules.nixos.magicbox = inputs.self.lib.mkHostServices {
     publicIPs = ["10.177.177.117"];
-    secretsEnvPath = "/var/lib/opnix/secrets/magicbox/caddy.env";
+    caddy = {
+      envSecrets = {
+        CF_API_TOKEN = "op://Secrets/Caddy Cloudflare Token for HTTPS/password";
+      };
+    };
     networks = ["magicbox-network" "zurg"];
     services = with inputs.self.services; [
       (termix {
@@ -130,7 +134,9 @@
         networks = ["magicbox-network"];
         dataDir = "/home/magicbox/data/grafana";
         adminPassword = null;
-        env_file = ["/var/lib/opnix/secrets/magicbox/grafana.env"];
+        envSecrets = {
+          GF_SECURITY_ADMIN_PASSWORD = "op://Secrets/Magicbox Grafana/password";
+        };
         plugins = [
           "grafana-pyroscope-app"
           "grafana-lokiexplore-app"

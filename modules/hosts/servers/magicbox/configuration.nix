@@ -76,43 +76,6 @@
 
     networking.firewall.allowedTCPPorts = [22 80 443 5432 6767];
 
-    services.onepassword-secrets = {
-      enable = true;
-      tokenFile = "/etc/op-token";
-      secrets = {
-        caddyCloudflareToken = {
-          path = "/var/lib/opnix/secrets/magicbox/caddy_cloudflare_token";
-          reference = "op://Secrets/Caddy Cloudflare Token for HTTPS/password";
-          mode = "0400";
-        };
-        grafanaAdminPassword = {
-          path = "/var/lib/opnix/secrets/magicbox/grafana_admin_password";
-          reference = "op://Secrets/Magicbox Grafana/password";
-          mode = "0400";
-        };
-      };
-    };
-
-    systemd.services.magicbox-secret-env = {
-      description = "Prepare Magicbox container secret env files";
-      after = ["opnix-secrets.service"];
-      requires = ["opnix-secrets.service"];
-      before = ["magicbox.service"];
-      wantedBy = ["magicbox.service"];
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        ExecStart = pkgs.writeShellScript "magicbox-secret-env" ''
-          install -d -m 0700 /var/lib/opnix/secrets/magicbox
-          umask 0077
-          printf 'CF_API_TOKEN=%s\n' "$(cat /var/lib/opnix/secrets/magicbox/caddy_cloudflare_token)" \
-            > /var/lib/opnix/secrets/magicbox/caddy.env
-          printf 'GF_SECURITY_ADMIN_PASSWORD=%s\n' "$(cat /var/lib/opnix/secrets/magicbox/grafana_admin_password)" \
-            > /var/lib/opnix/secrets/magicbox/grafana.env
-        '';
-      };
-    };
-
     systemd.services.magicbox-stale-mount-cleanup = {
       description = "Clean up stale Magicbox rclone mountpoints";
       before = ["magicbox.service"];
@@ -140,8 +103,8 @@
     };
 
     systemd.services.magicbox = {
-      after = ["magicbox-secret-env.service" "magicbox-stale-mount-cleanup.service"];
-      wants = ["magicbox-secret-env.service" "magicbox-stale-mount-cleanup.service"];
+      after = ["magicbox-stale-mount-cleanup.service"];
+      wants = ["magicbox-stale-mount-cleanup.service"];
     };
 
     services.alloy.enable = true;

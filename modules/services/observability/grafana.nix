@@ -15,6 +15,7 @@
     adminUser ? "admin",
     adminPassword ? "adminpassword",
     env_file ? [],
+    envSecrets ? {},
   }: let
     parts = builtins.match "([^:]+):([^:]+)" user;
     uid = builtins.elemAt parts 0;
@@ -26,6 +27,7 @@
       inherit image;
       inherit restart;
       inherit networks;
+      inherit envSecrets;
       caddy_port = port;
       environment =
         {

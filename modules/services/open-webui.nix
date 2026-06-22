@@ -6,7 +6,8 @@
     volumes ? [],
     dataDir ? "/home/magicbox/data/open-webui",
     ollamaUrl ? "http://host.docker.internal:11434",
-    oauthEnvFile ? null,
+    envSecrets ? {},
+    env_file ? [],
     oidc ? null,
   }: let
     oidcEnv =
@@ -22,7 +23,6 @@
         WEBUI_URL = builtins.head domains;
       }
       else {};
-    envFiles = if oauthEnvFile != null then [oauthEnvFile] else [];
   in {
     inherit domains;
     container_name = "open-webui";
@@ -35,8 +35,8 @@
         OLLAMA_BASE_URL = ollamaUrl;
       }
       // oidcEnv;
-    env_file = envFiles;
+    inherit envSecrets;
     inherit networks;
-    volumes = volumes ++ [ "${dataDir}:/app/backend/data" ];
-  };
+    volumes = volumes ++ ["${dataDir}:/app/backend/data"];
+  } // (if env_file == [] then {} else {inherit env_file;});
 }

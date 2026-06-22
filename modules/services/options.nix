@@ -21,7 +21,7 @@ in {
 
     # Convert a simplified service definition to Arion service format by removing meta keys and moving service.out to out.service.
     mkArionService = serviceDef: let
-      metaKeys = ["caddy_port" "domains" "out" "postgres" "postgresEnv"];
+      metaKeys = ["caddy_port" "domains" "out" "postgres" "postgresEnv" "envSecrets" "fileSecrets"];
       serviceAttrs = builtins.removeAttrs serviceDef metaKeys;
       outAttrs = serviceDef.out or {};
     in {
@@ -31,6 +31,173 @@ in {
 
     mkArionServices = services:
       lib.mapAttrs (_name: config.flake.lib.mkArionService) services;
+
+    secretBaseDir = serviceName: "/var/lib/opnix/secrets/${serviceName}";
+
+    envSecretPath = serviceName: envName: "${config.flake.lib.secretBaseDir serviceName}/env/${envName}";
+
+    envFilePath = serviceName: "${config.flake.lib.secretBaseDir serviceName}/envfile";
+
+    fileSecretHostName = containerPath: let
+      pathLength = builtins.stringLength containerPath;
+      withoutLeadingSlash = builtins.substring 1 (pathLength - 1) containerPath;
+    in
+      builtins.replaceStrings ["/"] ["-"] withoutLeadingSlash;
+
+    fileSecretPath = serviceName: containerPath: "${config.flake.lib.secretBaseDir serviceName}/files/${config.flake.lib.fileSecretHostName containerPath}";
+
+    validateFileSecrets = serviceName: fileSecrets: let
+      containerPaths = builtins.attrNames fileSecrets;
+      hostNames = map config.flake.lib.fileSecretHostName containerPaths;
+      uniqueHostNames = lib.unique hostNames;
+      invalidPaths = builtins.filter (path: !(lib.hasPrefix "/" path) || lib.hasInfix ".." path || config.flake.lib.fileSecretHostName path == "") containerPaths;
+    in
+      if invalidPaths != []
+      then throw "Invalid fileSecrets paths for ${serviceName}: ${lib.concatStringsSep ", " invalidPaths}"
+      else if builtins.length uniqueHostNames != builtins.length hostNames
+      then throw "fileSecrets host path collision for ${serviceName}"
+      else fileSecrets;
+
+    validateEnvSecrets = serviceName: envSecrets: let
+      envNames = builtins.attrNames envSecrets;
+      invalidNames = builtins.filter (name: builtins.match "[A-Za-z_][A-Za-z0-9_]*" name == null) envNames;
+    in
+      if invalidNames != []
+      then throw "Invalid envSecrets names for ${serviceName}: ${lib.concatStringsSep ", " invalidNames} (must be valid shell variable names)"
+      else envSecrets;
+
+    processServiceSecrets = s: let
+      serviceName = s.container_name;
+      envSecrets = config.flake.lib.validateEnvSecrets serviceName (s.envSecrets or {});
+      fileSecrets = config.flake.lib.validateFileSecrets serviceName (s.fileSecrets or {});
+      envSecretNames = builtins.attrNames envSecrets;
+      hasEnvSecrets = envSecrets != {};
+      hasFileSecrets = fileSecrets != {};
+      environmentWithoutSecrets = builtins.removeAttrs (s.environment or {}) envSecretNames;
+      fileSecretVolumes = map (containerPath: "${config.flake.lib.fileSecretPath serviceName containerPath}:${containerPath}:ro") (builtins.attrNames fileSecrets);
+    in
+      s
+      // lib.optionalAttrs hasEnvSecrets {
+        environment = environmentWithoutSecrets;
+        env_file = (s.env_file or []) ++ [config.flake.lib.envFilePath serviceName];
+      }
+      // lib.optionalAttrs hasFileSecrets {
+        volumes = (s.volumes or []) ++ fileSecretVolumes;
+      };
+
+    mkServiceSecretRegistrations = services: let
+      mkSecretName = serviceName: kind: key: "secret${builtins.substring 0 16 (builtins.hashString "sha256" "${serviceName}:${kind}:${key}")}";
+      envSecretAttrs = lib.concatMap (s:
+        lib.mapAttrsToList (envName: ref: {
+          name = mkSecretName s.container_name "env" envName;
+          value = {
+            reference = ref;
+            path = config.flake.lib.envSecretPath s.container_name envName;
+            mode = "0400";
+          };
+        }) (s.envSecrets or {}))
+      services;
+      fileSecretAttrs = lib.concatMap (s:
+        lib.mapAttrsToList (containerPath: ref: {
+          name = mkSecretName s.container_name "file" containerPath;
+          value = {
+            reference = ref;
+            path = config.flake.lib.fileSecretPath s.container_name containerPath;
+            mode = "0400";
+          };
+        }) (s.fileSecrets or {}))
+      services;
+    in
+      builtins.listToAttrs (envSecretAttrs ++ fileSecretAttrs);
+
+    mkSecretEnvScript = pkgs: projectName: services: let
+      servicesWithEnvSecrets = builtins.filter (s: (s.envSecrets or {}) != {}) services;
+      mkServiceBlock = s: let
+        envDir = "${config.flake.lib.secretBaseDir s.container_name}/env";
+        envFile = config.flake.lib.envFilePath s.container_name;
+        lines = lib.mapAttrsToList (envName: _ref: "printf '%s=%s\\n' ${lib.escapeShellArg envName} \"$(tr -d '\\n' < ${lib.escapeShellArg (config.flake.lib.envSecretPath s.container_name envName)})\"") (s.envSecrets or {});
+      in ''
+        install -d -m 0700 ${lib.escapeShellArg envDir}
+        umask 0077
+        {
+          ${lib.concatStringsSep "\n  " lines}
+        } > ${lib.escapeShellArg envFile}
+      '';
+    in
+      pkgs.writeShellScript "${projectName}-secret-env" (lib.concatStringsSep "\n" (map mkServiceBlock servicesWithEnvSecrets));
+
+    processDockerServices = {
+      name,
+      services,
+      caddy ? {},
+    }: let
+      servicesWithDomains = builtins.filter (s: (s.domains or []) != []) services;
+      hasCaddyServices = servicesWithDomains != [];
+      caddyNetworkName = "${name}-caddy-network";
+      caddyEntries = builtins.listToAttrs (map (s: {
+          name = s.container_name;
+          value = {
+            domains = s.domains;
+            port = s.caddy_port;
+            container_name = s.container_name;
+          };
+        })
+        servicesWithDomains);
+
+      caddyfileContent = config.flake.lib.mkCaddyfile caddyEntries;
+      caddyfilePath = builtins.toFile "Caddyfile" caddyfileContent;
+
+      caddyServiceDef = config.flake.services.caddy ({
+          networks = [caddyNetworkName];
+          inherit caddyfilePath;
+        }
+        // caddy);
+
+      addCaddyNetwork = s:
+        if (s.domains or []) != []
+        then s // {networks = (s.networks or []) ++ [caddyNetworkName];}
+        else s;
+
+      addPostgresEnvAndSecrets = s:
+        if s.postgres or false
+        then let
+          pgEnv = s.postgresEnv or {};
+          passwordFileVar = pgEnv.passwordFile or "DATABASE_PASSWORD_FILE";
+          passwordFilePrefix = pgEnv.passwordFilePrefix or "";
+          hostVar = pgEnv.host or "DATABASE_HOST";
+          portVar = pgEnv.port or "DATABASE_PORT";
+          databaseVar = pgEnv.database or "DATABASE_NAME";
+          userVar = pgEnv.user or "DATABASE_USER";
+          databaseName = pgEnv.overrideDatabase or s.container_name;
+          passwordPath = "/run/secrets/db_password";
+        in
+          s
+          // {
+            fileSecrets =
+              (s.fileSecrets or {})
+              // {
+                ${passwordPath} = "op://${vaultId}/${databaseName} Postgres/password";
+              };
+            extra_hosts = (s.extra_hosts or []) ++ ["host.docker.internal:host-gateway"];
+            environment =
+              (s.environment or {})
+              // {
+                ${passwordFileVar} = "${passwordFilePrefix}${passwordPath}";
+                ${hostVar} = "host.docker.internal";
+                ${portVar} = "5432";
+                ${databaseVar} = databaseName;
+                ${userVar} = databaseName;
+              };
+          }
+        else s;
+
+      processedUserServices = map config.flake.lib.processServiceSecrets (map addPostgresEnvAndSecrets (map addCaddyNetwork services));
+      allServicesList =
+        processedUserServices
+        ++ (lib.optional hasCaddyServices (config.flake.lib.processServiceSecrets caddyServiceDef));
+    in {
+      inherit caddyNetworkName hasCaddyServices allServicesList;
+    };
 
     # Get a set of { domains, port, container_name } for services that have caddy_port set.
     # Domains should include their scheme (http:// or https://).
@@ -77,7 +244,7 @@ in {
     #   - DATABASE_PASSWORD_FILE env var pointing to an opnix-managed secret file
     #   - DATABASE_HOST, DATABASE_PORT, DATABASE_NAME, DATABASE_USER env vars
     #   - extra_hosts entry for host.docker.internal
-    #   - Volume mount for the password file
+    #   - Generic fileSecret mounted at /run/secrets/db_password
     #
     # Customize env var names per service with postgresEnv:
     #   (myapp { postgres = true; postgresEnv.passwordFile = "MY_DB_PASS_FILE"; })
@@ -94,45 +261,73 @@ in {
       networks ? [],
       name ? null,
       publicIPs ? [],
-      secretsEnvPath ? "/home/magicbox/config/caddy/secrets.env",
-    }: {config, ...}: let
-      projectName = if name != null then name else config.networking.hostName;
+      caddy ? {},
+    }: {
+      config,
+      pkgs,
+      ...
+    }: let
+      projectName =
+        if name != null
+        then name
+        else config.networking.hostName;
       postgresServices = builtins.filter (s: s.postgres or false) services;
       hasPostgresServices = postgresServices != [];
+      processed = flakeConfig.flake.lib.processDockerServices {
+        inherit services caddy;
+        name = projectName;
+      };
+      allSecretAttrs = flakeConfig.flake.lib.mkServiceSecretRegistrations processed.allServicesList;
+      hasSecrets = allSecretAttrs != {};
+      hasEnvSecrets = builtins.any (s: (s.envSecrets or {}) != {}) processed.allServicesList;
     in {
-      imports =
-        [inputs.self.modules.nixos.arion inputs.self.modules.nixos.opnix];
+      imports = [inputs.self.modules.nixos.arion inputs.self.modules.nixos.opnix];
 
       host.caddyDomains = lib.concatMap (s: s.domains or []) services;
       host.publicIPs = publicIPs;
-      postgres-puppy.databases = lib.concatMap (s: if s.postgres or false then [s.postgresEnv.overrideDatabase or s.container_name] else []) services;
+      postgres-puppy.databases = lib.concatMap (s:
+        if s.postgres or false
+        then [s.postgresEnv.overrideDatabase or s.container_name]
+        else [])
+      services;
 
-      services.onepassword-secrets = lib.mkIf hasPostgresServices {
+      services.onepassword-secrets = lib.mkIf hasSecrets {
         enable = true;
         tokenFile = "/etc/op-token";
-        secrets = builtins.listToAttrs (map (s: {
-          name = "${s.postgresEnv.overrideDatabase or s.container_name}PostgresPassword";
-          value = {
-            reference = "op://${vaultId}/${s.postgresEnv.overrideDatabase or s.container_name} Postgres/password";
-            path = "/var/lib/opnix/secrets/${s.postgresEnv.overrideDatabase or s.container_name}/db_password";
-          };
-        }) postgresServices);
+        secrets = allSecretAttrs;
       };
 
-      systemd.services = lib.mkIf hasPostgresServices {
-        opnix-secrets = {
-          after = ["postgres-puppy.service"];
-          wants = ["postgres-puppy.service"];
+      systemd.services =
+        lib.optionalAttrs hasPostgresServices {
+          opnix-secrets = {
+            after = ["postgres-puppy.service"];
+            wants = ["postgres-puppy.service"];
+          };
+        }
+        // lib.optionalAttrs hasEnvSecrets {
+          "${projectName}-secret-env" = {
+            description = "Prepare ${projectName} container secret env files";
+            after = ["opnix-secrets.service"];
+            requires = ["opnix-secrets.service"];
+            before = ["${projectName}.service"];
+            wantedBy = ["${projectName}.service"];
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+              ExecStart = flakeConfig.flake.lib.mkSecretEnvScript pkgs projectName processed.allServicesList;
+            };
+          };
+        }
+        // lib.optionalAttrs hasSecrets {
+          ${projectName} = {
+            after = ["opnix-secrets.service"] ++ lib.optional hasEnvSecrets "${projectName}-secret-env.service";
+            wants = ["opnix-secrets.service"] ++ lib.optional hasEnvSecrets "${projectName}-secret-env.service";
+          };
         };
-        ${projectName} = {
-          after = ["opnix-secrets.service"];
-          wants = ["opnix-secrets.service"];
-        };
-      };
 
       virtualisation.arion.projects.${projectName} = flakeConfig.flake.lib.mkArionProject {
         name = projectName;
-        inherit networks services secretsEnvPath;
+        inherit networks services caddy processed;
       };
     };
 
@@ -140,80 +335,24 @@ in {
       name,
       networks ? [],
       services,
-      secretsEnvPath ? "/home/magicbox/config/caddy/secrets.env",
+      caddy ? {},
+      processed ? null,
     }: let
-      servicesWithDomains = builtins.filter (s: (s.domains or []) != []) services;
-      hasCaddyServices = servicesWithDomains != [];
-      caddyNetworkName = "${name}-caddy-network";
-      caddyEntries = builtins.listToAttrs (map (s: {
-          name = s.container_name;
-          value = {
-            domains = s.domains;
-            port = s.caddy_port;
-            container_name = s.container_name;
-          };
-        })
-        servicesWithDomains);
-
-      caddyfileContent = config.flake.lib.mkCaddyfile caddyEntries;
-      caddyfilePath = builtins.toFile "Caddyfile" caddyfileContent;
-
-      caddyServiceDef = config.flake.services.caddy {
-        networks = [caddyNetworkName];
-        inherit caddyfilePath secretsEnvPath;
-      };
-
-      addCaddyNetwork = s:
-        if (s.domains or []) != []
-        then s // {networks = (s.networks or []) ++ [caddyNetworkName];}
-        else s;
-
-      addPostgresEnv = s:
-        if s.postgres or false
-        then let
-          pgEnv = s.postgresEnv or {};
-          passwordFileVar = pgEnv.passwordFile or "DATABASE_PASSWORD_FILE";
-          hostVar = pgEnv.host or "DATABASE_HOST";
-          portVar = pgEnv.port or "DATABASE_PORT";
-          databaseVar = pgEnv.database or "DATABASE_NAME";
-          userVar = pgEnv.user or "DATABASE_USER";
-          secretsDir = "/var/lib/opnix/secrets/${pgEnv.overrideDatabase or s.container_name}";
-          containerSecretsDir = "/run/secrets";
-        in
-          s
-          // {
-            volumes = (s.volumes or []) ++ ["${secretsDir}:${containerSecretsDir}:ro"];
-            extra_hosts = (s.extra_hosts or []) ++ ["host.docker.internal:host-gateway"];
-            environment =
-              (s.environment or {})
-              // {
-                ${passwordFileVar} = "${containerSecretsDir}/db_password";
-                ${hostVar} = "host.docker.internal";
-                ${portVar} = "5432";
-                ${databaseVar} = pgEnv.overrideDatabase or s.container_name;
-                ${userVar} = pgEnv.overrideDatabase or s.container_name;
-              };
-          }
-        else s;
-
-      processedServices = map addPostgresEnv (map addCaddyNetwork services);
-      allServicesList =
-        processedServices
-        ++ (lib.optional hasCaddyServices caddyServiceDef);
+      proc = if processed != null then processed else config.flake.lib.processDockerServices {inherit name services caddy;};
 
       arionServices = builtins.listToAttrs (map (s: {
           name = s.container_name;
           value = config.flake.lib.mkArionService s;
         })
-        allServicesList);
+        proc.allServicesList);
 
       userNetworks = builtins.listToAttrs (map (n: {
           name = n;
           value = {name = n;};
         })
         networks);
-      caddyNetworks = lib.optionalAttrs hasCaddyServices {
-        ${caddyNetworkName} = {name = caddyNetworkName;};
+      caddyNetworks = lib.optionalAttrs proc.hasCaddyServices {
+        ${proc.caddyNetworkName} = {name = proc.caddyNetworkName;};
       };
       allNetworks = userNetworks // caddyNetworks;
     in {
