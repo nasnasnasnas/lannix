@@ -65,6 +65,7 @@
           nix
           attic-client
           nix-fast-build
+          jq
         ];
         settings = {
           runner = {

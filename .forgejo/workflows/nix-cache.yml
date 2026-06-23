@@ -65,18 +65,80 @@ jobs:
 
       - name: Update flake inputs
         id: update
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           set -euo pipefail
+          # GITHUB_OUTPUT is required: the build/push steps read steps.update.outputs.changed.
+          # If it's missing, fail loudly rather than silently skipping the build.
+          : "${GITHUB_OUTPUT:?GITHUB_OUTPUT not set by runner}"
+          # GITHUB_STEP_SUMMARY is optional: fall back to /dev/null if absent.
+          SUMMARY_FILE="${GITHUB_STEP_SUMMARY:-/dev/null}"
+          cp flake.lock flake.lock.before
           nix flake update
           if git diff --quiet -- flake.lock; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "flake.lock unchanged; nothing to build."
+            echo "flake.lock unchanged; nothing to build." >> "$SUMMARY_FILE"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
             # Commit locally so the build evaluates a clean (non-dirty) git tree;
             # pushed only after a successful build.
             git commit -m "chore(ci): nix flake update" -- flake.lock
+
+            # Render a Markdown table of changed inputs to the job summary.
+            {
+              echo "## Flake inputs updated"
+              echo ""
+              echo "| input | old | new | commit |"
+              echo "|---|---|---|---|"
+              # Emit one TSV row per changed github input:
+              #   name <TAB> owner <TAB> repo <TAB> full_old_rev <TAB> full_new_rev
+              # The full rev goes to the GitHub commits API; the display is shortened.
+              jq -r -n --slurpfile old flake.lock.before --slurpfile new flake.lock '
+                ($new[0].nodes) as $newn | ($old[0].nodes) as $oldn
+                | $newn | to_entries[]
+                | select(.value.locked != null)
+                | select(.value.locked.type == "github")
+                | .key as $name
+                | .value.locked as $locked
+                | select($locked != ($oldn[$name].locked // null))
+                | ($oldn[$name].locked.rev // "-") as $oldrev
+                | [$name, $locked.owner, $locked.repo, $oldrev, $locked.rev]
+                | @tsv
+              ' | while IFS=$'\t' read -r name owner repo oldrev newrev; do
+                subject=""
+                if [ -n "${GH_TOKEN:-}" ] && [ -n "$newrev" ]; then
+                  subject=$(curl -fsSL -H "Authorization: token $GH_TOKEN" \
+                    "https://api.github.com/repos/$owner/$repo/commits/$newrev" \
+                    2>/dev/null | jq -r '.commit.message | split("\n")[0]' 2>/dev/null || true)
+                fi
+                subject="${subject:-<unable to fetch>}"
+                # Escape pipes for the Markdown table.
+                subject="${subject//|/\\|}"
+                short_old="${oldrev:0:7}"
+                short_new="${newrev:0:7}"
+                echo "| \`${name}\` | \`${short_old}\` | \`${short_new}\` | ${subject} |"
+              done
+              # Non-github changed inputs (tarball/flakehub/path/indirect):
+              # compare the entire locked object, since narHash/lastModified may
+              # change without a rev. Display rev // narHash[0:12] // lastModified.
+              jq -r -n --slurpfile old flake.lock.before --slurpfile new flake.lock '
+                ($new[0].nodes) as $newn | ($old[0].nodes) as $oldn
+                | $newn | to_entries[]
+                | select(.value.locked != null)
+                | select(.value.locked.type != "github")
+                | .key as $name
+                | .value.locked as $locked
+                | select($locked != ($oldn[$name].locked // null))
+                | ($oldn[$name].locked) as $oldl
+                | def ident(l): (l.rev // (l.narHash[0:16]) // (l.lastModified|tostring) // "-");
+                "| \($name) | \(ident($oldl)) | \(ident($locked)) | (non-github) |"
+              '
+              echo ""
+              echo "_Commit subjects fetched from GitHub; short revs shown._"
+            } >> "$SUMMARY_FILE"
           fi
+          rm -f flake.lock.before
 
       - name: Build all hosts and push to cache
         if: steps.update.outputs.changed == 'true'
