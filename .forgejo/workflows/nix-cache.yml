@@ -70,23 +70,17 @@ jobs:
             echo "flake.lock unchanged; nothing to build."
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
-            # Commit locally so the build evaluates a clean git tree (no dirty-source
-            # re-evaluation per worker). Pushed only after a successful build.
+            # Commit locally so the build evaluates a clean (non-dirty) git tree;
+            # pushed only after a successful build.
             git commit -m "chore(ci): nix flake update" -- flake.lock
           fi
-
-      - name: Prefetch flake inputs
-        if: steps.update.outputs.changed == 'true'
-        # Warm the input cache single-threaded; the parallel nix-eval-jobs workers
-        # otherwise race unpacking github inputs into the libgit2 git cache.
-        run: nix flake archive
 
       - name: Build all hosts and push to cache
         if: steps.update.outputs.changed == 'true'
         run: |
           set -euo pipefail
           nix-fast-build \
-            --eval-workers 2 \
+            --eval-workers 1 \
             --skip-cached \
             --no-nom \
             --attic-cache "$ATTIC_CACHE" \
