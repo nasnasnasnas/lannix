@@ -10,6 +10,7 @@
       (nextcloud {domains = ["https://next.szpunar.cloud"];})
       (nextcloud-cron {})
       (forgejo {domains = ["https://git.szpunar.cloud"];})
+      (atticd {domains = ["https://attic.szpunar.cloud"];})
       (gomuks {
         domains = ["https://leah.gomuks.szpunar.cloud"];
         dataDir = "/home/magicbox/data/gomuks-leah";
