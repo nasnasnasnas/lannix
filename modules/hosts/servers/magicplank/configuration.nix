@@ -25,6 +25,7 @@
       unstable.fresh-editor
       master.kdePackages.plasma-bigscreen
       master.kdePackages.plasma-nm
+			unstable.vacuum-tube
     ];
 
     # Use nixpkgs-master only for kdePackages (Plasma 6 etc.)
