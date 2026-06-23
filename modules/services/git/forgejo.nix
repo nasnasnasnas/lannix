@@ -13,8 +13,7 @@
       host = "FORGEJO__database__HOST";
       database = "FORGEJO__database__NAME";
       user = "FORGEJO__database__USER";
-      passwordFile = "FORGEJO__database__PASSWD_URI";
-      passwordFilePrefix = "file:";
+      passwordFile = "FORGEJO__database__PASSWD__FILE";
     };
     environment = {
       USER_UID = 1000;
