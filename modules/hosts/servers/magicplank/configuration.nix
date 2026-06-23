@@ -24,6 +24,7 @@
       dua
       unstable.fresh-editor
       master.kdePackages.plasma-bigscreen
+      master.kdePackages.plasma-nm
     ];
 
     # Use nixpkgs-master only for kdePackages (Plasma 6 etc.)
