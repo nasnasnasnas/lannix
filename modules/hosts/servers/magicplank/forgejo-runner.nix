@@ -51,9 +51,6 @@
           "debian-latest:docker://debian:latest"
           "ubuntu-latest:docker://ubuntu:latest"
           "rust-latest:docker://rust:latest"
-          # Native (on-host) execution for the Nix flake cache job: uses the system
-          # nix-daemon (working sandbox + build users, no /etc/apt impurity, no
-          # nixos/nix symlink escape) and a persistent /nix store across runs.
           "native:host"
         ];
         hostPackages = with pkgs; [
