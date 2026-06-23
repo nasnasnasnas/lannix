@@ -13,7 +13,6 @@ env:
   NIX_CONFIG: |
     experimental-features = nix-command flakes
     accept-flake-config = true
-    sandbox = false
     build-users-group =
   ATTIC_ENDPOINT: "https://attic.szpunar.cloud/"
   ATTIC_CACHE: "lannix"
