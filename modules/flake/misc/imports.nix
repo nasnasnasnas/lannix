@@ -36,6 +36,8 @@
     solaar = {
       url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz";
     };
+
+    llm-agents.url = "github:numtide/llm-agents.nix";
   };
 
   # imports = [

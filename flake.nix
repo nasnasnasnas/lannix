@@ -29,6 +29,7 @@
     };
     import-tree.url = "github:vic/import-tree";
     lazyvim.url = "github:pfassina/lazyvim-nix";
+    llm-agents.url = "github:numtide/llm-agents.nix";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";

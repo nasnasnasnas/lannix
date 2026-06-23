@@ -35,10 +35,13 @@ in {
         text = ''
           zen-beta
           zen
+          vivaldi
         '';
         mode = "0755";
       };
     };
+
+    nixpkgs.overlays = [ inputs.llm-agents.overlays.default ];
 
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
@@ -128,10 +131,14 @@ in {
 
       nextdns
       bottles
-
+      dua
       zulu25
 
-      unstable.claude-code
+      llm-agents.claude-code
+      llm-agents.omp
+      llm-agents.opencode
+      llm-agents.junie
+      llm-agents.herdr
 
       unstable.jetbrains.webstorm
       unstable.jetbrains.idea
