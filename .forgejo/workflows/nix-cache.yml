@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "0 */6 * * *"
   workflow_dispatch:
+  # When someone commits a new flake.lock, build + cache immediately so
+  # hosts are ready to deploy without waiting for the next scheduled run.
+  push:
+    branches: [main]
+    paths:
+      - "flake.lock"
 
 concurrency:
   group: nix-binary-cache
@@ -74,16 +80,35 @@ jobs:
           : "${GITHUB_OUTPUT:?GITHUB_OUTPUT not set by runner}"
           # GITHUB_STEP_SUMMARY is optional: fall back to /dev/null if absent.
           SUMMARY_FILE="${GITHUB_STEP_SUMMARY:-/dev/null}"
-          cp flake.lock flake.lock.before
-          nix flake update
-          if git diff --quiet -- flake.lock; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "flake.lock unchanged; nothing to build." >> "$SUMMARY_FILE"
+          if [ "${{ github.event_name }}" = "push" ]; then
+            # Triggered by a flake.lock commit — the lock is already current.
+            # No update or local commit needed; build + cache directly.
+            # Skip our own scheduled pushes to avoid a redundant rebuild of the
+            # same set we just built + pushed. Inspect the commit author email
+            # (github.actor may resolve to the token/runner, not the committer).
+            COMMIT_AUTHOR=$(git log -1 --format=%ae)
+            if [ "$COMMIT_AUTHOR" = "actions@git.szpunar.cloud" ]; then
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              echo "## Skipped: CI's own flake.lock push" >> "$SUMMARY_FILE"
+              echo "" >> "$SUMMARY_FILE"
+              echo "_Triggered by a scheduled CI push — already built. No rebuild._" >> "$SUMMARY_FILE"
+            else
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              echo "## Build triggered by flake.lock push" >> "$SUMMARY_FILE"
+              echo "" >> "$SUMMARY_FILE"
+              echo "_The lock was committed externally — no \`nix flake update\` run._" >> "$SUMMARY_FILE"
+            fi
           else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            # Commit locally so the build evaluates a clean (non-dirty) git tree;
-            # pushed only after a successful build.
-            git commit -m "chore(ci): nix flake update" -- flake.lock
+            cp flake.lock flake.lock.before
+            nix flake update
+            if git diff --quiet -- flake.lock; then
+              echo "changed=false" >> "$GITHUB_OUTPUT"
+              echo "flake.lock unchanged; nothing to build." >> "$SUMMARY_FILE"
+            else
+              echo "changed=true" >> "$GITHUB_OUTPUT"
+              # Commit locally so the build evaluates a clean (non-dirty) git tree;
+              # pushed only after a successful build.
+              git commit -m "chore(ci): nix flake update" -- flake.lock
 
             # Render a Markdown table of changed inputs to the job summary.
             {
@@ -137,6 +162,7 @@ jobs:
               echo ""
               echo "_Commit subjects fetched from GitHub; short revs shown._"
             } >> "$SUMMARY_FILE"
+            fi
           fi
           rm -f flake.lock.before
 
@@ -153,7 +179,7 @@ jobs:
             --flake ".#checks.x86_64-linux"
 
       - name: Push updated flake.lock
-        if: steps.update.outputs.changed == 'true'
+        if: steps.update.outputs.changed == 'true' && github.event_name != 'push'
         env:
           REF: ${{ github.ref_name }}
         run: git push origin "HEAD:${REF}"
