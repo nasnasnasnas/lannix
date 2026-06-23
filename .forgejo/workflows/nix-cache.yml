@@ -10,50 +10,29 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  NIX_CONFIG: |
-    experimental-features = nix-command flakes
-    accept-flake-config = true
-    build-users-group = nixbld
-    sandbox = false
   ATTIC_ENDPOINT: "https://attic.szpunar.cloud/"
   ATTIC_CACHE: "lannix"
 
 jobs:
   build-and-cache:
-    runs-on: node-22
+    runs-on: native
     timeout-minutes: 360
     defaults:
       run:
         shell: bash
     steps:
-      - name: Install Nix
-        run: |
-          set -euo pipefail
-          export USER=root
-          # Unprivileged build users: the container can't set up a sandbox, so builds
-          # run as these users instead of root, which keeps them from creating
-          # /homeless-shelter (the non-sandbox purity guard would otherwise fail).
-          groupadd -r nixbld
-          for i in $(seq 1 8); do
-            useradd -r -g nixbld -G nixbld -d /var/empty -s /usr/sbin/nologin "nixbld$i"
-          done
-          mkdir -m 0755 -p /nix && chown root /nix
-          curl -fsSL https://nixos.org/nix/install | sh -s -- --no-daemon --no-channel-add
-          echo "$HOME/.nix-profile/bin" >> "$GITHUB_PATH"
-          echo "/nix/var/nix/profiles/default/bin" >> "$GITHUB_PATH"
-
       - name: Authenticate Nix to GitHub
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           set -euo pipefail
+          # Let nix flake update resolve github: inputs without hitting the
+          # unauthenticated API rate limit. Written to the job-user's nix.conf;
+          # the system nix-daemon reads it for Github fetch auth.
           mkdir -p "$HOME/.config/nix"
           if [ -n "${GH_TOKEN:-}" ]; then
             printf 'access-tokens = github.com=%s\n' "$GH_TOKEN" >> "$HOME/.config/nix/nix.conf"
           fi
-
-      - name: Install tooling
-        run: nix profile install nixpkgs#attic-client nixpkgs#nix-fast-build
 
       - name: Checkout repository
         env:
@@ -98,6 +77,7 @@ jobs:
           set -euo pipefail
           nix-fast-build \
             --eval-workers 1 \
+            -j 4 \
             --skip-cached \
             --no-nom \
             --attic-cache "$ATTIC_CACHE" \
