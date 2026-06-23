@@ -25,6 +25,13 @@
       unstable.fresh-editor
     ];
 
+    # Use nixpkgs-master only for kdePackages (Plasma 6 etc.)
+    nixpkgs.overlays = [
+      (final: _prev: {
+        kdePackages = final.master.kdePackages;
+      })
+    ];
+
     nix.settings.trusted-users = ["magicbox"];
 
     programs.nix-ld = {
