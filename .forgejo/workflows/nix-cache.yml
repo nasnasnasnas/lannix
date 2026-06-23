@@ -21,18 +21,23 @@ jobs:
       run:
         shell: bash
     steps:
-      - name: Authenticate Nix to GitHub
+      - name: Configure Nix GitHub auth
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           set -euo pipefail
-          # Let nix flake update resolve github: inputs without hitting the
-          # unauthenticated API rate limit. Written to the job-user's nix.conf;
-          # the system nix-daemon reads it for Github fetch auth.
-          mkdir -p "$HOME/.config/nix"
+          # Write the GitHub access token to a temp nix.conf that only the update
+          # and build steps read (via NIX_USER_CONF_FILES), so the secret is gone
+          # when the job ends and never lands in the persistent runner HOME.
+          : "${RUNNER_TEMP:=$HOME/.cache/runner-tmp}"
+          mkdir -p "$RUNNER_TEMP"
+          NIX_CONF="$RUNNER_TEMP/nix.conf"
+          (umask 077; : > "$NIX_CONF")
           if [ -n "${GH_TOKEN:-}" ]; then
-            printf 'access-tokens = github.com=%s\n' "$GH_TOKEN" >> "$HOME/.config/nix/nix.conf"
+            printf 'access-tokens = github.com=%s\n' "$GH_TOKEN" > "$NIX_CONF"
           fi
+          chmod 600 "$NIX_CONF"
+          echo "NIX_USER_CONF_FILES=$NIX_CONF" >> "$GITHUB_ENV"
 
       - name: Checkout repository
         env:
@@ -53,8 +58,10 @@ jobs:
           ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
         run: |
           set -euo pipefail
+          # The substituter + public key are wired system-wide via the nix-cache
+          # NixOS module (Phase 3), so `attic use` is unnecessary here. We only
+          # authenticate for pushing.
           attic login --set-default ci "$ATTIC_ENDPOINT" "$ATTIC_TOKEN"
-          attic use "ci:$ATTIC_CACHE"
 
       - name: Update flake inputs
         id: update
@@ -88,3 +95,11 @@ jobs:
         env:
           REF: ${{ github.ref_name }}
         run: git push origin "HEAD:${REF}"
+
+      - name: Cleanup
+        if: always()
+        run: |
+          set -x
+          # Defense-in-depth: scrub the temp nix.conf containing the GitHub token.
+          # act normally wipes $RUNNER_TEMP on job end, but remove explicitly.
+          rm -f "${RUNNER_TEMP:-$HOME/.cache/runner-tmp}/nix.conf"
