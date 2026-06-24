@@ -175,6 +175,7 @@ jobs:
             -j 4 \
             --skip-cached \
             --no-nom \
+            --option fallback true \
             --attic-cache "$ATTIC_CACHE" \
             --flake ".#checks.x86_64-linux"
 
