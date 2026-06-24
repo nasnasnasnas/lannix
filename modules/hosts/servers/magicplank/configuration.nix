@@ -95,7 +95,11 @@
     services = {
       desktopManager.plasma6.enable = true;
 
-      displayManager.plasma-login-manager.enable = true;
+      displayManager = {
+        plasma-login-manager.enable = true;
+        autoLogin.enable = true;
+        autoLogin.user = "magicplank";
+      };
     };
     programs.kdeconnect.enable = true;
 
