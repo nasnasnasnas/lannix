@@ -99,6 +99,25 @@
     };
     programs.kdeconnect.enable = true;
 
+    programs.steam.enable = true;
+    programs.gamescope = {
+      enable = true;
+      capSysNice = false;
+    };
+    programs.steam.gamescopeSession.enable = true;
+
+    services.ananicy = {
+      enable = true;
+      package = pkgs.ananicy-cpp;
+      rulesProvider = pkgs.ananicy-cpp;
+      extraRules = [
+        {
+          "name" = "gamescope";
+          "nice" = -20;
+        }
+      ];
+    };
+
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
     # on your system were taken. It‘s perfectly fine and recommended to leave
