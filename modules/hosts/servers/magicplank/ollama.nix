@@ -7,7 +7,7 @@
       "gemma4:e2b-it-qat"
       "gemma4:e4b-it-qat"
       "gemma4:12b-it-qat"
-      "gemma4:26b-it-qat"
+      "gemma4:26b-a4b-it-qat"
       "gemma4:31b-it-qat"
     ];
     services.ollama.environmentVariables = {
