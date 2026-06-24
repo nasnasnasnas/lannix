@@ -163,7 +163,7 @@ jobs:
                 fi
                 subject="${subject:-<unable to fetch>}"
                 # Plain-text body line (commit messages are not Markdown-rendered).
-                printf -- '- %s: %s -> %s  %s\n' \
+                printf -- '- %s: %s -> %s - %s\n' \
                   "$name" "$short_old" "$short_new" "$subject" >> "$COMMIT_BODY"
                 # Markdown row for the job summary (escape pipes).
                 printf -- '| `%s` | `%s` | `%s` | %s |\n' \
