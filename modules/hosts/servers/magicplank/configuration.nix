@@ -80,6 +80,9 @@
 
     # Tailscale
     networking.firewall.checkReversePath = "loose";
+
+    # for attic
+    networking.hosts."127.0.0.1" = ["attic.szpunar.cloud"];
     services.tailscale = {
       enable = true;
       useRoutingFeatures = "server";
