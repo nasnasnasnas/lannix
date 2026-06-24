@@ -33,6 +33,7 @@
       (final: _prev: {
         kdePackages = final.master.kdePackages;
       })
+      inputs.nix-cachyos-kernel.overlays.default
     ];
 
     nix.settings.trusted-users = ["magicbox"];
@@ -41,7 +42,7 @@
       enable = true;
     };
 
-    nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.default ];
+    # nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.default ];
     boot.kernelPackages = pkgs.cachyosKernels."linuxPackages-cachyos-latest-lto-zen4";
 
     # nix.settings.substituters = [ "https://attic.xuyh0120.win/lantian" ];
