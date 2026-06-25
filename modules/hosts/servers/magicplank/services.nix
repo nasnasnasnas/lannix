@@ -1,6 +1,6 @@
 {inputs, ...}: {
   flake.modules.nixos.magicplank = inputs.self.lib.mkHostServices {
-    publicIPs = ["107.219.61.126" "100.100.165.5"];
+    publicIPs = ["107.219.61.126"];
     caddy = {
       envSecrets = {
         CF_API_TOKEN = "op://Secrets/Caddy Cloudflare Token for HTTPS/password";
