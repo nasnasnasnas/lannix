@@ -1,7 +1,6 @@
----
 name: nix-build-pr
 
-'on':
+on:
   pull_request:
 
 concurrency:
