@@ -1,5 +1,38 @@
-{...}: {
-  flake.modules.nixos.remotebox = {pkgs, ...}: {
+{inputs, ...}: {
+  flake.modules.nixos.remotebox = {pkgs, ...}: let
+    opencodeOverlay = final: _prev: {
+      opencode = final.stdenvNoCC.mkDerivation {
+        pname = "opencode";
+        version = "1.14.28";
+
+        src = final.fetchurl {
+          url = "https://github.com/anomalyco/opencode/releases/download/v1.14.28/opencode-linux-x64.tar.gz";
+          hash = "sha256-P5pxOWEtRCGkZAjUbu7Se9lYvb5/Q1FM1eWhCtFUDls=";
+        };
+
+        nativeBuildInputs = [final.makeBinaryWrapper];
+
+        dontUnpack = true;
+
+        installPhase = ''
+          runHook preInstall
+
+          tar -xzf $src
+          install -Dm755 opencode $out/bin/opencode
+          wrapProgram $out/bin/opencode \
+            --prefix PATH : ${final.lib.makeBinPath [final.ripgrep]}
+
+          runHook postInstall
+        '';
+      };
+    };
+
+    unstable = import inputs.nixpkgs-unstable {
+      inherit (pkgs.stdenv.hostPlatform) system;
+      inherit (pkgs) config;
+      overlays = [opencodeOverlay];
+    };
+  in {
     # imports = with inputs.self.modules.nixos; [
     #   system-cli
     #   systemd-boot
@@ -20,11 +53,19 @@
       nixd
       ripgrep
       rustc
-      bun
       htop
       ffmpeg-full
       dua
-    ];
+      postgresql
+      nodejs
+      telegraf
+      screen
+    ] ++ (with unstable; [
+      bun
+      opencode
+      git-credential-oauth
+      fresh-editor
+    ]);
 
     nix.settings.trusted-users = ["magicbox"];
 
@@ -52,6 +93,8 @@
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
       PermitRootLogin = "prohibit-password";
+      ClientAliveInterval = 60;
+      ClientAliveCountMax = 10;
     };
 
     # Tailscale

@@ -25,9 +25,9 @@
       fsType = "ext4";
     };
 
-    swapDevices = [
-      {device = "/dev/disk/by-uuid/88391961-da8c-43ac-97dd-1b02bed0ca99";}
-    ];
+    # swapDevices = [
+    #   {device = "/dev/disk/by-uuid/88391961-da8c-43ac-97dd-1b02bed0ca99";}
+    # ];
 
     networking.interfaces.enp3s0 = {
       ipv4.addresses = [
