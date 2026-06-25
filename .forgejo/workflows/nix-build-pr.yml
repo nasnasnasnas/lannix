@@ -1,18 +1,21 @@
 ---
-name: nix-eval
+name: nix-build-pr
 
 'on':
-  push:
-  workflow_dispatch:
+  pull_request:
 
 concurrency:
-  group: nix-eval-${{ github.ref }}
+  group: nix-build-pr-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  ATTIC_ENDPOINT: "https://attic.szpunar.cloud/"
+  ATTIC_CACHE: "lannix"
+
 jobs:
-  evaluate:
+  build:
     runs-on: native
-    timeout-minutes: 60
+    timeout-minutes: 360
     defaults:
       run:
         shell: bash
@@ -55,11 +58,27 @@ jobs:
           git config user.name "forgejo-actions"
           git config user.email "actions@git.szpunar.cloud"
 
-      - name: Evaluate all host configurations
+      - name: Configure Attic
+        env:
+          ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
         run: |
           set -euo pipefail
-          nix eval --show-trace --raw .#checks.x86_64-linux \
-            --apply 'cs: toString (map (c: c.drvPath) (builtins.attrValues cs))'
+          # The substituter + public key are wired system-wide via the nix-cache
+          # NixOS module, so `attic use` is unnecessary here. We only
+          # authenticate for pushing.
+          attic login --set-default ci "$ATTIC_ENDPOINT" "$ATTIC_TOKEN"
+
+      - name: Build changed hosts and push to cache
+        run: |
+          set -euo pipefail
+          nix-fast-build \
+            --eval-workers 1 \
+            -j 4 \
+            --skip-cached \
+            --no-nom \
+            --option fallback true \
+            --attic-cache "$ATTIC_CACHE" \
+            --flake ".#checks.x86_64-linux"
 
       - name: Cleanup
         if: always()
