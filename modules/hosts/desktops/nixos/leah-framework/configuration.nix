@@ -126,16 +126,7 @@
       package = inputs.noctalia-greeter.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
       # Optional configuration
-       greeter-args = "--session Niri";
-      settings = {
-        cursor = {
-          theme = "Adwaita";
-          size = 24;
-        };
-        keyboard = {
-          layout = "us";
-        };
-      };
+      greeter-args = "--session Niri";
     };
 
     services.tailscale = {
