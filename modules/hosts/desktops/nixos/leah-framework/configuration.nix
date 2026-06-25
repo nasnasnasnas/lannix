@@ -186,6 +186,7 @@
     security.polkit.enable = true;
 
     services.tlp.enable = false;
+    services.power-profiles-daemon.enable = true;
 
     # services.cpupower-gui.enable = true;
 

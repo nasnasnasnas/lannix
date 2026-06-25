@@ -1,0 +1,71 @@
+---
+name: nix-eval
+
+'on':
+  push:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: nix-eval-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  evaluate:
+    runs-on: native
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Configure Nix GitHub auth
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          set -euo pipefail
+          # Write the GitHub token to a temp nix.conf that only eval reads
+          # via NIX_USER_CONF_FILES. The secret is gone when the job ends and
+          # never lands in the persistent runner HOME.
+          : "${RUNNER_TEMP:=$HOME/.cache/runner-tmp}"
+          mkdir -p "$RUNNER_TEMP"
+          NIX_CONF="$RUNNER_TEMP/nix.conf"
+          (umask 077; : > "$NIX_CONF")
+          if [ -n "${GH_TOKEN:-}" ]; then
+            printf 'access-tokens = github.com=%s\n' "$GH_TOKEN" > "$NIX_CONF"
+          fi
+          chmod 600 "$NIX_CONF"
+          echo "NIX_USER_CONF_FILES=$NIX_CONF" >> "$GITHUB_ENV"
+
+      - name: Checkout repository
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SERVER: ${{ github.server_url }}
+          REPO: ${{ github.repository }}
+          REF: ${{ github.ref_name }}
+          EVENT: ${{ github.event_name }}
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory '*'
+          git clone "https://oauth2:${TOKEN}@${SERVER#https://}/${REPO}.git" .
+          if [ "$EVENT" = "pull_request" ]; then
+            git checkout "$HEAD_REF"
+          else
+            git checkout "$REF"
+          fi
+          git config user.name "forgejo-actions"
+          git config user.email "actions@git.szpunar.cloud"
+
+      - name: Evaluate all host configurations
+        run: |
+          set -euo pipefail
+          nix eval --show-trace --raw .#checks.x86_64-linux \
+            --apply 'cs: toString (map (c: c.drvPath) (builtins.attrValues cs))'
+
+      - name: Cleanup
+        if: always()
+        run: |
+          set -x
+          # Defense-in-depth: scrub the temp nix.conf with the GitHub token.
+          # act normally wipes $RUNNER_TEMP on job end; remove it explicitly.
+          rm -f "${RUNNER_TEMP:-$HOME/.cache/runner-tmp}/nix.conf"
