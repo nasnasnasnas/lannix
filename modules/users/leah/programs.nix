@@ -92,7 +92,7 @@ in {
         loginBackground = true;
       })
 
-      inputs.zen-browser.packages."${system}".default
+      inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
       unstable.floorp-bin
       unstable.ollama
       unstable.kdePackages.kamoso
