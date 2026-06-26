@@ -135,7 +135,6 @@
     programs.gamescope = {
       enable = true;
       capSysNice = false;
-      enableWsi = true;
     };
 
       systemd.user.services.steam = {
