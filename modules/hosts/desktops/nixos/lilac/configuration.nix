@@ -60,7 +60,7 @@
 
     networking.networkmanager.enable = true;
     networking.networkmanager.wifi.backend = "iwd";
-    networking.networkmanager.wifi.powersave = false;
+    networking.networkmanager.wifi.powersave = true;
 
     # Set your time zone.
     time.timeZone = "America/Indiana/Indianapolis";
