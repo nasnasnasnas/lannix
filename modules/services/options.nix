@@ -93,7 +93,7 @@ in {
           value = {
             reference = ref;
             path = config.flake.lib.envSecretPath s.container_name envName;
-            mode = "0400";
+            mode = "0444";
           };
         }) (s.envSecrets or {}))
       services;
