@@ -1,5 +1,5 @@
 {inputs, ...}: {
-  flake.modules.nixos.magicplank = {pkgs, ...}: {
+  flake.modules.nixos.magicplank = {pkgs, lib, ...}: {
     # imports = with inputs.self.modules.nixos; [
     #   system-cli
     #   systemd-boot
@@ -113,6 +113,21 @@
     };
     programs.kdeconnect.enable = true;
 
+    programs.steam.package = pkgs.steam.override {
+      extraPkgs = pkgs': with pkgs'; [
+        libXcursor
+        libXi
+        libXinerama
+        libXScrnSaver
+        libpng
+        libpulseaudio
+        libvorbis
+        stdenv.cc.cc.lib # Provides libstdc++.so.6
+        libkrb5
+        keyutils
+        # Add other libraries as needed
+      ];
+    };
     programs.steam.enable = true;
     programs.steam.remotePlay.openFirewall = true;
     programs.steam.gamescopeSession.enable = true;
@@ -120,6 +135,7 @@
     programs.gamescope = {
       enable = true;
       capSysNice = false;
+      enableWsi = true;
     };
 
       systemd.user.services.steam = {
@@ -143,6 +159,20 @@
           "nice" = -20;
         }
       ];
+    };
+
+    services = {
+      xserver.enable = false; # Assuming no other Xserver needed
+      getty.autologinUser = "magicbox";
+      greetd = {
+        enable = true;
+        settings = {
+          default_session = {
+            command = "${lib.getExe pkgs.gamescope} -W 1920 -H 1080 -f -e --xwayland-count 2 --hdr-enabled --hdr-itm-enabled -- steam -pipewire-dmabuf -gamepadui -steamdeck -steamos3 > /dev/null 2>&1";
+            user = "magicbox";
+          };
+        };
+      };
     };
 
     # This value determines the NixOS release from which the default
