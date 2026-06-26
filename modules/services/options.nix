@@ -21,7 +21,7 @@ in {
 
     # Convert a simplified service definition to Arion service format by removing meta keys and moving service.out to out.service.
     mkArionService = serviceDef: let
-      metaKeys = ["caddy_port" "domains" "out" "postgres" "postgresEnv" "envSecrets" "fileSecrets"];
+      metaKeys = ["caddy_port" "domains" "out" "postgres" "postgresEnv" "envSecrets" "fileSecrets" "caddyRaw"];
       serviceAttrs = builtins.removeAttrs serviceDef metaKeys;
       outAttrs = serviceDef.out or {};
     in {
@@ -136,22 +136,35 @@ in {
       caddyNetworkName = "${name}-caddy-network";
       caddyEntries = builtins.listToAttrs (map (s: {
           name = s.container_name;
-          value = {
-            domains = s.domains;
-            port = s.caddy_port;
-            container_name = s.container_name;
-          };
+          value =
+            {
+              domains = s.domains;
+              port = s.caddy_port;
+              container_name = s.container_name;
+            }
+            // lib.optionalAttrs (s ? caddyRaw) {inherit (s) caddyRaw;};
         })
         servicesWithDomains);
 
-      caddyfileContent = config.flake.lib.mkCaddyfile caddyEntries;
+      # globalConfig is consumed here (prepended to the Caddyfile) and extraNetworks is
+      # appended to the caddy container's auto network (so a caddyRaw block can reverse_proxy
+      # backends that live on an app network, e.g. matrix-rtc on synapse-net). The rest of
+      # `caddy` (e.g. envSecrets, extraPorts, dataDir) is forwarded to the caddy factory.
+      caddyGlobalConfig = caddy.globalConfig or "";
+      caddyExtraNetworks = caddy.extraNetworks or [];
+      caddyFactoryArgs = builtins.removeAttrs caddy ["globalConfig" "extraNetworks"];
+
+      caddyfileContent = config.flake.lib.mkCaddyfile {
+        entries = caddyEntries;
+        globalConfig = caddyGlobalConfig;
+      };
       caddyfilePath = builtins.toFile "Caddyfile" caddyfileContent;
 
       caddyServiceDef = config.flake.services.caddy ({
-          networks = [caddyNetworkName];
+          networks = [caddyNetworkName] ++ caddyExtraNetworks;
           inherit caddyfilePath;
         }
-        // caddy);
+        // caddyFactoryArgs);
 
       addCaddyNetwork = s:
         if (s.domains or []) != []
@@ -211,30 +224,43 @@ in {
         services
       );
 
-    mkCaddyfile = entries: let
-      mkBlocks = _name: entry: let
-        httpsDomains = builtins.filter (d: lib.hasPrefix "https://" d) entry.domains;
-        httpDomains = builtins.filter (d: !lib.hasPrefix "https://" d) entry.domains;
-        reverseProxy = "reverse_proxy ${entry.container_name}:${toString entry.port}";
-        httpsBlock = lib.optionalString (httpsDomains != []) ''
-          ${lib.concatStringsSep ", " httpsDomains} {
-              ${reverseProxy}
+    # entries: attrset keyed by container_name, each { domains, port, container_name, caddyRaw? }.
+    # When an entry sets caddyRaw, that verbatim Caddyfile snippet is emitted instead of the
+    # auto-generated reverse_proxy block (for path-based routing, CORS, custom matchers, etc.).
+    # globalConfig, if non-empty, is prepended verbatim (e.g. a `{ layer4 { ... } }` block).
+    mkCaddyfile = {
+      entries,
+      globalConfig ? "",
+    }: let
+      mkBlocks = _name: entry:
+        if (entry.caddyRaw or null) != null
+        then entry.caddyRaw
+        else let
+          httpsDomains = builtins.filter (d: lib.hasPrefix "https://" d) entry.domains;
+          httpDomains = builtins.filter (d: !lib.hasPrefix "https://" d) entry.domains;
+          reverseProxy = "reverse_proxy ${entry.container_name}:${toString entry.port}";
+          httpsBlock = lib.optionalString (httpsDomains != []) ''
+            ${lib.concatStringsSep ", " httpsDomains} {
+                ${reverseProxy}
 
-              tls {
-                  dns cloudflare {env.CF_API_TOKEN}
-                  resolvers 1.1.1.1
-              }
-          }
-        '';
-        httpBlock = lib.optionalString (httpDomains != []) ''
-          ${lib.concatStringsSep ", " httpDomains} {
-              ${reverseProxy}
-          }
-        '';
-      in
-        httpsBlock + httpBlock;
+                tls {
+                    dns cloudflare {env.CF_API_TOKEN}
+                    resolvers 1.1.1.1
+                }
+            }
+          '';
+          httpBlock = lib.optionalString (httpDomains != []) ''
+            ${lib.concatStringsSep ", " httpDomains} {
+                ${reverseProxy}
+            }
+          '';
+        in
+          httpsBlock + httpBlock;
     in
-      lib.concatStringsSep "\n" (lib.attrValues (lib.mapAttrs mkBlocks entries));
+      lib.concatStringsSep "\n" (
+        lib.optional (globalConfig != "") globalConfig
+        ++ lib.attrValues (lib.mapAttrs mkBlocks entries)
+      );
 
     # Factory that returns a NixOS module setting host.caddyDomains and
     # virtualisation.arion.projects from a list of services.
