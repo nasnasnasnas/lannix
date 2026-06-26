@@ -114,11 +114,24 @@
     programs.kdeconnect.enable = true;
 
     programs.steam.enable = true;
+    programs.steam.remotePlay.openFirewall = true;
+    programs.steam.gamescopeSession.enable = true;
+    programs.steam.protontricks.enable = true;
     programs.gamescope = {
       enable = true;
       capSysNice = false;
     };
-    programs.steam.gamescopeSession.enable = true;
+
+      systemd.user.services.steam = {
+        enable = true;
+        description = "Open Steam in the background at boot";
+        serviceConfig = {
+          ExecStart = "${pkgs.steam}/bin/steam -nochatui -nofriendsui -silent %U";
+          wantedBy = [ "graphical-session.target" ];
+          Restart = "on-failure";
+          RestartSec = "5s";
+        };
+      };
 
     services.ananicy = {
       enable = true;
