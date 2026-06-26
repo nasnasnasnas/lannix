@@ -95,15 +95,11 @@
         bridge = "telegram";
         networks = ["synapse-net"];
         dataDir = "/home/magicbox/data/mautrix-telegram";
-        configSecret = "op://Secrets/Mautrix Telegram Config/notesPlain";
-        registrationSecret = "op://Secrets/Mautrix Telegram Registration/notesPlain";
       })
       (mautrix {
         bridge = "signal";
         networks = ["synapse-net"];
         dataDir = "/home/magicbox/data/mautrix-signal";
-        configSecret = "op://Secrets/Mautrix Signal Config/notesPlain";
-        registrationSecret = "op://Secrets/Mautrix Signal Registration/notesPlain";
       })
       (mautrix {
         bridge = "discord";
@@ -111,8 +107,6 @@
         webPort = 29334;
         networks = ["synapse-net"];
         dataDir = "/home/magicbox/data/mautrix-discord";
-        configSecret = "op://Secrets/Mautrix Discord Config/notesPlain";
-        registrationSecret = "op://Secrets/Mautrix Discord Registration/notesPlain";
       })
 
       # Matrix RTC

@@ -1,15 +1,15 @@
 {...}: {
   # mautrix-* puppeting bridges (telegram / signal / discord). Each keeps its own SQLite
-  # database in dataDir. config.yaml and registration.yaml are opnix file secrets
-  # (registration.yaml is also mounted into Synapse as an app_service_config_file).
+  # database AND its config.yaml + registration.yaml in dataDir (migrated from the Pi). These
+  # are NOT opnix read-only secrets: mautrix rewrites/chowns its config on startup (config
+  # schema migration), so the files must be writable and owned by the bridge. Synapse reads
+  # each registration.yaml separately via opnix (read-only is fine there; tokens are stable).
   # Set domains (+ caddy_port via webPort) only for bridges that expose an HTTP endpoint
   # (discord's media proxy, port 29334).
   flake.services.mautrix = {
     bridge,
     networks ? [],
     dataDir,
-    configSecret,
-    registrationSecret,
     domains ? [],
     webPort ? null,
     image ? "dock.mau.dev/mautrix/${bridge}:latest",
@@ -18,10 +18,6 @@
   }: {
     container_name = "mautrix-${bridge}";
     inherit image restart networks depends_on;
-    fileSecrets = {
-      "/data/config.yaml" = configSecret;
-      "/data/registration.yaml" = registrationSecret;
-    };
     volumes = ["${dataDir}:/data"];
   }
   // (
