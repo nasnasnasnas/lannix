@@ -103,7 +103,8 @@ in {
           value = {
             reference = ref;
             path = config.flake.lib.fileSecretPath s.container_name containerPath;
-            mode = "0400";
+            # 0444 so non-root container processes can read their bind-mounted config.
+            mode = "0444";
           };
         }) (s.fileSecrets or {}))
       services;

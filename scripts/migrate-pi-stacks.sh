@@ -20,8 +20,13 @@
 #   - the DATA rsync is executed ON magicplank, pulling straight from the Pi via your
 #     forwarded ssh agent, with root on both ends and --numeric-ids — so the original UIDs are
 #     preserved exactly (same container images => same UIDs, no guessing/chowning needed).
-# Passwordless sudo is therefore required for the login user on BOTH the Pi and magicplank, and
-# magicplank must be able to reach the Pi (set PI_FROM_MP if its address differs from there).
+# These run over ssh with NO TTY, so sudo cannot prompt. Acquire privilege one of two ways
+# (auto-detected from the ssh user; override per host with PI_SUDO=/MP_SUDO=):
+#   - connect as root@<host>            -> no sudo used (recommended; magicplank allows root ssh)
+#   - connect as a normal user          -> `sudo` is prefixed and must be PASSWORDLESS (NOPASSWD)
+# magicplank must also be able to reach the Pi (set PI_FROM_MP if its address differs from there).
+#
+# Example (root both ends, simplest): PI=root@10.1.0.11 MP=root@magicplank ./migrate-pi-stacks.sh data
 #
 # Prereqs on the machine you run this from: ssh access (with agent, i.e. `ssh-add`) to both the
 # Pi and magicplank, and `op` (1Password CLI) signed in. rsync / ssh / yq / jq are pulled in
@@ -62,6 +67,17 @@ DRY_RUN="${DRY_RUN:-0}"
 STAGE="$(mktemp -d)"
 trap 'rm -rf "$STAGE"' EXIT
 
+# Reading the Pi's bind-mounts and writing magicplank's data dirs both need root. Privilege is
+# acquired non-interactively (these run over ssh with no TTY, so sudo cannot prompt): connect as
+# root@<host> and no sudo is used; otherwise we prefix `sudo`, which then REQUIRES passwordless
+# sudo for that user. Auto-detected from the ssh target's user; override with PI_SUDO/MP_SUDO=""
+# (root) or ="sudo".
+_default_sudo() { case "$1" in root@*|root) echo "" ;; *) echo "sudo" ;; esac; }
+PI_SUDO="${PI_SUDO-$(_default_sudo "$PI")}"
+MP_SUDO="${MP_SUDO-$(_default_sudo "$MP")}"
+# rsync-path run on the Pi end (root there too, so it can read the bind-mounts).
+PI_RSYNC_PATH="${PI_SUDO:+sudo }rsync"
+
 log()  { printf '\033[1;36m==>\033[0m %s\n' "$*"; }
 warn() { printf '\033[1;33m!! \033[0m %s\n' "$*" >&2; }
 run()  { if [ "$DRY_RUN" = 1 ]; then echo "DRY: $*"; else "$@"; fi; }
@@ -71,8 +87,8 @@ run()  { if [ "$DRY_RUN" = 1 ]; then echo "DRY: $*"; else "$@"; fi; }
 # skip optional pieces gracefully.
 pull() { # pull <remote-path> <local-name>
   local remote="$1" local_name="$2"
-  if ssh "$PI" "sudo test -f '$remote'"; then
-    ( umask 077; ssh "$PI" "sudo cat '$remote'" > "$STAGE/$local_name" )
+  if ssh "$PI" "$PI_SUDO test -f '$remote'"; then
+    ( umask 077; ssh "$PI" "$PI_SUDO cat '$remote'" > "$STAGE/$local_name" )
     return 0
   fi
   warn "missing on Pi, skipping: $remote"
@@ -189,21 +205,23 @@ do_secrets() {
 # ── data ─────────────────────────────────────────────────────────────────────────────────
 # Run rsync ON magicplank, pulling straight from the Pi, as root on both ends. This preserves
 # the original numeric ownership (Postgres uid 70 / Synapse 991 / Redis 999 / ...) without any
-# guessing. Auth to the Pi uses your forwarded ssh agent (sudo keeps SSH_AUTH_SOCK), and root
-# on the Pi side comes from --rsync-path="sudo rsync".
+# guessing. Auth to the Pi uses your forwarded ssh agent; when sudo is needed on magicplank we
+# keep SSH_AUTH_SOCK across it, and root on the Pi side comes from PI_RSYNC_PATH.
 sync_dir() { # sync_dir <pi-subdir> <mp-dest-subdir>
   local src="$1" dst="$2"
-  if ! ssh "$PI" "sudo test -d '$src'"; then
+  if ! ssh "$PI" "$PI_SUDO test -d '$src'"; then
     warn "missing on Pi, skipping data: $src"
     return 0
   fi
   log "sync (on $MP)  $PI_FROM_MP:$src  ->  $MP_DATA/$dst"
+  local mp_rsync="rsync"
+  [ -n "$MP_SUDO" ] && mp_rsync="$MP_SUDO --preserve-env=SSH_AUTH_SOCK rsync"
   run ssh -A "$MP" "
     set -e
-    sudo mkdir -p '$MP_DATA/$dst'
-    sudo --preserve-env=SSH_AUTH_SOCK rsync -aHAX --numeric-ids --delete \
+    $MP_SUDO mkdir -p '$MP_DATA/$dst'
+    $mp_rsync -aHAX --numeric-ids --delete \
       -e 'ssh -A -o StrictHostKeyChecking=accept-new' \
-      --rsync-path='sudo rsync' \
+      --rsync-path='$PI_RSYNC_PATH' \
       '$PI_FROM_MP:$src/' '$MP_DATA/$dst/'
   "
 }
@@ -219,7 +237,7 @@ do_data() {
   sync_dir "$PI_SYNAPSE/mautrix-signal"    "mautrix-signal"
   sync_dir "$PI_SYNAPSE/mautrix-discord"   "mautrix-discord"
   # heisenbridge keeps almost no local state; create the dir so the bind-mount exists.
-  run ssh "$MP" "sudo mkdir -p '$MP_DATA/heisenbridge'"
+  run ssh "$MP" "$MP_SUDO mkdir -p '$MP_DATA/heisenbridge'"
 
   # Sharkey: uploaded files + Postgres (pgroonga) cluster + Redis.
   sync_dir "$PI_SHARKEY/files" "sharkey/files"
