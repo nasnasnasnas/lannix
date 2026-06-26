@@ -33,12 +33,25 @@
     caddyRaw = ''
       ${rtcDomain} {
           handle /sfu/get* {
-              header Access-Control-Allow-Origin "*"
-              header Access-Control-Allow-Methods "POST, OPTIONS"
-              header Access-Control-Allow-Headers "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+              # Preflight: answer OPTIONS directly, WITH the CORS headers (a bare 204 would
+              # make the browser block the real request).
               @options method OPTIONS
-              respond @options 204
-              reverse_proxy ${authBackend}
+              handle @options {
+                  header Access-Control-Allow-Origin "*"
+                  header Access-Control-Allow-Methods "POST, OPTIONS"
+                  header Access-Control-Allow-Headers "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+                  header Access-Control-Max-Age "3600"
+                  respond 204
+              }
+              # Actual request: set the headers on the proxied response via header_down
+              # (a top-level `header` is not reliably applied to reverse_proxy responses).
+              handle {
+                  reverse_proxy ${authBackend} {
+                      header_down Access-Control-Allow-Origin "*"
+                      header_down Access-Control-Allow-Methods "POST, OPTIONS"
+                      header_down Access-Control-Allow-Headers "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization"
+                  }
+              }
           }
           handle /livekit/sfu/* {
               uri strip_prefix /livekit/sfu
