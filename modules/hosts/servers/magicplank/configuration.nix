@@ -82,6 +82,16 @@
     # Tailscale
     networking.firewall.checkReversePath = "loose";
 
+    # LiveKit / Matrix-RTC media + TURNS (TURNS 5349 is published by caddy's layer4 listener,
+    # 7881 + the 50100-50200/udp range are published directly by the livekit container).
+    networking.firewall.allowedTCPPorts = [7881 5349];
+    networking.firewall.allowedUDPPortRanges = [
+      {
+        from = 50100;
+        to = 50200;
+      }
+    ];
+
     # for attic
     networking.hosts."127.0.0.1" = ["attic.szpunar.cloud"];
     services.tailscale = {

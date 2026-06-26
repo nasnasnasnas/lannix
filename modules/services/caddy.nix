@@ -6,6 +6,7 @@
     envSecrets ? {},
     env_file ? [],
     dataDir ? "/home/magicbox/data/caddy",
+    extraPorts ? [],
   }: {
     container_name = "caddy";
     inherit image;
@@ -14,11 +15,13 @@
     caddy_port = null;
     command = ["caddy" "run" "--config" "/etc/caddy/Caddyfile" "--adapter" "caddyfile"];
     inherit networks envSecrets;
-    ports = [
-      "80:80"
-      "443:443"
-      "443:443/udp"
-    ];
+    ports =
+      [
+        "80:80"
+        "443:443"
+        "443:443/udp"
+      ]
+      ++ extraPorts;
     volumes = [
       "${caddyfilePath}:/etc/caddy/Caddyfile:ro"
       "${dataDir}:/data"
