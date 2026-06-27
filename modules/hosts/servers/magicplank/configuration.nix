@@ -137,16 +137,16 @@
       capSysNice = false;
     };
 
-      systemd.user.services.steam = {
-        enable = true;
-        description = "Open Steam in the background at boot";
-        serviceConfig = {
-          ExecStart = "${pkgs.steam}/bin/steam -nochatui -nofriendsui -silent %U";
-          wantedBy = [ "graphical-session.target" ];
-          Restart = "on-failure";
-          RestartSec = "5s";
-        };
+    systemd.user.services.steam = {
+      enable = true;
+      description = "Open Steam in the background at boot";
+      serviceConfig = {
+        ExecStart = "${pkgs.steam}/bin/steam -nochatui -nofriendsui -silent %U";
+        wantedBy = [ "graphical-session.target" ];
+        Restart = "on-failure";
+        RestartSec = "5s";
       };
+    };
 
     services.ananicy = {
       enable = true;
@@ -158,20 +158,6 @@
           "nice" = -20;
         }
       ];
-    };
-
-    services = {
-      xserver.enable = false; # Assuming no other Xserver needed
-      getty.autologinUser = "magicbox";
-      greetd = {
-        enable = true;
-        settings = {
-          default_session = {
-            command = "${lib.getExe pkgs.gamescope} -W 1920 -H 1080 -f -e --xwayland-count 2 --hdr-enabled --hdr-itm-enabled -- steam -pipewire-dmabuf -gamepadui -steamdeck -steamos3 > /dev/null 2>&1";
-            user = "magicbox";
-          };
-        };
-      };
     };
 
     # This value determines the NixOS release from which the default
