@@ -22,7 +22,7 @@ in {
     # Convert a simplified service definition to Arion service format by removing meta keys and moving service.out to out.service.
     mkArionService = serviceDef: let
       metaKeys = ["caddy_port" "domains" "out" "postgres" "postgresEnv" "envSecrets" "fileSecrets" "caddyRaw"];
-      serviceAttrs = builtins.removeAttrs serviceDef metaKeys;
+      serviceAttrs = removeAttrs serviceDef metaKeys;
       outAttrs = serviceDef.out or {};
     in {
       service = serviceAttrs;
