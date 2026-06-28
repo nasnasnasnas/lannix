@@ -39,7 +39,10 @@ jobs:
           REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
-          git config --global --add safe.directory '*'
+          GIT_CONF="$(mktemp)"
+          git config -f "$GIT_CONF" --add safe.directory '*'
+          export GIT_CONFIG_GLOBAL="$GIT_CONF"
+          echo "GIT_CONFIG_GLOBAL=$GIT_CONF" >> "$GITHUB_ENV"
           git clone "https://oauth2:${TOKEN}@${SERVER#https://}/${REPO}.git" .
           git checkout main
           git config user.name "forgejo-actions"
@@ -179,4 +182,5 @@ jobs:
         if: always()
         run: |
           rm -f "${RUNNER_TEMP:-$HOME/.cache/runner-tmp}/nix.conf" \
-                "${RUNNER_TEMP:-$HOME/.cache/runner-tmp}/bump-output.txt"
+                "${RUNNER_TEMP:-$HOME/.cache/runner-tmp}/bump-output.txt" \
+                "${GIT_CONFIG_GLOBAL:-}"

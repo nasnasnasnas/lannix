@@ -47,7 +47,10 @@ jobs:
           HEAD_REF: ${{ github.head_ref }}
         run: |
           set -euo pipefail
-          git config --global --add safe.directory '*'
+          GIT_CONF="$(mktemp)"
+          git config -f "$GIT_CONF" --add safe.directory '*'
+          export GIT_CONFIG_GLOBAL="$GIT_CONF"
+          echo "GIT_CONFIG_GLOBAL=$GIT_CONF" >> "$GITHUB_ENV"
           git clone "https://oauth2:${TOKEN}@${SERVER#https://}/${REPO}.git" .
           if [ "$EVENT" = "pull_request" ]; then
             git checkout "$HEAD_REF"

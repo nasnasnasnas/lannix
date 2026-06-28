@@ -53,7 +53,10 @@ jobs:
           REF: ${{ github.ref_name }}
         run: |
           set -euo pipefail
-          git config --global --add safe.directory '*'
+          GIT_CONF="$(mktemp)"
+          git config -f "$GIT_CONF" --add safe.directory '*'
+          export GIT_CONFIG_GLOBAL="$GIT_CONF"
+          echo "GIT_CONFIG_GLOBAL=$GIT_CONF" >> "$GITHUB_ENV"
           git clone "https://oauth2:${TOKEN}@${SERVER#https://}/${REPO}.git" .
           git checkout "$REF"
           git config user.name "forgejo-actions"
@@ -219,4 +222,5 @@ jobs:
           set -x
           # Defense-in-depth: scrub the temp nix.conf containing the GitHub token.
           # act normally wipes $RUNNER_TEMP on job end, but remove explicitly.
-          rm -f "${RUNNER_TEMP:-$HOME/.cache/runner-tmp}/nix.conf"
+          rm -f "${RUNNER_TEMP:-$HOME/.cache/runner-tmp}/nix.conf" \
+                "${GIT_CONFIG_GLOBAL:-}"
