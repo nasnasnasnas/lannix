@@ -1,4 +1,4 @@
-{...}: {
+{config, ...}: {
   # mautrix-* puppeting bridges (telegram / signal / discord). Each keeps its own SQLite
   # database AND its config.yaml + registration.yaml in dataDir (migrated from the Pi). These
   # are NOT opnix read-only secrets: mautrix rewrites/chowns its config on startup (config
@@ -12,7 +12,7 @@
     dataDir,
     domains ? [],
     webPort ? null,
-    image ? "dock.mau.dev/mautrix/${bridge}:latest",
+    image ? config.flake.lib.image "dock.mau.dev/mautrix/${bridge}",
     restart ? "unless-stopped",
     depends_on ? ["synapse"],
   }:

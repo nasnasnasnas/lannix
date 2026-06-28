@@ -1,10 +1,10 @@
-{...}: {
+{config, ...}: {
   flake.services.nzbdav = {
     domains ? [],
     networks ? [],
     container_name ? "nzbdav",
     restart ? "unless-stopped",
-    image ? "nzbdav/nzbdav:latest",
+    image ? config.flake.lib.image "nzbdav/nzbdav",
     port ? 3000,
     user ? "1000:100",
     environment ? {},
@@ -43,7 +43,7 @@
     networks ? [],
     container_name ? "nzbdav-rclone",
     restart ? "unless-stopped",
-    image ? "rclone/rclone:latest",
+    image ? config.flake.lib.image "rclone/rclone",
     port ? null,
     user ? "1000:100",
     command ? [

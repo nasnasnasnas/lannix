@@ -1,10 +1,10 @@
-{...}: {
+{config, ...}: {
   flake.services.zurg = {
     domains ? [],
     networks ? [],
     container_name ? "zurg",
     restart ? "unless-stopped",
-    image ? "ghcr.io/debridmediamanager/zurg-testing:latest",
+    image ? config.flake.lib.image "ghcr.io/debridmediamanager/zurg-testing",
     port ? null,
     user ? "1000:100",
     environment ? {},
@@ -40,7 +40,7 @@
     networks ? [],
     container_name ? "rclone", # just plain "rclone" for legacy reasons
     restart ? "unless-stopped",
-    image ? "rclone/rclone:latest",
+    image ? config.flake.lib.image "rclone/rclone",
     port ? null,
     user ? "1000:100",
     command ? [

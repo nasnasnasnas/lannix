@@ -1,10 +1,10 @@
-{...}: {
+{config, ...}: {
   flake.services.radarr = {
     domains ? [],
     networks ? [],
     container_name ? "radarr",
     restart ? "unless-stopped",
-    image ? "linuxserver/radarr:latest",
+    image ? config.flake.lib.image "linuxserver/radarr",
     port ? 7878,
     user ? "1000:100",
     environment ? {},

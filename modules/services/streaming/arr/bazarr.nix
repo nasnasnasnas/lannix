@@ -1,10 +1,10 @@
-{...}: {
+{config, ...}: {
   flake.services.bazarr = {
     domains ? [],
     networks ? [],
     container_name ? "bazarr",
     restart ? "unless-stopped",
-    image ? "linuxserver/bazarr:latest",
+    image ? config.flake.lib.image "linuxserver/bazarr",
     port ? 6767,
     user ? "1000:100",
     environment ? {},

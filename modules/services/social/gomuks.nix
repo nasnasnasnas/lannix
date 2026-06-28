@@ -1,10 +1,10 @@
-{...}: {
+{config, ...}: {
   flake.services.gomuks = {
     domains ? [],
     networks ? [],
     container_name ? "gomuks",
     restart ? "unless-stopped",
-    image ? "dock.mau.dev/gomuks/gomuks:latest",
+    image ? config.flake.lib.image "dock.mau.dev/gomuks/gomuks",
     port ? 29325,
     environment ? {},
     volumes ? [],

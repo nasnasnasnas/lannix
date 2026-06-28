@@ -1,10 +1,10 @@
-{...}: {
+{config, ...}: {
   flake.services.victoriametrics = {
     domains ? [],
     networks ? [],
     container_name ? "victoriametrics",
     restart ? "unless-stopped",
-    image ? "victoriametrics/victoria-metrics:latest",
+    image ? config.flake.lib.image "victoriametrics/victoria-metrics",
     port ? 8428,
     environment ? {},
     volumes ? [],

@@ -1,7 +1,7 @@
-{...}: {
+{config, ...}: {
   flake.services.caddy = {
     networks ? [],
-    image ? "ghcr.io/nealol/caddy-cloudflare-l4:latest",
+    image ? config.flake.lib.image "ghcr.io/nealol/caddy-cloudflare-l4",
     caddyfilePath,
     envSecrets ? {},
     env_file ? [],

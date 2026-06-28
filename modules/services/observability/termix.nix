@@ -1,10 +1,10 @@
-{...}: {
+{config, ...}: {
   flake.services.termix = {
     domains ? [],
     networks ? [],
     container_name ? "termix",
     restart ? "unless-stopped",
-    image ? "ghcr.io/lukegus/termix:latest",
+    image ? config.flake.lib.image "ghcr.io/lukegus/termix",
     port ? 8080,
     environment ? {},
     volumes ? [],

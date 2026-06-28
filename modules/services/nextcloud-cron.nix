@@ -1,7 +1,7 @@
-{...}: {
+{config, ...}: {
   flake.services.nextcloud-cron = {
     networks ? [],
-    image ? "nextcloud:33.0.2",
+    image ? config.flake.lib.image "nextcloud",
     volumes ? [],
     dataDir ? "/home/magicbox/data/nextcloud",
   }: {

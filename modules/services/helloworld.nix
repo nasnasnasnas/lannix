@@ -1,8 +1,8 @@
-{...}: {
+{config, ...}: {
   flake.services.helloworld = {
     domains ? [],
     networks ? [],
-    image ? "crccheck/hello-world",
+    image ? config.flake.lib.image "crccheck/hello-world",
   }: {
     inherit domains;
     container_name = "helloworld";

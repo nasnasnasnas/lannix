@@ -1,4 +1,4 @@
-{...}: {
+{config, ...}: {
   # Synapse Matrix homeserver.
   #
   # Config is split into a directory (SYNAPSE_CONFIG_PATH points at /config, a dir):
@@ -20,7 +20,7 @@
     serverName ? "szp.lol",
     appserviceRegistrations ? {},
     container_name ? "synapse",
-    image ? "docker.io/matrixdotorg/synapse:latest",
+    image ? config.flake.lib.image "docker.io/matrixdotorg/synapse",
     restart ? "unless-stopped",
     port ? 8008,
     depends_on ? ["synapse-db"],

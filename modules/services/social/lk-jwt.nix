@@ -1,4 +1,4 @@
-{...}: {
+{config, ...}: {
   # lk-jwt-service: mints LiveKit JWTs for Matrix RTC. No domain of its own — it is reached
   # by caddy on /sfu/get via the combined matrix-rtc.szp.lol block defined in the livekit
   # service (both sit on the same app network, which caddy joins via caddy.extraNetworks).
@@ -8,7 +8,7 @@
     fullAccessHomeservers ? "szp.lol",
     envSecrets ? {},
     container_name ? "auth-service",
-    image ? "ghcr.io/element-hq/lk-jwt-service:latest",
+    image ? config.flake.lib.image "ghcr.io/element-hq/lk-jwt-service",
     restart ? "unless-stopped",
     port ? 8080,
   }: {

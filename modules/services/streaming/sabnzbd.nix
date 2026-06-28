@@ -1,10 +1,10 @@
-{...}: {
+{config, ...}: {
   flake.services.sabnzbd = {
     domains ? [],
     networks ? [],
     container_name ? "sabnzbd",
     restart ? "unless-stopped",
-    image ? "linuxserver/sabnzbd:latest",
+    image ? config.flake.lib.image "linuxserver/sabnzbd",
     port ? 8080,
     user ? "1000:100",
     environment ? {},
