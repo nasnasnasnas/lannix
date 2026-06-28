@@ -60,8 +60,8 @@
     "digest": "sha256:18574aba70fc89d2b695273fbe2e7b2f8ad7e8e786b4cc535124fbe14bada1d0"
   },
   "git.szpunar.cloud/leah/pictures.place": {
-    "tag": "3e77c5e7a23960c31278efba6f4e1090329d4bc2",
-    "digest": "sha256:9a99fd80c44ab454745060e3c886d895bf89f6cbcd195c983f07dece662b7250"
+    "tag": "latest",
+    "digest": "sha256:166a8d13df9f4967801f7101881aee43a65e3a3180c61853db32ed66651a0b4c"
   },
   "git.szpunar.cloud/nea/pulse": {
     "tag": "cefede2c2b872b750de43121a4a6e4326b86b8ca",
