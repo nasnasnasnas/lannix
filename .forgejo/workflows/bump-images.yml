@@ -98,9 +98,7 @@ jobs:
             mv modules/services/images.json.tmp modules/services/images.json
 
             git add modules/services/images.json
-            git commit -m "chore(images): bump ${key}
-
-${oldDigest} -> ${newDigest}"
+            git commit -m "chore(images): bump ${key} \n\n${oldDigest} -> ${newDigest}"
 
             # Force-push under FORGEJO_PR_TOKEN (not the clone URL's GITHUB_TOKEN)
             # so the push actor triggers pull_request events for nix-build-pr.yml.
