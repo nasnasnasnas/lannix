@@ -49,7 +49,7 @@ jobs:
         id: bump
         env:
           REGISTRY_TOKEN_LEAH: ${{ secrets.REGISTRY_TOKEN_LEAH }}
-          REGISTRY_TOKEN_NEA: ${{ secrets.REGISTRY_TOKEN_NEA }}
+          REGISTRY_TOKEN_NEA: ${{ secrets.REGISTRY_TOKEN_LEAH }} # TODO: get a nea token
         run: |
           set -euo pipefail
           : "${GITHUB_OUTPUT:?GITHUB_OUTPUT not set by runner}"
