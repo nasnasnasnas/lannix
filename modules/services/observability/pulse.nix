@@ -1,8 +1,8 @@
-{...}: {
+{config, ...}: {
   flake.services.pulse = {
     domains ? [],
     networks ? [],
-    image ? "git.szpunar.cloud/nea/pulse:cefede2c2b872b750de43121a4a6e4326b86b8ca",
+    image ? config.flake.lib.image "git.szpunar.cloud/nea/pulse",
     envSecrets ? {},
     environment ? {},
     env_file ? [],

@@ -1,10 +1,10 @@
-{...}: {
+{config, ...}: {
   flake.services.mylar = {
     domains ? [],
     networks ? [],
     container_name ? "mylar",
     restart ? "unless-stopped",
-    image ? "linuxserver/mylar:latest",
+    image ? config.flake.lib.image "linuxserver/mylar",
     port ? 8090,
     user ? "1000:100",
     environment ? {},

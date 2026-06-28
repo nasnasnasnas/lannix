@@ -1,4 +1,4 @@
-{...}: {
+{config, ...}: {
   # LiveKit SFU for Matrix RTC (Element Call).
   #
   # HTTP/WS is reverse-proxied at matrix-rtc.szp.lol/livekit/sfu/ via a single combined caddy
@@ -16,7 +16,7 @@
     authBackend ? "auth-service:8080",
     livekitBackend ? "livekit:7880",
     container_name ? "livekit",
-    image ? "livekit/livekit-server:latest",
+    image ? config.flake.lib.image "livekit/livekit-server",
     restart ? "unless-stopped",
     port ? 7880,
     rtcTcpPort ? 7881,

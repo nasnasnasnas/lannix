@@ -1,10 +1,10 @@
-{...}: {
+{config, ...}: {
   flake.services.jellyfin = {
     domains ? [],
     networks ? [],
     container_name ? "jellyfin",
     restart ? "always",
-    image ? "linuxserver/jellyfin:latest",
+    image ? config.flake.lib.image "linuxserver/jellyfin",
     port ? 8096,
     environment ? {},
     volumes ? [],

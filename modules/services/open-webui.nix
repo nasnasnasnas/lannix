@@ -1,8 +1,8 @@
-{...}: {
+{config, ...}: {
   flake.services.open-webui = {
     domains ? [],
     networks ? [],
-    image ? "ghcr.io/open-webui/open-webui:main",
+    image ? config.flake.lib.image "ghcr.io/open-webui/open-webui",
     volumes ? [],
     dataDir ? "/home/magicbox/data/open-webui",
     ollamaUrl ? "http://host.docker.internal:11434",

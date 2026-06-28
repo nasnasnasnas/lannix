@@ -19,6 +19,14 @@ in {
     extractCaddyDomains = services:
       lib.concatMap (s: s.domains or []) services;
 
+    # Resolve an image key from images.json to a digest-pinned reference: "name:tag@sha256:…"
+    image = key:
+      let
+        pins = lib.importJSON ./images.json;
+        e = pins.${key} or (throw "image-pin: no entry for ${key}");
+        name = e.name or key;
+      in "${name}:${e.tag}@${e.digest}";
+
     # Convert a simplified service definition to Arion service format by removing meta keys and moving service.out to out.service.
     mkArionService = serviceDef: let
       metaKeys = ["caddy_port" "domains" "out" "postgres" "postgresEnv" "envSecrets" "fileSecrets" "caddyRaw"];

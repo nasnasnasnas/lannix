@@ -1,4 +1,4 @@
-{...}: {
+{config, ...}: {
   # Heisenbridge (bouncer-style IRC bridge). Runs as two containers sharing one config:
   #   - heisenbridge       : the appservice itself (media = false)
   #   - heisenbridge-media : the media proxy, exposed at heisenbridge.szp.lol (media = true)
@@ -11,7 +11,7 @@
     media ? false,
     domains ? [],
     synapseUrl ? "http://synapse:8008",
-    image ? "hif1/heisenbridge:latest",
+    image ? config.flake.lib.image "hif1/heisenbridge",
     restart ? "unless-stopped",
     mediaPort ? 9898,
     depends_on ? ["synapse"],

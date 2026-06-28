@@ -1,4 +1,4 @@
-{...}: {
+{config, ...}: {
   # A dedicated Postgres container (NOT the shared host postgres-puppy), used where an app
   # needs a specific image or initdb settings:
   #   - Synapse: stock postgres with C collation (POSTGRES_INITDB_ARGS)
@@ -8,7 +8,7 @@
     container_name,
     dataDir,
     networks ? [],
-    image ? "postgres:15-alpine",
+    image ? config.flake.lib.image "postgres:15-alpine",
     restart ? "always",
     db,
     user,

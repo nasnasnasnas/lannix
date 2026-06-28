@@ -1,10 +1,10 @@
-{...}: {
+{config, ...}: {
   flake.services.sonarr = {
     domains ? [],
     networks ? [],
     container_name ? "sonarr",
     restart ? "unless-stopped",
-    image ? "linuxserver/sonarr:latest",
+    image ? config.flake.lib.image "linuxserver/sonarr",
     port ? 8989,
     user ? "1000:100",
     environment ? {},

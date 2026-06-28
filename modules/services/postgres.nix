@@ -1,7 +1,7 @@
-{...}: {
+{config, ...}: {
   flake.services.postgres = {
     networks ? [],
-    image ? "postgres:latest",
+    image ? config.flake.lib.image "postgres:latest",
     dataDir ? "/home/magicbox/data/postgres",
     restart ? "always",
     user ? null,

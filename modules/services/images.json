@@ -1,0 +1,156 @@
+{
+  "codeberg.org/forgejo/forgejo": {
+    "tag": "15",
+    "digest": "sha256:55bb42bec9abef5223744804f164e37d37b20df7e8b8b4807ba213ad4f071d6d"
+  },
+  "crccheck/hello-world": {
+    "tag": "latest",
+    "digest": "sha256:0404ca69b522f8629d7d4e9034a7afe0300b713354e8bf12ec9657581cf59400"
+  },
+  "dock.mau.dev/mautrix/discord": {
+    "tag": "latest",
+    "digest": "sha256:7716389dfb11dc7a44c8363348a48e91c1c463ded012f0fb08cdf266fcb20246"
+  },
+  "dock.mau.dev/mautrix/signal": {
+    "tag": "latest",
+    "digest": "sha256:2db17c9a99bab7c12ac194fda90e8acecce477a79c83f5803d73c2c077b47ae9"
+  },
+  "dock.mau.dev/mautrix/telegram": {
+    "tag": "latest",
+    "digest": "sha256:17b71cf6d45d7fb4eff3e9ea254613881df6531989031efbfccad12acc1d0782"
+  },
+  "dock.mau.dev/gomuks/gomuks": {
+    "tag": "latest",
+    "digest": "sha256:083fd33165319a0d250d675116972125076a75fbeaa95502dad0bc6eb7e6d9de"
+  },
+  "docker.io/matrixdotorg/synapse": {
+    "tag": "latest",
+    "digest": "sha256:da325af40104051923899e5f5a2f1d537e6e3ccf2f0f38285689ae9bbfdb190a"
+  },
+  "ghcr.io/debridmediamanager/zurg-testing": {
+    "tag": "latest",
+    "digest": "sha256:5c47ef99443ac67c9a5ede82204b5be75d30eb25b4ac4885b6612d7526243baa"
+  },
+  "ghcr.io/element-hq/lk-jwt-service": {
+    "tag": "latest",
+    "digest": "sha256:29918567e6b7cd920e2853b4cd6848ce01b79947c3d19a9f1ed5b74f0a2a88bf"
+  },
+  "ghcr.io/lukegus/termix": {
+    "tag": "latest",
+    "digest": "sha256:f987d1423a9d1f0bd870b248ad42ccaa10873d801c187a371791216ae4a82135"
+  },
+  "ghcr.io/nealol/caddy-cloudflare-l4": {
+    "tag": "latest",
+    "digest": "sha256:8399fda27dfb9bb0d87ee11743b435bbf19cde7bae638bfefe742929f1884e4c"
+  },
+  "ghcr.io/nealol/realtime-server": {
+    "tag": "latest",
+    "digest": "sha256:d516519bf42dd21bbd6686b320ee41776c4a9419fd046731707195f9c2b8074c"
+  },
+  "ghcr.io/open-webui/open-webui": {
+    "tag": "main",
+    "digest": "sha256:7f1b0a1a50cfbac23da3b16f96bc968fd757b26dc9e54e93813d61768ea9184e"
+  },
+  "ghcr.io/pocket-id/pocket-id": {
+    "tag": "v2",
+    "digest": "sha256:a2a38a96699d7483d65b5849b015d954f294938306a03a9c0699bc5b79554e86"
+  },
+  "ghcr.io/zhaofengli/attic": {
+    "tag": "latest",
+    "digest": "sha256:18574aba70fc89d2b695273fbe2e7b2f8ad7e8e786b4cc535124fbe14bada1d0"
+  },
+  "git.szpunar.cloud/leah/pictures.place": {
+    "tag": "3e77c5e7a23960c31278efba6f4e1090329d4bc2",
+    "digest": "sha256:9a99fd80c44ab454745060e3c886d895bf89f6cbcd195c983f07dece662b7250"
+  },
+  "git.szpunar.cloud/nea/pulse": {
+    "tag": "cefede2c2b872b750de43121a4a6e4326b86b8ca",
+    "digest": "sha256:dd9fe308cde62e5cc7cf33c484ed7c9297db145595a5046b2457fb173ce09d21"
+  },
+  "grafana/grafana": {
+    "tag": "latest",
+    "digest": "sha256:121a7a9ece6dc10b969f1f96eed64b4f07dfac0d0b8abc070f7cb83bbde86f63"
+  },
+  "grafana/pyroscope": {
+    "tag": "latest",
+    "digest": "sha256:73b23dbb99f154a0803c136abafdff825475f415dd4d4587538d014c672b5a55"
+  },
+  "hif1/heisenbridge": {
+    "tag": "latest",
+    "digest": "sha256:4648b0987d37ea9f398e93940bafb32b4f0fa0ff1a7611af993a35ea4debc03f"
+  },
+  "linuxserver/bazarr": {
+    "tag": "latest",
+    "digest": "sha256:aaaa087af75a73b7ac765dcc5d748874cfafdb93c23ec9f64fbb481dea291b23"
+  },
+  "linuxserver/jellyfin": {
+    "tag": "latest",
+    "digest": "sha256:c9bb091532bec4fa12b3ce3c08d163cab2b369f5f30f1f30ca49a46d97f5eec8"
+  },
+  "linuxserver/lidarr": {
+    "tag": "latest",
+    "digest": "sha256:4ac390131993f3104a43c4abed79b8abd3227e2536f7b468877e5f41d9f54da4"
+  },
+  "linuxserver/mylar": {
+    "tag": "latest",
+    "digest": "sha256:649e5faf743fea271bd796af67e163f98b3ad7934b0c84b7ed27bf34952ab55d"
+  },
+  "linuxserver/prowlarr": {
+    "tag": "latest",
+    "digest": "sha256:3950b5e48cf4ba9dab78fe14038dd7f062e66b7b4ab368b02c94a13f6a3dae9f"
+  },
+  "linuxserver/radarr": {
+    "tag": "latest",
+    "digest": "sha256:1e95b5c13fe015361a9ae1c4d99fc2336816790aaea60fa74b2ffebe076a69e0"
+  },
+  "linuxserver/sabnzbd": {
+    "tag": "latest",
+    "digest": "sha256:3df6abbd61d82710f91997b66178405862939a4009e8db212fa4f0a7a65f2047"
+  },
+  "linuxserver/sonarr": {
+    "tag": "latest",
+    "digest": "sha256:fbb15bb4fb14d1ffe017f6be0e3fed8f1b300e4687e329767da0b61f36ba1eed"
+  },
+  "livekit/livekit-server": {
+    "tag": "latest",
+    "digest": "sha256:50409575b8a4c4d4e5496793ba698701a230bc5d0f33e54dbe6877ba6e325a9f"
+  },
+  "nextcloud": {
+    "tag": "33.0.2",
+    "digest": "sha256:39b2ba219271a22851f8409a7b1295d5892aba1696d9193500311c02e60591a4"
+  },
+  "nzbdav/nzbdav": {
+    "tag": "latest",
+    "digest": "sha256:fc44a9d33adceddc4397eb660b4fcaf1917e23323fb80dea0645f56db129562f"
+  },
+  "postgres:15-alpine": {
+    "name": "postgres",
+    "tag": "15-alpine",
+    "digest": "sha256:cd17e2ac98240fce1541ad2a803b34009b4eea5aec8a832363cdc7eca62e722e"
+  },
+  "postgres:latest": {
+    "name": "postgres",
+    "tag": "latest",
+    "digest": "sha256:4aabea78cf39b90e834caf3af7d602a18565f6fe2508705c8d01aa63245c2e20"
+  },
+  "rclone/rclone": {
+    "tag": "latest",
+    "digest": "sha256:623378ad0ff3ebd5cebf77720843c0e02edfe46e2d5b5ac6bed54c6371780dfb"
+  },
+  "redis": {
+    "tag": "7-alpine",
+    "digest": "sha256:6ab0b6e7381779332f97b8ca76193e45b0756f38d4c0dcda72dbb3c32061ab99"
+  },
+  "registry.activitypub.software/transfem-org/sharkey": {
+    "tag": "latest",
+    "digest": "sha256:1e5a60b9e0ef77dc04fe2b9bd1fffb0f41bc81e6e8c996deb944170453229edc"
+  },
+  "victoriametrics/victoria-logs": {
+    "tag": "latest",
+    "digest": "sha256:e16dd33a95623cc21730cf5285344ed9f97419eeaff7d24b039c135beb85ee7e"
+  },
+  "victoriametrics/victoria-metrics": {
+    "tag": "latest",
+    "digest": "sha256:b8703ff12ed437effad4fc36492fec14824277f2890a5876b8a9e6cfe5139839"
+  }
+}

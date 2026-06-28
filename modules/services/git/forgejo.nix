@@ -1,8 +1,8 @@
-{...}: {
+{config, ...}: {
   flake.services.forgejo = {
     domains ? [],
     networks ? [],
-    image ? "codeberg.org/forgejo/forgejo:15",
+    image ? config.flake.lib.image "codeberg.org/forgejo/forgejo",
     volumes ? [],
     dataDir ? "/home/magicbox/data/forgejo",
   }: {

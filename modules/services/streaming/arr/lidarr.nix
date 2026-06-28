@@ -1,10 +1,10 @@
-{...}: {
+{config, ...}: {
   flake.services.lidarr = {
     domains ? [],
     networks ? [],
     container_name ? "lidarr",
     restart ? "unless-stopped",
-    image ? "linuxserver/lidarr:latest",
+    image ? config.flake.lib.image "linuxserver/lidarr",
     port ? 8686,
     user ? "1000:100",
     environment ? {},

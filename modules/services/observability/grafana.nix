@@ -1,10 +1,10 @@
-{...}: {
+{config, ...}: {
   flake.services.grafana = {
     domains ? [],
     networks ? [],
     container_name ? "grafana",
     restart ? "unless-stopped",
-    image ? "grafana/grafana:latest",
+    image ? config.flake.lib.image "grafana/grafana",
     port ? 3000,
     environment ? {},
     volumes ? [],

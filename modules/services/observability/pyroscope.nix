@@ -1,10 +1,10 @@
-{...}: {
+{config, ...}: {
   flake.services.pyroscope = {
     domains ? [],
     networks ? [],
     container_name ? "pyroscope",
     restart ? "unless-stopped",
-    image ? "grafana/pyroscope:latest",
+    image ? config.flake.lib.image "grafana/pyroscope",
     port ? 4040,
     environment ? {},
     volumes ? [],

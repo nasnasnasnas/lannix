@@ -1,0 +1,133 @@
+name: bump-images
+
+on:
+  schedule:
+    - cron: "0 5 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: bump-images
+  cancel-in-progress: false
+
+jobs:
+  bump-images:
+    runs-on: native
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Configure Nix GitHub auth
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          set -euo pipefail
+          : "${RUNNER_TEMP:=$HOME/.cache/runner-tmp}"
+          mkdir -p "$RUNNER_TEMP"
+          NIX_CONF="$RUNNER_TEMP/nix.conf"
+          (umask 077; : > "$NIX_CONF")
+          if [ -n "${GH_TOKEN:-}" ]; then
+            printf 'access-tokens = github.com=%s\n' "$GH_TOKEN" > "$NIX_CONF"
+          fi
+          chmod 600 "$NIX_CONF"
+          echo "NIX_USER_CONF_FILES=$NIX_CONF" >> "$GITHUB_ENV"
+
+      - name: Checkout repository
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SERVER: ${{ github.server_url }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory '*'
+          git clone "https://oauth2:${TOKEN}@${SERVER#https://}/${REPO}.git" .
+          git checkout main
+          git config user.name "forgejo-actions"
+          git config user.email "actions@git.szpunar.cloud"
+
+      - name: Bump image digests
+        id: bump
+        env:
+          REGISTRY_TOKEN_LEAH: ${{ secrets.REGISTRY_TOKEN_LEAH }}
+          REGISTRY_TOKEN_NEA: ${{ secrets.REGISTRY_TOKEN_NEA }}
+        run: |
+          set -euo pipefail
+          : "${GITHUB_OUTPUT:?GITHUB_OUTPUT not set by runner}"
+          OUTPUT=$(mktemp)
+          # Capture CHANGED lines; bumper exits non-zero on registry failures
+          # but we still want to open PRs for any images that did resolve.
+          nix run .#bump-images 2>&1 | tee "$OUTPUT" || true
+          CHANGED_COUNT=$(grep -c '^CHANGED' "$OUTPUT" || true)
+          echo "changed_count=$CHANGED_COUNT" >> "$GITHUB_OUTPUT"
+          # Save the CHANGED lines for the per-image PR step.
+          cp "$OUTPUT" "$RUNNER_TEMP/bump-output.txt"
+          rm -f "$OUTPUT"
+
+      - name: Open one PR per changed image
+        if: steps.bump.outputs.changed_count != '0'
+        env:
+          FORGEJO_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
+          SERVER: ${{ github.server_url }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          API_BASE="${SERVER#https://}"
+          API_URL="https://${API_BASE}/api/v1/repos/${REPO}"
+
+          while IFS=$'\t' read -r _ key oldDigest newDigest; do
+            # Slugify: replace [/:] with - for git branch names.
+            slug=$(printf '%s' "$key" | sed 's#[/:]#-#g')
+            branch="images/bump-${slug}"
+
+            # Check if branch already exists (dedupe: reuse branch, existing PR auto-updates).
+            BRANCH_EXISTS=$(curl -fsSL -o /dev/null -w '%{http_code}' \
+              -H "Authorization: token $FORGEJO_TOKEN" \
+              "$API_URL/branches/$branch" 2>/dev/null || true)
+
+            # Start from a clean main for each key.
+            git checkout main
+            git checkout -B "$branch"
+            # Reset working-tree images.json to main's committed version —
+            # the bumper wrote ALL digests into the dirty working tree, but
+            # each branch must contain only this key's change.
+            git checkout main -- modules/services/images.json
+
+            jq --arg key "$key" --arg digest "$newDigest" \
+              '.[$key].digest = $digest' \
+              modules/services/images.json > modules/services/images.json.tmp
+            mv modules/services/images.json.tmp modules/services/images.json
+
+            git add modules/services/images.json
+            git commit -m "chore(images): bump ${key}
+
+${oldDigest} -> ${newDigest}"
+
+            # Force-push under FORGEJO_PR_TOKEN (not the clone URL's GITHUB_TOKEN)
+            # so the push actor triggers pull_request events for nix-build-pr.yml.
+            git push -f "https://oauth2:${FORGEJO_TOKEN}@${API_BASE}/${REPO}.git" "HEAD:${branch}"
+
+            # Only open a PR if the branch didn't already exist
+            # (existing branch → existing PR auto-updates from the force-push).
+            if [ "$BRANCH_EXISTS" != "200" ]; then
+              PR_BODY=$(printf 'Bumps `%s` digest.\n\n`%s` → `%s`\n\n_Automated by `bump-images` workflow._' \
+                "$key" "$oldDigest" "$newDigest")
+              curl -fsSL -X POST \
+                -H "Authorization: token $FORGEJO_TOKEN" \
+                -H "Content-Type: application/json" \
+                -d "$(jq -n --arg head "$branch" --arg title "chore(images): bump ${key}" --arg body "$PR_BODY" \
+                  '{head: $head, base: "main", title: $title, body: $body}')" \
+                "$API_URL/pulls" > /dev/null
+              echo "Opened PR for $key (branch $branch)"
+            else
+              echo "Updated existing PR for $key (branch $branch)"
+            fi
+
+            # Return to main for the next key.
+            git checkout main
+          done < <(grep '^CHANGED' "$RUNNER_TEMP/bump-output.txt")
+
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -f "${RUNNER_TEMP:-$HOME/.cache/runner-tmp}/nix.conf" \
+                "${RUNNER_TEMP:-$HOME/.cache/runner-tmp}/bump-output.txt"

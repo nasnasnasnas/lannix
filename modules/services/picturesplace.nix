@@ -1,8 +1,8 @@
-{...}: {
+{config, ...}: {
   flake.services.picturesplace = {
     domains ? [],
     networks ? [],
-    image ? "git.szpunar.cloud/leah/pictures.place:3e77c5e7a23960c31278efba6f4e1090329d4bc2",
+    image ? config.flake.lib.image "git.szpunar.cloud/leah/pictures.place",
     volumes ? [],
     envSecrets ? {},
     environment ? {},

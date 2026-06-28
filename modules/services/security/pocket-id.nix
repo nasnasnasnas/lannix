@@ -1,8 +1,8 @@
-{...}: {
+{config, ...}: {
   flake.services.pocket-id = {
     domains ? [],
     networks ? [],
-    image ? "ghcr.io/pocket-id/pocket-id:v2",
+    image ? config.flake.lib.image "ghcr.io/pocket-id/pocket-id",
     volumes ? [],
     dataDir ? "/home/magicbox/data/pocket-id",
   }: {

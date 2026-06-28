@@ -1,4 +1,4 @@
-{...}: {
+{config, ...}: {
   # Sharkey (Misskey fork) web frontend/backend.
   # Its full config (incl. DB password + setupPassword) lives in default.yml, which is an
   # opnix file secret mounted read-only at /sharkey/.config/default.yml.
@@ -8,7 +8,7 @@
     dataDir,
     configSecret,
     container_name ? "sharkey",
-    image ? "registry.activitypub.software/transfem-org/sharkey:latest",
+    image ? config.flake.lib.image "registry.activitypub.software/transfem-org/sharkey",
     restart ? "always",
     port ? 3000,
     depends_on ? ["sharkey-db" "sharkey-redis"],

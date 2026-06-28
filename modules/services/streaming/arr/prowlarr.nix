@@ -1,10 +1,10 @@
-{...}: {
+{config, ...}: {
   flake.services.prowlarr = {
     domains ? [],
     networks ? [],
     container_name ? "prowlarr",
     restart ? "unless-stopped",
-    image ? "linuxserver/prowlarr:latest",
+    image ? config.flake.lib.image "linuxserver/prowlarr",
     port ? 9696,
     user ? "1000:100",
     environment ? {},

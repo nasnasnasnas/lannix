@@ -1,8 +1,8 @@
-{...}: {
+{config, ...}: {
   flake.services.realtime-md = {
     domains ? [],
     networks ? [],
-    image ? "ghcr.io/nealol/realtime-server:latest",
+    image ? config.flake.lib.image "ghcr.io/nealol/realtime-server",
     volumes ? [],
     dataDir ? "/home/magicbox/data/realtime",
     envSecrets ? {},

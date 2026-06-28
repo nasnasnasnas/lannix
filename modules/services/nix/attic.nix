@@ -1,8 +1,8 @@
-{...}: {
+{config, ...}: {
   flake.services.atticd = {
     domains ? [],
     networks ? [],
-    image ? "ghcr.io/zhaofengli/attic:latest",
+    image ? config.flake.lib.image "ghcr.io/zhaofengli/attic",
     dataDir ? "/home/magicbox/data/attic",
     tokenSecret ? "op://Secrets/Attic Server Token/password",
     allowedHost ? "attic.szpunar.cloud",
