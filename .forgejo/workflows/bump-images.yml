@@ -78,7 +78,7 @@ jobs:
           # the PR shows "broken due to missing fork information" in the UI.
           REPO_OWNER="${REPO%%/*}"
 
-          while IFS=$'\t' read -r _ key oldDigest newDigest; do
+          while IFS=$'\t' read -r _ key oldDigest newDigest bodyJson; do
             # Slugify: replace [/:] with - for git branch names.
             slug=$(printf '%s' "$key" | sed 's#[/:]#-#g')
             branch="images/bump-${slug}"
@@ -125,8 +125,7 @@ jobs:
                 echo "Branch not yet registered (HTTP $CODE), retrying in 3s…"
                 sleep 3
               done
-              PR_BODY=$(printf 'Bumps `%s` digest.\n\n`%s` → `%s`\n\n_Automated by `bump-images` workflow._' \
-                "$key" "$oldDigest" "$newDigest")
+              PR_BODY=$(printf '%s' "$bodyJson" | jq -r '.')
               curl -fsSL -X POST \
                 -H "Authorization: token $PR_TOKEN" \
                 -H "Content-Type: application/json" \
@@ -135,7 +134,20 @@ jobs:
                 "$API_URL/pulls" > /dev/null
               echo "Opened PR for $key (branch $branch)"
             else
-              echo "Updated existing PR for $key (branch $branch)"
+              # Update the existing PR's body with new metadata.
+              PR_BODY=$(printf '%s' "$bodyJson" | jq -r '.')
+              PR_NUM=$(curl -fsSL \
+                -H "Authorization: token $PR_TOKEN" \
+                "$API_URL/pulls?head=${REPO_OWNER}:${branch}&state=open" 2>/dev/null \
+                | jq -r '.[0].number // empty')
+              if [ -n "$PR_NUM" ]; then
+                curl -fsSL -X PATCH \
+                  -H "Authorization: token $PR_TOKEN" \
+                  -H "Content-Type: application/json" \
+                  -d "$(jq -n --arg body "$PR_BODY" '{body: $body}')" \
+                  "$API_URL/pulls/$PR_NUM" > /dev/null
+              fi
+              echo "Updated existing PR #$PR_NUM for $key (branch $branch)"
             fi
 
             # Return to main for the next key.

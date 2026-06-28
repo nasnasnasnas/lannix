@@ -43,8 +43,72 @@ const dockerConfigFor = (owner: string, token: string): string => {
   return dir;
 };
 
+// Fetch OCI labels for a specific digest via `crane config`.
+// Returns null if the image/config is unavailable (e.g. old digest GC'd).
+const getLabels = (name: string, digest: string, env?: Record<string, string>): Record<string, string> | null => {
+  const r = Bun.spawnSync(["crane", "config", `${name}@${digest}`], { env, timeout: 30000 });
+  if (r.exitCode !== 0) return null;
+  try {
+    const config = JSON.parse(r.stdout.toString());
+    return config?.config?.Labels ?? null;
+  } catch {
+    return null;
+  }
+};
+
+// Format a markdown PR body with image metadata (version, build date, source).
+const formatBody = (
+  key: string, oldDigest: string, newDigest: string,
+  oldLabels: Record<string, string> | null,
+  newLabels: Record<string, string> | null,
+): string => {
+  const lines: string[] = [`Bumps \`${key}\` digest.`, "", `\`${oldDigest}\` → \`${newDigest}\``, ""];
+
+  if (newLabels) {
+    const version = newLabels["org.opencontainers.image.version"];
+    const created = newLabels["org.opencontainers.image.created"];
+    const source = newLabels["org.opencontainers.image.source"];
+    const revision = newLabels["org.opencontainers.image.revision"];
+    const desc = newLabels["org.opencontainers.image.description"];
+    const url = newLabels["org.opencontainers.image.url"];
+
+    const info: string[] = [];
+    if (version) {
+      const oldVersion = oldLabels?.["org.opencontainers.image.version"];
+      info.push(`**Version:** ${oldVersion && oldVersion !== version ? `${oldVersion} → ` : ""}${version}`);
+    }
+    if (created) info.push(`**Built:** ${created}`);
+    if (source) info.push(`**Source:** ${source}`);
+    if (revision) {
+      const baseUrl = source?.replace(/\.git$/, "").replace(/\/tree\/.*/, "");
+      if (baseUrl) {
+        info.push(`**Revision:** [${revision.substring(0, 12)}](${baseUrl}/commit/${revision})`);
+      } else {
+        info.push(`**Revision:** ${revision.substring(0, 12)}`);
+      }
+    }
+    if (desc) info.push(`**Description:** ${desc}`);
+    if (url) info.push(`**URL:** ${url}`);
+
+    // Changelog: compare old → new revision if both are available.
+    // Works for GitHub, Gitea, Forgejo (all use /compare/<old>...<new>).
+    const oldRevision = oldLabels?.["org.opencontainers.image.revision"];
+    if (source && oldRevision && revision && oldRevision !== revision) {
+      const baseUrl = source.replace(/\.git$/, "").replace(/\/tree\/.*/, "");
+      lines.push(`### Changelog`, "", `[Compare ${oldRevision.substring(0, 12)}…${revision.substring(0, 12)}](${baseUrl}/compare/${oldRevision}...${revision})`, "");
+    }
+
+    if (info.length) {
+      lines.push("### Image metadata", "", ...info, "");
+    }
+  }
+
+  lines.push("_Automated by `bump-images` workflow._");
+  return lines.join("\n");
+};
+
 const failures: string[] = [];
-const changed: { key: string; oldDigest: string; newDigest: string }[] = [];
+const changed: { key: string; oldDigest: string; newDigest: string; body: string }[] = [];
 
 for (const [key, e] of Object.entries(pins) as [string, any][]) {
   const name = e.name ?? key;
@@ -63,23 +127,28 @@ for (const [key, e] of Object.entries(pins) as [string, any][]) {
   }
 
   const r = Bun.spawnSync(["crane", "digest", ref], { env });
-  if (configDir) rmSync(configDir, { recursive: true, force: true });
 
   if (r.exitCode !== 0) {
+    if (configDir) rmSync(configDir, { recursive: true, force: true });
     console.error(`digest failed for ${key}: ${r.stderr.toString().trim()}`);
     failures.push(key);
     continue;
   }
   const digest = r.stdout.toString().trim();
   if (digest && digest !== e.digest) {
-    changed.push({ key, oldDigest: e.digest ?? "(new)", newDigest: digest });
+    const oldLabels = e.digest ? getLabels(name, e.digest, env) : null;
+    const newLabels = getLabels(name, digest, env);
+    const body = formatBody(key, e.digest ?? "(new)", digest, oldLabels, newLabels);
+    changed.push({ key, oldDigest: e.digest ?? "(new)", newDigest: digest, body });
     e.digest = digest;
   }
+
+  if (configDir) rmSync(configDir, { recursive: true, force: true });
 }
 
 if (changed.length) {
   await Bun.write(pinsPath, JSON.stringify(pins, null, 2) + "\n");
-  for (const c of changed) console.log(`CHANGED\t${c.key}\t${c.oldDigest}\t${c.newDigest}`);
+  for (const c of changed) console.log(`CHANGED\t${c.key}\t${c.oldDigest}\t${c.newDigest}\t${JSON.stringify(c.body)}`);
 }
 
 if (failures.length) {
