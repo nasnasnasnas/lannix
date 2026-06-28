@@ -64,7 +64,7 @@
     "digest": "sha256:e9c634326a6a3791b35943d9a4f7e28928047b752e42036e85b1ccb315393120"
   },
   "git.szpunar.cloud/nea/pulse": {
-    "tag": "cefede2c2b872b750de43121a4a6e4326b86b8ca",
+    "tag": "latest",
     "digest": "sha256:dd9fe308cde62e5cc7cf33c484ed7c9297db145595a5046b2457fb173ce09d21"
   },
   "grafana/grafana": {
