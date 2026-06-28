@@ -88,6 +88,21 @@ jobs:
               -H "Authorization: token $PR_TOKEN" \
               "$API_URL/branches/$branch" 2>/dev/null || true)
 
+            # If the branch already exists, check whether it already contains
+            # the target digest. The bumper compares against main's images.json,
+            # so while a bump PR is open (unmerged) main still has the old digest
+            # and every run would re-detect the same "change". Skip commit/push
+            # entirely if the remote branch already has this digest.
+            if [ "$BRANCH_EXISTS" = "200" ]; then
+              git fetch origin "$branch" --quiet
+              BRANCH_DIGEST=$(git show "origin/$branch:modules/services/images.json" \
+                | jq -r --arg key "$key" '.[$key].digest // empty' 2>/dev/null || true)
+              if [ "$BRANCH_DIGEST" = "$newDigest" ]; then
+                echo "Skipping $key — branch $branch already at $newDigest"
+                continue
+              fi
+            fi
+
             # Start from a clean main for each key.
             git checkout main
             git checkout -B "$branch"
@@ -104,9 +119,9 @@ jobs:
             git add modules/services/images.json
             git commit -m "chore(images): bump ${key}" -m "${oldDigest} -> ${newDigest}"
 
-            # Force-push under FORGEJO_PR_TOKEN (not the clone URL's GITHUB_TOKEN)
+            # Force-push under PR_TOKEN (not the clone URL's GITHUB_TOKEN)
             # so the push actor triggers pull_request events for nix-build-pr.yml.
-            git push -f "https://oauth2:${FORGEJO_TOKEN}@${API_BASE}/${REPO}.git" "HEAD:${branch}"
+            git push -f "https://oauth2:${PR_TOKEN}@${API_BASE}/${REPO}.git" "HEAD:${branch}"
 
             # Only open a PR if the branch didn't already exist
             # (existing branch → existing PR auto-updates from the force-push).
@@ -135,19 +150,25 @@ jobs:
               echo "Opened PR for $key (branch $branch)"
             else
               # Update the existing PR's body with new metadata.
+              # Forgejo's /pulls endpoint has no `head` query param (that's
+              # GitHub-only) — it's ignored and ALL open PRs are returned, so
+              # `.[0].number` resolves to an arbitrary PR. Filter client-side
+              # by .head.ref to find the correct PR for this branch.
               PR_BODY=$(printf '%s' "$bodyJson" | jq -r '.')
               PR_NUM=$(curl -fsSL \
                 -H "Authorization: token $PR_TOKEN" \
-                "$API_URL/pulls?head=${REPO_OWNER}:${branch}&state=open" 2>/dev/null \
-                | jq -r '.[0].number // empty')
+                "$API_URL/pulls?state=open&limit=1000" 2>/dev/null \
+                | jq -r --arg b "$branch" 'map(select(.head.ref==$b))[0].number // empty')
               if [ -n "$PR_NUM" ]; then
                 curl -fsSL -X PATCH \
                   -H "Authorization: token $PR_TOKEN" \
                   -H "Content-Type: application/json" \
                   -d "$(jq -n --arg body "$PR_BODY" '{body: $body}')" \
                   "$API_URL/pulls/$PR_NUM" > /dev/null
+                echo "Updated existing PR #$PR_NUM for $key (branch $branch)"
+              else
+                echo "WARN: no open PR found for branch $branch — body not updated"
               fi
-              echo "Updated existing PR #$PR_NUM for $key (branch $branch)"
             fi
 
             # Return to main for the next key.
