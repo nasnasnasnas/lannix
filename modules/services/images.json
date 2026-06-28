@@ -117,7 +117,7 @@
   },
   "nextcloud": {
     "tag": "stable",
-    "digest": "sha256:39b2ba219271a22851f8409a7b1295d5892aba1696d9193500311c02e60591a4"
+    "digest": "sha256:bb3672cdb9dfccb2159da88826981a8d749f5d4cd9a2816c1f32d93e08f541eb"
   },
   "nzbdav/nzbdav": {
     "tag": "latest",
