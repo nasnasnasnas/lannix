@@ -66,13 +66,17 @@ jobs:
       - name: Open one PR per changed image
         if: steps.bump.outputs.changed_count != '0'
         env:
-          FORGEJO_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
+          PR_TOKEN: ${{ secrets.PR_TOKEN }}
           SERVER: ${{ github.server_url }}
           REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
           API_BASE="${SERVER#https://}"
           API_URL="https://${API_BASE}/api/v1/repos/${REPO}"
+          # Repo owner for the PR head field — Forgejo needs "owner:branch"
+          # (not just "branch") to properly link same-repo PRs. Without it,
+          # the PR shows "broken due to missing fork information" in the UI.
+          REPO_OWNER="${REPO%%/*}"
 
           while IFS=$'\t' read -r _ key oldDigest newDigest; do
             # Slugify: replace [/:] with - for git branch names.
@@ -81,7 +85,7 @@ jobs:
 
             # Check if branch already exists (dedupe: reuse branch, existing PR auto-updates).
             BRANCH_EXISTS=$(curl -fsSL -o /dev/null -w '%{http_code}' \
-              -H "Authorization: token $FORGEJO_TOKEN" \
+              -H "Authorization: token $PR_TOKEN" \
               "$API_URL/branches/$branch" 2>/dev/null || true)
 
             # Start from a clean main for each key.
@@ -98,7 +102,7 @@ jobs:
             mv modules/services/images.json.tmp modules/services/images.json
 
             git add modules/services/images.json
-            git commit -m "chore(images): bump ${key} \n\n${oldDigest} -> ${newDigest}"
+            git commit -m "chore(images): bump ${key}" -m "${oldDigest} -> ${newDigest}"
 
             # Force-push under FORGEJO_PR_TOKEN (not the clone URL's GITHUB_TOKEN)
             # so the push actor triggers pull_request events for nix-build-pr.yml.
@@ -107,12 +111,26 @@ jobs:
             # Only open a PR if the branch didn't already exist
             # (existing branch → existing PR auto-updates from the force-push).
             if [ "$BRANCH_EXISTS" != "200" ]; then
+              # Wait for Forgejo to register the pushed branch in its database.
+              # The branch-push hook runs asynchronously; if we create the PR
+              # before it completes, Forgejo can't resolve the head ref and the
+              # PR shows "broken due to missing fork information" until the
+              # hook finishes (self-fixes after a few minutes, but the PR is
+              # unusable in the interim).
+              for i in 1 2 3 4 5; do
+                CODE=$(curl -fsSL -o /dev/null -w '%{http_code}' \
+                  -H "Authorization: token $PR_TOKEN" \
+                  "$API_URL/branches/$branch" 2>/dev/null || true)
+                [ "$CODE" = "200" ] && break
+                echo "Branch not yet registered (HTTP $CODE), retrying in 3s…"
+                sleep 3
+              done
               PR_BODY=$(printf 'Bumps `%s` digest.\n\n`%s` → `%s`\n\n_Automated by `bump-images` workflow._' \
                 "$key" "$oldDigest" "$newDigest")
               curl -fsSL -X POST \
-                -H "Authorization: token $FORGEJO_TOKEN" \
+                -H "Authorization: token $PR_TOKEN" \
                 -H "Content-Type: application/json" \
-                -d "$(jq -n --arg head "$branch" --arg title "chore(images): bump ${key}" --arg body "$PR_BODY" \
+                -d "$(jq -n --arg head "${REPO_OWNER}:${branch}" --arg title "chore(images): bump ${key}" --arg body "$PR_BODY" \
                   '{head: $head, base: "main", title: $title, body: $body}')" \
                 "$API_URL/pulls" > /dev/null
               echo "Opened PR for $key (branch $branch)"
