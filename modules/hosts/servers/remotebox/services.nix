@@ -43,7 +43,7 @@
           TELEGRAF_SALT = "op://Secrets/Pulse Production Secrets/Telegraf Salt";
         };
         environment = let
-          url = "https://pulse.szp.lol"; 
+          url = "https://pulse.szp.lol";
         in {
           BETTER_AUTH_URL = url;
           PUBLIC_APP_URL = url;

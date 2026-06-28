@@ -43,29 +43,31 @@
     #   #inputs.arion.nixosModules.arion
     # ];
 
-    environment.systemPackages = with pkgs; [
-      git
-      wget
-      curl
-      btop
-      fastfetch
-      hyfetch
-      nixd
-      ripgrep
-      rustc
-      htop
-      ffmpeg-full
-      dua
-      postgresql
-      nodejs
-      telegraf
-      screen
-    ] ++ (with unstable; [
-      bun
-      opencode
-      git-credential-oauth
-      fresh-editor
-    ]);
+    environment.systemPackages = with pkgs;
+      [
+        git
+        wget
+        curl
+        btop
+        fastfetch
+        hyfetch
+        nixd
+        ripgrep
+        rustc
+        htop
+        ffmpeg-full
+        dua
+        postgresql
+        nodejs
+        telegraf
+        screen
+      ]
+      ++ (with unstable; [
+        bun
+        opencode
+        git-credential-oauth
+        fresh-editor
+      ]);
 
     nix.settings.trusted-users = ["magicbox"];
 

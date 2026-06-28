@@ -13,10 +13,10 @@
 
     systemd.services.forgejo-runner-token-env = {
       description = "Prepare forgejo runner token env file";
-      after = [ "opnix-secrets.service" ];
-      requires = [ "opnix-secrets.service" ];
-      before = [ "gitea-runner-forgejo.service" ];
-      wantedBy = [ "gitea-runner-forgejo.service" ];
+      after = ["opnix-secrets.service"];
+      requires = ["opnix-secrets.service"];
+      before = ["gitea-runner-forgejo.service"];
+      wantedBy = ["gitea-runner-forgejo.service"];
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
@@ -34,7 +34,7 @@
       image = "docker:dind";
       privileged = true;
       command = ["dockerd" "-H" "tcp://0.0.0.0:2375" "--tls=false"];
-      ports = [ "127.0.0.1:2376:2375" ];
+      ports = ["127.0.0.1:2376:2375"];
     };
 
     services.gitea-actions-runner = {

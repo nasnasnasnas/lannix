@@ -25,7 +25,7 @@ in {
     users.users."${username}" = {
       isNormalUser = true;
       shell = pkgs.fish;
-      extraGroups = [ "docker" ];
+      extraGroups = ["docker"];
     };
     programs.fish.enable = true;
 

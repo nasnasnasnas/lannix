@@ -1,5 +1,8 @@
 {...}: {
-  config.flake.lib.mkPostgresPuppy = {pkgs, databases}: let
+  config.flake.lib.mkPostgresPuppy = {
+    pkgs,
+    databases,
+  }: let
     databasesJson = builtins.toJSON (map (name: {inherit name;}) databases);
     psql = "${pkgs.postgresql}/bin/psql";
     pg_isready = "${pkgs.postgresql}/bin/pg_isready";

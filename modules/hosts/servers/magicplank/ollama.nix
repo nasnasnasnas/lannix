@@ -13,6 +13,6 @@
     services.ollama.environmentVariables = {
       OLLAMA_JINA = "true";
     };
-    networking.firewall.allowedTCPPorts = [ 11434 ];
+    networking.firewall.allowedTCPPorts = [11434];
   };
 }

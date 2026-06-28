@@ -23,20 +23,26 @@
         WEBUI_URL = builtins.head domains;
       }
       else {};
-  in {
-    inherit domains;
-    container_name = "open-webui";
-    inherit image;
-    restart = "unless-stopped";
-    caddy_port = 8080;
-    extra_hosts = ["host.docker.internal:host-gateway"];
-    environment =
-      {
-        OLLAMA_BASE_URL = ollamaUrl;
-      }
-      // oidcEnv;
-    inherit envSecrets;
-    inherit networks;
-    volumes = volumes ++ ["${dataDir}:/app/backend/data"];
-  } // (if env_file == [] then {} else {inherit env_file;});
+  in
+    {
+      inherit domains;
+      container_name = "open-webui";
+      inherit image;
+      restart = "unless-stopped";
+      caddy_port = 8080;
+      extra_hosts = ["host.docker.internal:host-gateway"];
+      environment =
+        {
+          OLLAMA_BASE_URL = ollamaUrl;
+        }
+        // oidcEnv;
+      inherit envSecrets;
+      inherit networks;
+      volumes = volumes ++ ["${dataDir}:/app/backend/data"];
+    }
+    // (
+      if env_file == []
+      then {}
+      else {inherit env_file;}
+    );
 }

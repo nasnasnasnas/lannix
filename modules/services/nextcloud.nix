@@ -4,7 +4,7 @@
     networks ? [],
     image ? "nextcloud:33.0.2",
     volumes ? [],
-    dataDir ? "/home/magicbox/data/nextcloud"
+    dataDir ? "/home/magicbox/data/nextcloud",
   }: {
     inherit domains;
     container_name = "nextcloud";
@@ -22,6 +22,6 @@
     restart = "unless-stopped";
     caddy_port = 80;
     inherit networks;
-    volumes = volumes ++ [ "${dataDir}:/var/www/html:z" ];
+    volumes = volumes ++ ["${dataDir}:/var/www/html:z"];
   };
 }

@@ -1,4 +1,8 @@
-{config, lib, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
   perSystem = {system, ...}: {
     checks =
       lib.mapAttrs'

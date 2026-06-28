@@ -365,7 +365,10 @@ in {
       caddy ? {},
       processed ? null,
     }: let
-      proc = if processed != null then processed else config.flake.lib.processDockerServices {inherit name services caddy;};
+      proc =
+        if processed != null
+        then processed
+        else config.flake.lib.processDockerServices {inherit name services caddy;};
 
       arionServices = builtins.listToAttrs (map (s: {
           name = s.container_name;

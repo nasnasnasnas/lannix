@@ -3,7 +3,7 @@
     networks ? [],
     image ? "nextcloud:33.0.2",
     volumes ? [],
-    dataDir ? "/home/magicbox/data/nextcloud"
+    dataDir ? "/home/magicbox/data/nextcloud",
   }: {
     container_name = "nextcloud-cron";
     entrypoint = "/cron.sh";
@@ -21,6 +21,6 @@
     inherit image;
     restart = "unless-stopped";
     inherit networks;
-    volumes = volumes ++ [ "${dataDir}:/var/www/html:z" ];
+    volumes = volumes ++ ["${dataDir}:/var/www/html:z"];
   };
 }

@@ -1,5 +1,9 @@
 {inputs, ...}: {
-  flake.modules.nixos.magicplank = {pkgs, lib, ...}: {
+  flake.modules.nixos.magicplank = {
+    pkgs,
+    lib,
+    ...
+  }: {
     # imports = with inputs.self.modules.nixos; [
     #   system-cli
     #   systemd-boot
@@ -25,7 +29,7 @@
       unstable.fresh-editor
       master.kdePackages.plasma-bigscreen
       master.kdePackages.plasma-nm
-			unstable.vacuum-tube
+      unstable.vacuum-tube
     ];
 
     # Use nixpkgs-master only for kdePackages (Plasma 6 etc.)
@@ -114,19 +118,20 @@
     programs.kdeconnect.enable = true;
 
     programs.steam.package = pkgs.steam.override {
-      extraPkgs = pkgs': with pkgs'; [
-        libXcursor
-        libXi
-        libXinerama
-        libXScrnSaver
-        libpng
-        libpulseaudio
-        libvorbis
-        stdenv.cc.cc.lib # Provides libstdc++.so.6
-        libkrb5
-        keyutils
-        # Add other libraries as needed
-      ];
+      extraPkgs = pkgs':
+        with pkgs'; [
+          libXcursor
+          libXi
+          libXinerama
+          libXScrnSaver
+          libpng
+          libpulseaudio
+          libvorbis
+          stdenv.cc.cc.lib # Provides libstdc++.so.6
+          libkrb5
+          keyutils
+          # Add other libraries as needed
+        ];
     };
     programs.steam.enable = true;
     programs.steam.remotePlay.openFirewall = true;
@@ -142,7 +147,7 @@
       description = "Open Steam in the background at boot";
       serviceConfig = {
         ExecStart = "${pkgs.steam}/bin/steam -nochatui -nofriendsui -silent %U";
-        wantedBy = [ "graphical-session.target" ];
+        wantedBy = ["graphical-session.target"];
         Restart = "on-failure";
         RestartSec = "5s";
       };

@@ -1,10 +1,11 @@
-{
-  inputs,
-  ...
-}: let
+{inputs, ...}: let
   username = "leah";
 in {
-  flake.modules.homeManager."${username}" = {pkgs, lib, ...}: {
+  flake.modules.homeManager."${username}" = {
+    pkgs,
+    lib,
+    ...
+  }: {
     programs.starship = {
       enable = true;
       settings = lib.mkMerge [

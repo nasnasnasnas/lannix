@@ -1,5 +1,9 @@
 {...}: {
-  perSystem = {pkgs, lib, ...}: {
+  perSystem = {
+    pkgs,
+    lib,
+    ...
+  }: {
     packages.radaromega = pkgs.appimageTools.wrapType2 {
       pname = "radaromega";
       version = "0.1";

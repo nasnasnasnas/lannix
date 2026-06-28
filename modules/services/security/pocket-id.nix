@@ -4,7 +4,7 @@
     networks ? [],
     image ? "ghcr.io/pocket-id/pocket-id:v2",
     volumes ? [],
-    dataDir ? "/home/magicbox/data/pocket-id"
+    dataDir ? "/home/magicbox/data/pocket-id",
   }: {
     inherit domains;
     container_name = "pocket-id";
@@ -18,6 +18,6 @@
       MAXMIND_LICENSE_KEY_FILE = "/app/data/maxmind-license";
       TRUST_PROXY = "true";
     };
-    volumes = volumes ++ [ "${dataDir}:/app/data" ];
+    volumes = volumes ++ ["${dataDir}:/app/data"];
   };
 }

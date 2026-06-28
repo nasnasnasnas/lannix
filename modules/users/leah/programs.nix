@@ -13,19 +13,20 @@ in {
     programs._1password-gui.polkitPolicyOwners = ["leah"];
     programs.steam.enable = true;
     programs.steam.package = pkgs.steam.override {
-      extraPkgs = pkgs': with pkgs'; [
-        libxcursor
-        libxi
-        libxinerama
-        libxscrnsaver
-        libpng
-        libpulseaudio
-        libvorbis
-        stdenv.cc.cc.lib # Provides libstdc++.so.6
-        libkrb5
-        keyutils
-        # Add other libraries as needed
-      ];
+      extraPkgs = pkgs':
+        with pkgs'; [
+          libxcursor
+          libxi
+          libxinerama
+          libxscrnsaver
+          libpng
+          libpulseaudio
+          libvorbis
+          stdenv.cc.cc.lib # Provides libstdc++.so.6
+          libkrb5
+          keyutils
+          # Add other libraries as needed
+        ];
     };
     programs.kdeconnect.enable = true;
     programs.localsend.enable = true;
@@ -88,7 +89,7 @@ in {
         accent = "lavender";
         font = "Noto Sans";
         fontSize = "13";
-          background = "${./nas-flag-wallpaper.png}";
+        background = "${./nas-flag-wallpaper.png}";
         loginBackground = true;
       })
 
@@ -172,9 +173,9 @@ in {
 
       inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.radaromega
       (unstable.vivaldi.override {
-          enableWidevine = true;
-          proprietaryCodecs = true;
-          inherit widevine-cdm vivaldi-ffmpeg-codecs;
+        enableWidevine = true;
+        proprietaryCodecs = true;
+        inherit widevine-cdm vivaldi-ffmpeg-codecs;
       })
 
       unstable.obsidian
@@ -186,7 +187,7 @@ in {
 
     # Enable the COSMIC desktop environment
     services.desktopManager.cosmic.enable = true;
-    environment.cosmic.excludePackages = [ pkgs.networkmanagerapplet ];
+    environment.cosmic.excludePackages = [pkgs.networkmanagerapplet];
     programs.niri.enable = true;
 
     programs.direnv.enable = true;

@@ -8,7 +8,7 @@
     port ? 8080,
     environment ? {},
     volumes ? [],
-    dataDir
+    dataDir,
   }: {
     inherit domains;
     inherit container_name;
@@ -16,9 +16,11 @@
     inherit restart;
     inherit networks;
     caddy_port = port;
-    environment = {
-      PORT = builtins.toString port;
-    } // environment;
-    volumes = volumes ++ [ "${dataDir}:/app/data" ];
+    environment =
+      {
+        PORT = builtins.toString port;
+      }
+      // environment;
+    volumes = volumes ++ ["${dataDir}:/app/data"];
   };
 }

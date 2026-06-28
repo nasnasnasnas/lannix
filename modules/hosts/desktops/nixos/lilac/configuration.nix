@@ -1,8 +1,5 @@
 {inputs, ...}: {
-  flake.modules.nixos.lilac = {
-    pkgs,
-    ...
-  }: {
+  flake.modules.nixos.lilac = {pkgs, ...}: {
     imports = with inputs.self.modules.nixos; [
       home-manager
       leah # (adds leah user + home manager config)
@@ -46,16 +43,16 @@
     boot.loader.efi.canTouchEfiVariables = true;
 
     boot.initrd.kernelModules = ["amdgpu"];
-    boot.kernelParams = [ "quiet" "splash" ];
-    
+    boot.kernelParams = ["quiet" "splash"];
+
     boot.plymouth = {
       enable = true;
       theme = "bgrt";
     };
-    
+
     boot.initrd.systemd.enable = true;
 
-    nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.default ];
+    nixpkgs.overlays = [inputs.nix-cachyos-kernel.overlays.default];
     boot.kernelPackages = pkgs.cachyosKernels."linuxPackages-cachyos-latest-lto-zen4";
 
     networking.networkmanager.enable = true;
@@ -149,7 +146,7 @@
       description = "Tailscale Systray";
       serviceConfig = {
         Type = "simple";
-        ExecStart = ''${pkgs.unstable.tailscale}/bin/tailscale systray''; 
+        ExecStart = ''${pkgs.unstable.tailscale}/bin/tailscale systray'';
       };
     };
 
@@ -208,7 +205,7 @@
     services.hardware.bolt.enable = true;
 
     networking.firewall.enable = false;
-    
+
     virtualisation.docker.enable = true;
 
     services.nextdns = {

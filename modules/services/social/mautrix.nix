@@ -15,17 +15,18 @@
     image ? "dock.mau.dev/mautrix/${bridge}:latest",
     restart ? "unless-stopped",
     depends_on ? ["synapse"],
-  }: {
-    container_name = "mautrix-${bridge}";
-    inherit image restart networks depends_on;
-    volumes = ["${dataDir}:/data"];
-  }
-  // (
-    if webPort == null
-    then {}
-    else {
-      inherit domains;
-      caddy_port = webPort;
+  }:
+    {
+      container_name = "mautrix-${bridge}";
+      inherit image restart networks depends_on;
+      volumes = ["${dataDir}:/data"];
     }
-  );
+    // (
+      if webPort == null
+      then {}
+      else {
+        inherit domains;
+        caddy_port = webPort;
+      }
+    );
 }

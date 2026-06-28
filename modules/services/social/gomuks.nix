@@ -8,7 +8,7 @@
     port ? 29325,
     environment ? {},
     volumes ? [],
-    dataDir
+    dataDir,
   }: {
     inherit domains;
     inherit container_name;
@@ -17,6 +17,6 @@
     inherit networks;
     caddy_port = port;
     inherit environment;
-    volumes = volumes ++ [ "${dataDir}:/data" ];
+    volumes = volumes ++ ["${dataDir}:/data"];
   };
 }
