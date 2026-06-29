@@ -1,0 +1,292 @@
+name: deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      hosts:
+        description: "Hosts to deploy (space- or comma-separated). Defaults to all three servers."
+        required: false
+        default: ""
+        type: string
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+env:
+  ATTIC_ENDPOINT: "https://attic.szpunar.cloud/"
+  ATTIC_CACHE: "lannix"
+
+jobs:
+  build:
+    runs-on: native
+    timeout-minutes: 360
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Configure Nix GitHub auth
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          set -euo pipefail
+          : "${RUNNER_TEMP:=$HOME/.cache/runner-tmp}"
+          mkdir -p "$RUNNER_TEMP"
+          NIX_CONF="$RUNNER_TEMP/nix.conf"
+          (umask 077; : > "$NIX_CONF")
+          if [ -n "${GH_TOKEN:-}" ]; then
+            printf 'access-tokens = github.com=%s\n' "$GH_TOKEN" > "$NIX_CONF"
+          fi
+          chmod 600 "$NIX_CONF"
+          echo "NIX_USER_CONF_FILES=$NIX_CONF" >> "$GITHUB_ENV"
+
+      - name: Checkout repository
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SERVER: ${{ github.server_url }}
+          REPO: ${{ github.repository }}
+          REF: ${{ github.ref_name }}
+          EVENT: ${{ github.event_name }}
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          GIT_CONF="$(mktemp)"
+          git config -f "$GIT_CONF" --add safe.directory '*'
+          export GIT_CONFIG_GLOBAL="$GIT_CONF"
+          echo "GIT_CONFIG_GLOBAL=$GIT_CONF" >> "$GITHUB_ENV"
+          git clone "https://oauth2:${TOKEN}@${SERVER#https://}/${REPO}.git" .
+          if [ "$EVENT" = "pull_request" ]; then
+            git checkout "$HEAD_REF"
+          else
+            git checkout "$REF"
+          fi
+          git config user.name "forgejo-actions"
+          git config user.email "actions@git.szpunar.cloud"
+
+      - name: Configure Attic
+        env:
+          ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
+        run: |
+          set -euo pipefail
+          attic login --set-default ci "$ATTIC_ENDPOINT" "$ATTIC_TOKEN"
+
+      - name: Build all hosts and push to cache
+        run: |
+          set -euo pipefail
+          nix-fast-build \
+            --eval-workers 1 \
+            -j 4 \
+            --skip-cached \
+            --no-nom \
+            --option fallback true \
+            --attic-cache "$ATTIC_CACHE" \
+            --flake ".#checks.x86_64-linux"
+
+      - name: Build and cache deploy-rs
+        run: |
+          set -euo pipefail
+          : "${RUNNER_TEMP:=$HOME/.cache/runner-tmp}"
+          nix build --no-link --out-link "$RUNNER_TEMP/deploy-rs-out" .#deploy-rs
+          attic push "$ATTIC_CACHE" "$(readlink -f "$RUNNER_TEMP/deploy-rs-out")"
+          rm -f "$RUNNER_TEMP/deploy-rs-out"
+
+      - name: Cleanup
+        if: always()
+        run: |
+          set -x
+          rm -f "${RUNNER_TEMP:-$HOME/.cache/runner-tmp}/nix.conf" \
+                "${GIT_CONFIG_GLOBAL:-}"
+
+  deploy-others:
+    runs-on: native
+    needs: build
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Configure Nix GitHub auth
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          set -euo pipefail
+          : "${RUNNER_TEMP:=$HOME/.cache/runner-tmp}"
+          mkdir -p "$RUNNER_TEMP"
+          NIX_CONF="$RUNNER_TEMP/nix.conf"
+          (umask 077; : > "$NIX_CONF")
+          if [ -n "${GH_TOKEN:-}" ]; then
+            printf 'access-tokens = github.com=%s\n' "$GH_TOKEN" > "$NIX_CONF"
+          fi
+          chmod 600 "$NIX_CONF"
+          echo "NIX_USER_CONF_FILES=$NIX_CONF" >> "$GITHUB_ENV"
+
+      - name: Checkout repository
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SERVER: ${{ github.server_url }}
+          REPO: ${{ github.repository }}
+          REF: ${{ github.ref_name }}
+          EVENT: ${{ github.event_name }}
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          GIT_CONF="$(mktemp)"
+          git config -f "$GIT_CONF" --add safe.directory '*'
+          export GIT_CONFIG_GLOBAL="$GIT_CONF"
+          echo "GIT_CONFIG_GLOBAL=$GIT_CONF" >> "$GITHUB_ENV"
+          git clone "https://oauth2:${TOKEN}@${SERVER#https://}/${REPO}.git" .
+          if [ "$EVENT" = "pull_request" ]; then
+            git checkout "$HEAD_REF"
+          else
+            git checkout "$REF"
+          fi
+          git config user.name "forgejo-actions"
+          git config user.email "actions@git.szpunar.cloud"
+
+      - name: Deploy
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          REQUESTED: ${{ inputs.hosts }}
+          JOB_TARGETS: others
+        run: |
+          set -euo pipefail
+          : "${RUNNER_TEMP:=$HOME/.cache/runner-tmp}"
+          mkdir -p "$RUNNER_TEMP"
+          KEY="$RUNNER_TEMP/deploy-key"
+          (umask 077; printf '%s\n' "$DEPLOY_SSH_KEY" > "$KEY")
+          eval "$(ssh-agent -s)"
+          ssh-add "$KEY"
+          rm -f "$KEY"
+          trap 'kill "$SSH_AGENT_PID" 2>/dev/null || true' EXIT
+
+          case "$JOB_TARGETS" in
+            others) DEFAULT="remotebox magicbox" ;;
+            magicplank) DEFAULT="magicplank" ;;
+            *) echo "Unknown JOB_TARGETS=$JOB_TARGETS" >&2; exit 1 ;;
+          esac
+
+          targets=()
+          if [ -z "$(printf '%s' "$REQUESTED" | tr -d ' ,')" ]; then
+            for d in $DEFAULT; do targets+=("$d"); done
+          else
+            IFS=', ' read -ra req <<< "$REQUESTED"
+            for d in $DEFAULT; do
+              for r in "${req[@]}"; do
+                [ "$d" = "$r" ] && targets+=("$d")
+              done
+            done
+          fi
+
+          if [ "${#targets[@]}" -eq 0 ]; then
+            echo "No targets for this job; skipping deploy."
+            exit 0
+          fi
+
+          args=()
+          for t in "${targets[@]}"; do args+=(".#$t"); done
+          echo "Deploying: ${targets[*]}"
+          nix run .#deploy-rs -- --targets "${args[@]}"
+
+      - name: Cleanup
+        if: always()
+        run: |
+          set -x
+          rm -f "${RUNNER_TEMP:-$HOME/.cache/runner-tmp}/nix.conf" \
+                "${GIT_CONFIG_GLOBAL:-}"
+
+  deploy-magicplank:
+    runs-on: remotebox-native
+    needs: [build, deploy-others]
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Configure Nix GitHub auth
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          set -euo pipefail
+          : "${RUNNER_TEMP:=$HOME/.cache/runner-tmp}"
+          mkdir -p "$RUNNER_TEMP"
+          NIX_CONF="$RUNNER_TEMP/nix.conf"
+          (umask 077; : > "$NIX_CONF")
+          if [ -n "${GH_TOKEN:-}" ]; then
+            printf 'access-tokens = github.com=%s\n' "$GH_TOKEN" > "$NIX_CONF"
+          fi
+          chmod 600 "$NIX_CONF"
+          echo "NIX_USER_CONF_FILES=$NIX_CONF" >> "$GITHUB_ENV"
+
+      - name: Checkout repository
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SERVER: ${{ github.server_url }}
+          REPO: ${{ github.repository }}
+          REF: ${{ github.ref_name }}
+          EVENT: ${{ github.event_name }}
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          set -euo pipefail
+          GIT_CONF="$(mktemp)"
+          git config -f "$GIT_CONF" --add safe.directory '*'
+          export GIT_CONFIG_GLOBAL="$GIT_CONF"
+          echo "GIT_CONFIG_GLOBAL=$GIT_CONF" >> "$GITHUB_ENV"
+          git clone "https://oauth2:${TOKEN}@${SERVER#https://}/${REPO}.git" .
+          if [ "$EVENT" = "pull_request" ]; then
+            git checkout "$HEAD_REF"
+          else
+            git checkout "$REF"
+          fi
+          git config user.name "forgejo-actions"
+          git config user.email "actions@git.szpunar.cloud"
+
+      - name: Deploy
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          REQUESTED: ${{ inputs.hosts }}
+          JOB_TARGETS: magicplank
+        run: |
+          set -euo pipefail
+          : "${RUNNER_TEMP:=$HOME/.cache/runner-tmp}"
+          mkdir -p "$RUNNER_TEMP"
+          KEY="$RUNNER_TEMP/deploy-key"
+          (umask 077; printf '%s\n' "$DEPLOY_SSH_KEY" > "$KEY")
+          eval "$(ssh-agent -s)"
+          ssh-add "$KEY"
+          rm -f "$KEY"
+          trap 'kill "$SSH_AGENT_PID" 2>/dev/null || true' EXIT
+
+          case "$JOB_TARGETS" in
+            others) DEFAULT="remotebox magicbox" ;;
+            magicplank) DEFAULT="magicplank" ;;
+            *) echo "Unknown JOB_TARGETS=$JOB_TARGETS" >&2; exit 1 ;;
+          esac
+
+          targets=()
+          if [ -z "$(printf '%s' "$REQUESTED" | tr -d ' ,')" ]; then
+            for d in $DEFAULT; do targets+=("$d"); done
+          else
+            IFS=', ' read -ra req <<< "$REQUESTED"
+            for d in $DEFAULT; do
+              for r in "${req[@]}"; do
+                [ "$d" = "$r" ] && targets+=("$d")
+              done
+            done
+          fi
+
+          if [ "${#targets[@]}" -eq 0 ]; then
+            echo "No targets for this job; skipping deploy."
+            exit 0
+          fi
+
+          args=()
+          for t in "${targets[@]}"; do args+=(".#$t"); done
+          echo "Deploying: ${targets[*]}"
+          nix run .#deploy-rs -- --targets "${args[@]}"
+
+      - name: Cleanup
+        if: always()
+        run: |
+          set -x
+          rm -f "${RUNNER_TEMP:-$HOME/.cache/runner-tmp}/nix.conf" \
+                "${GIT_CONFIG_GLOBAL:-}"
