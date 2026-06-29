@@ -152,6 +152,7 @@ jobs:
           set -euo pipefail
           : "${RUNNER_TEMP:=$HOME/.cache/runner-tmp}"
           mkdir -p "$RUNNER_TEMP"
+          export HOME="$RUNNER_TEMP"
           KEY="$RUNNER_TEMP/deploy-key"
           (umask 077; printf '%s\n' "$DEPLOY_SSH_KEY" > "$KEY")
           eval "$(ssh-agent -s)"
@@ -249,6 +250,7 @@ jobs:
           set -euo pipefail
           : "${RUNNER_TEMP:=$HOME/.cache/runner-tmp}"
           mkdir -p "$RUNNER_TEMP"
+          export HOME="$RUNNER_TEMP"
           KEY="$RUNNER_TEMP/deploy-key"
           (umask 077; printf '%s\n' "$DEPLOY_SSH_KEY" > "$KEY")
           eval "$(ssh-agent -s)"
