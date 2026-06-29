@@ -4,7 +4,7 @@
     networks ? [],
     container_name ? "nzbdav",
     restart ? "unless-stopped",
-    image ? config.flake.lib.image "nzbdav/nzbdav",
+    image ? config.flake.lib.image "ghcr.io/nealol/nzbdav",
     port ? 3000,
     user ? "1000:100",
     environment ? {},

@@ -36,7 +36,7 @@
         configDir = "/home/magicbox/config/nzbdav";
         volumes = [
           "/mnt/nzbdav:/mnt/nzbdav:rshared"
-          "/home/magicbox/media:/data"
+          "/mnt/extra/media:/data"
         ];
       })
 
@@ -56,7 +56,7 @@
         volumes = [
           "/home/magicbox/config/jellyfin:/config"
           "/home/magicbox/data/jellyfin:/cache"
-          "/home/magicbox/media:/data"
+          "/mnt/extra/media:/data"
           "/home/magicbox/manual-media:/data-ro"
           "/mnt/zurg:/media:rshared"
           "/mnt/nzbdav:/mnt/nzbdav:rshared"
@@ -74,7 +74,7 @@
         networks = ["magicbox-network"];
         configDir = "/home/magicbox/config/sonarr";
         volumes = [
-          "/home/magicbox/media:/data"
+          "/mnt/extra/media:/data"
           "/mnt/nzbdav:/mnt/nzbdav:rshared"
         ];
       })
@@ -84,7 +84,7 @@
         networks = ["magicbox-network"];
         configDir = "/home/magicbox/config/radarr";
         volumes = [
-          "/home/magicbox/media:/data"
+          "/mnt/extra/media:/data"
           "/mnt/nzbdav:/mnt/nzbdav:rshared"
         ];
       })
@@ -94,7 +94,7 @@
         networks = ["magicbox-network"];
         configDir = "/home/magicbox/config/lidarr";
         volumes = [
-          "/home/magicbox/media:/data"
+          "/mnt/extra/media:/data"
           "/mnt/nzbdav:/mnt/nzbdav:rshared"
         ];
       })
@@ -104,7 +104,7 @@
         networks = ["magicbox-network"];
         configDir = "/home/magicbox/config/mylar";
         volumes = [
-          "/home/magicbox/media:/data"
+          "/mnt/extra/media:/data"
           "/mnt/nzbdav:/mnt/nzbdav:rshared"
         ];
       })
@@ -115,7 +115,7 @@
         configDir = "/home/magicbox/config/bazarr";
         ports = ["6767:6767"];
         volumes = [
-          "/home/magicbox/media:/data"
+          "/mnt/extra/media:/data"
           "/mnt/nzbdav:/mnt/nzbdav:rshared"
         ];
       })
@@ -125,7 +125,7 @@
         networks = ["magicbox-network"];
         configDir = "/home/magicbox/config/sabnzbd";
         volumes = [
-          "/home/magicbox/media/usenet:/data/usenet:rw"
+          "/mnt/extra/media/usenet:/data/usenet:rw"
         ];
       })
 
