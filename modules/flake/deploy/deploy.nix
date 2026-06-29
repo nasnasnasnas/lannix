@@ -5,17 +5,17 @@
     sshOpts = ["-o" "StrictHostKeyChecking=accept-new"];
     nodes = {
       magicbox = {
-        hostname = "magicbox";
+        hostname = "100.83.201.118";
         profiles.system.path =
           inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.magicbox;
       };
       remotebox = {
-        hostname = "remotebox";
+        hostname = "100.117.147.116";
         profiles.system.path =
           inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.remotebox;
       };
       magicplank = {
-        hostname = "magicplank";
+        hostname = "100.100.165.5";
         profiles.system.path =
           inputs.deploy-rs.lib.x86_64-linux.activate.nixos inputs.self.nixosConfigurations.magicplank;
       };
