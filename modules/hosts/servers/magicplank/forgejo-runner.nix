@@ -67,6 +67,7 @@
           nix-fast-build
           jq
           openssh
+          nixos-rebuild
         ];
         settings = {
           runner = {
