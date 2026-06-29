@@ -66,6 +66,7 @@
           attic-client
           nix-fast-build
           jq
+          openssh
         ];
         settings = {
           runner = {
