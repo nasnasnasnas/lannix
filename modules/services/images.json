@@ -45,7 +45,7 @@
   },
   "ghcr.io/nealol/realtime-server": {
     "tag": "latest",
-    "digest": "sha256:d516519bf42dd21bbd6686b320ee41776c4a9419fd046731707195f9c2b8074c"
+    "digest": "sha256:92dc5d74f32ec1a27913c2b902c0057258d56ae08325df554b8e4f82a4b8c81c"
   },
   "ghcr.io/open-webui/open-webui": {
     "tag": "main",
