@@ -302,6 +302,7 @@ jobs:
             echo "=== Deploying $t ($ip) ==="
             nixos-rebuild switch \
               --flake ".#$t" \
+              --build-host "root@$ip" \
               --target-host "root@$ip" \
               --use-substitutes
           done
