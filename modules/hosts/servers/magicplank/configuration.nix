@@ -98,6 +98,7 @@
 
     # for attic
     networking.hosts."127.0.0.1" = ["attic.szpunar.cloud"];
+    services.resolved.enable = true;
     services.tailscale = {
       enable = true;
       useRoutingFeatures = "server";
