@@ -26,8 +26,7 @@
         /home/magicbox/config/{bazarr,jellyfin,lidarr,mylar,nzbdav,postgres,prowlarr,radarr,rclone-nzbdav,sabnzbd,sonarr,zurg-testing} \
         /home/magicbox/data/{caddy,grafana,jellyfin,postgres,pyroscope,termix,victorialogs,victoriametrics,zurg-testing} \
         /home/magicbox/media/usenet \
-        /home/magicbox/manual-media \
-        /mnt/{extra,nzbdav,windows,zurg}
+        /home/magicbox/manual-media
 
       # Set ownership for local directories
       chown -R 1000:100 /home/magicbox/config || true
@@ -39,14 +38,19 @@
       chmod -R 755 /home/magicbox/media || true
       chmod -R 755 /home/magicbox/manual-media || true
 
-      chown -R 1000:100 /mnt/zurg || true
-      chmod -R 755 /mnt/zurg || true
-      chown -R 1000:100 /mnt/nzbdav || true
-      chmod -R 755 /mnt/nzbdav || true
-      chown -R 1000:100 /mnt/extra || true
-      chmod -R 755 /mnt/extra || true
-      chown -R 1000:100 /mnt/windows || true
-      chmod -R 755 /mnt/windows || true
+      # Set ownership on /mnt mountpoints only while UNMOUNTED. A live mount is
+      # owned by its own filesystem; recursing into one (especially a wedged
+      # rclone FUSE backend) makes chown/chmod block forever in the kernel and
+      # stalls every activation. Reading /proc/mounts never touches the mount.
+      mounts="$(cat /proc/mounts)"
+      for mp in /mnt/zurg /mnt/nzbdav /mnt/extra /mnt/windows; do
+        case " $mounts " in
+          *" $mp "*) continue ;;
+        esac
+        mkdir -p "$mp" || true
+        chown 1000:100 "$mp" || true
+        chmod 755 "$mp" || true
+      done
     '';
 
     users.users.magicbox = {
