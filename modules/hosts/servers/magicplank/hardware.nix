@@ -12,6 +12,9 @@
     ];
 
     boot.loader.systemd-boot.enable = true;
+    # /boot is a 510M ESP and cachyOS initrds are ~55-60M each, so it holds only
+    # a handful of generations. Cap retained boot entries to keep it from filling.
+    boot.loader.systemd-boot.configurationLimit = 5;
     boot.loader.efi.canTouchEfiVariables = true;
 
     boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "thunderbolt" "usbhid" "usb_storage" "sd_mod"];
