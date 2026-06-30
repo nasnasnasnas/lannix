@@ -98,6 +98,11 @@
 
     # for attic
     networking.hosts."127.0.0.1" = ["attic.szpunar.cloud"];
+
+    # Caddy reverse-proxies this to off-host Home Assistant at 10.1.0.12:8123
+    # (site block in services.nix caddy.globalConfig). Registered here so DNS
+    # generation emits the home.szpunar.cloud A record -> this host's publicIPs.
+    host.caddyDomains = ["https://home.szpunar.cloud"];
     services.resolved.enable = true;
     services.tailscale = {
       enable = true;

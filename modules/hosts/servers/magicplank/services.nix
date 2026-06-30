@@ -22,6 +22,18 @@
                 }
             }
         }
+
+        # Home Assistant runs off-host at 10.1.0.12:8123; reverse-proxy the public
+        # domain to it. (Domain registered in configuration.nix host.caddyDomains so
+        # DNS generation creates the home.szpunar.cloud A record.)
+        home.szpunar.cloud {
+            reverse_proxy 10.1.0.12:8123
+
+            tls {
+                dns cloudflare {env.CF_API_TOKEN}
+                resolvers 1.1.1.1
+            }
+        }
       '';
       envSecrets = {
         CF_API_TOKEN = "op://Secrets/Caddy Cloudflare Token for HTTPS/password";
