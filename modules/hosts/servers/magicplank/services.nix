@@ -60,6 +60,7 @@
           providerName = "Pocket ID";
         };
       })
+      (unsloth {domains = ["https://unsloth.szpunar.cloud"];})
 
       # Synapse / Matrix
 

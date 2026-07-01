@@ -156,5 +156,9 @@
   "ghcr.io/nealol/nzbdav": {
     "tag": "0.6.5",
     "digest": "sha256:b3d37069d3c9b0158d00e6b2e016260cbff38f8317ab5de30936190284732022"
+  },
+  "unsloth/unsloth": {
+    "tag": "latest",
+    "digest": "sha256:f21629b9ae4ed11231768edfaed0f40d41d85d6ea9a71e8096a3d96ea0311772"
   }
 }
