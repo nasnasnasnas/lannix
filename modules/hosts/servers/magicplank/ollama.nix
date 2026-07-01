@@ -1,7 +1,7 @@
 {inputs, ...}: {
   flake.modules.nixos.magicplank = {pkgs, ...}: {
     services.ollama.enable = true;
-    services.ollama.package = pkgs.unstable.ollama-rocm;
+    services.ollama.package = pkgs.unstable.ollama-vulkan;
     services.ollama.host = "0.0.0.0";
     services.ollama.loadModels = [
       "gemma4:e2b-it-qat"
