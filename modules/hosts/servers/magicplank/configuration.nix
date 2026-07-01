@@ -123,12 +123,6 @@
     };
     programs.kdeconnect.enable = true;
 
-    services.rustdesk-server = {
-      enable = true;
-      openFirewall = true;
-      # signal.relayHosts = ["example.com"];
-    };
-
     programs.steam.package = pkgs.steam.override {
       extraPkgs = pkgs':
         with pkgs'; [
