@@ -17,7 +17,7 @@ inputs:
   repo:
     description: "owner/repo of the nix config holding bump-images.yml"
     required: false
-    default: "leah/lannix"
+    default: "LAN/lannix"
   ref:
     description: "branch bump-images.yml runs on"
     required: false
