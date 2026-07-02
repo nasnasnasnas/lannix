@@ -1,0 +1,46 @@
+name: trigger-image-bump
+description: >-
+  Dispatch the lannix bump-images workflow for a single images.json key so a
+  freshly pushed image is bumped immediately instead of waiting for the hourly
+  scan. Drop this step at the end of an image build/push pipeline.
+inputs:
+  image:
+    description: "images.json key to bump, e.g. git.szpunar.cloud/leah/pictures.place"
+    required: true
+  token:
+    description: "PAT with write access to the lannix repo (workflow dispatch)"
+    required: true
+  server:
+    description: "Forgejo server URL hosting lannix"
+    required: false
+    default: "https://git.szpunar.cloud"
+  repo:
+    description: "owner/repo of the nix config holding bump-images.yml"
+    required: false
+    default: "leah/lannix"
+  ref:
+    description: "branch bump-images.yml runs on"
+    required: false
+    default: "main"
+runs:
+  using: composite
+  steps:
+    - name: Dispatch bump-images
+      shell: bash
+      env:
+        IMAGE: ${{ inputs.image }}
+        TOKEN: ${{ inputs.token }}
+        SERVER: ${{ inputs.server }}
+        REPO: ${{ inputs.repo }}
+        REF: ${{ inputs.ref }}
+      run: |
+        set -euo pipefail
+        [ -n "$IMAGE" ] || { echo "image input is required" >&2; exit 1; }
+        API="${SERVER%/}/api/v1/repos/${REPO}/actions/workflows/bump-images.yml/dispatches"
+        # image keys are registry paths (alnum / . - : /) — no JSON escaping needed.
+        curl -fsSL -X POST \
+          -H "Authorization: token ${TOKEN}" \
+          -H "Content-Type: application/json" \
+          -d "{\"ref\":\"${REF}\",\"inputs\":{\"image\":\"${IMAGE}\"}}" \
+          "$API"
+        echo "Dispatched bump-images for ${IMAGE}"

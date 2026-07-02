@@ -110,7 +110,17 @@ const formatBody = (
 const failures: string[] = [];
 const changed: { key: string; oldDigest: string; newDigest: string; body: string }[] = [];
 
+// Optional single-image filter. When BUMP_ONLY is set (e.g. via a
+// workflow_dispatch webhook for a freshly pushed image), only that key is
+// resolved; every other entry is skipped. Empty/unset = scan all (cron path).
+const only = process.env.BUMP_ONLY?.trim() || null;
+if (only && !(only in pins)) {
+  console.error(`BUMP_ONLY=${only} not found in ${pinsPath}`);
+  process.exit(1);
+}
+
 for (const [key, e] of Object.entries(pins) as [string, any][]) {
+  if (only && key !== only) continue;
   const name = e.name ?? key;
   const ref = `${name}:${e.tag}`;
 

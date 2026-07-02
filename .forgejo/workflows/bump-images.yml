@@ -4,6 +4,12 @@ on:
   schedule:
     - cron: "0 * * * *"
   workflow_dispatch:
+    inputs:
+      image:
+        description: "Only bump this images.json key (empty = scan all)."
+        required: false
+        default: ""
+        type: string
 
 concurrency:
   group: bump-images
@@ -53,6 +59,7 @@ jobs:
         env:
           REGISTRY_TOKEN_LEAH: ${{ secrets.REGISTRY_TOKEN_LEAH }}
           REGISTRY_TOKEN_NEA: ${{ secrets.REGISTRY_TOKEN_LEAH }} # TODO: get a nea token
+          BUMP_ONLY: ${{ inputs.image }}
         run: |
           set -euo pipefail
           : "${GITHUB_OUTPUT:?GITHUB_OUTPUT not set by runner}"
