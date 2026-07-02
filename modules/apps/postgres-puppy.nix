@@ -1,4 +1,10 @@
 {...}: {
+  # Server-side, READ-ONLY database provisioner.
+  #
+  # Passwords are generated off-box and stored in 1Password by the local
+  # `nix run .#postgres-puppy-seed` command. This host only needs a read-only
+  # 1Password service token: it reads each database's password from 1Password
+  # and applies it to Postgres (CREATE USER/DB if missing + ALTER USER PASSWORD).
   config.flake.lib.mkPostgresPuppy = {
     pkgs,
     databases,
@@ -10,7 +16,7 @@
   in
     pkgs.writeShellApplication {
       name = "postgres-puppy";
-      runtimeInputs = [pkgs._1password-cli pkgs.jq pkgs.openssl];
+      runtimeInputs = [pkgs._1password-cli pkgs.jq];
       text = ''
         VAULT_ID="q63632lctm4by3clskcul4gmf4"
         TAG="MagicBox Postgres"
@@ -27,7 +33,7 @@
 
         INPUT=${builtins.toJSON databasesJson}
 
-        # Fetch all existing postgres items from 1Password
+        # Fetch all existing postgres items from 1Password (read-only)
         ITEM_IDS=$(op item list --vault "$VAULT_ID" --categories Database --tags "$TAG" --format json | jq -r '.[].id')
 
         # Build lookup: fetch full details for each existing item
@@ -37,41 +43,30 @@
           ALL_ITEMS=$(echo "$ALL_ITEMS" | jq --argjson item "$ITEM" '. + [$item]')
         done
 
-        # Process each requested database
+        # Apply each requested database
         for db_name in $(echo "$INPUT" | jq -r '.[].name'); do
           # Find existing item by database field value
           ITEM=$(echo "$ALL_ITEMS" | jq -r --arg name "$db_name" \
             '[.[] | select(.fields[]? | select(.id == "database" and .value == $name))] | first // empty')
 
           if [ "$ITEM" = "" ] || [ "$ITEM" = "null" ]; then
-            # Create new 1Password item with generated password
-            echo "Creating 1Password item for $db_name"
-            GEN_PASS=$(openssl rand -base64 20)
-            ITEM=$(op item create \
-              --category Database \
-              --vault "$VAULT_ID" \
-              --tags "$TAG" \
-              --title "''${db_name} Postgres" \
-              "type=postgresql" \
-              "password=$GEN_PASS" \
-              "database=$db_name" \
-              "username=$db_name" \
-              --format json)
+            echo "ERROR: no 1Password item found for database '$db_name'." >&2
+            echo "This host provisions read-only. Run 'nix run .#postgres-puppy-seed' from a machine" >&2
+            echo "with a write-capable 1Password token to generate and store it, then redeploy." >&2
+            exit 1
           fi
 
           PASSWORD=$(echo "$ITEM" | jq -r '.fields[] | select(.id == "password") | .value // empty')
-
           if [ -z "$PASSWORD" ]; then
-            # Existing item has no password — generate one
-            echo "Adding password to existing item for $db_name"
-            ITEM_ID=$(echo "$ITEM" | jq -r '.id')
-            op item edit "$ITEM_ID" --vault "$VAULT_ID" \
-              --generate-password='20,letters,digits,symbols' > /dev/null
-            PASSWORD=$(op item get "$ITEM_ID" --vault "$VAULT_ID" --format json \
-              | jq -r '.fields[] | select(.id == "password") | .value')
+            echo "ERROR: 1Password item for database '$db_name' has no password." >&2
+            echo "Run 'nix run .#postgres-puppy-seed' to (re)generate it, then redeploy." >&2
+            exit 1
           fi
 
-          echo "Creating database $db_name if it doesn't exist"
+          echo "Applying database $db_name"
+
+          # Double single quotes so arbitrary generated passwords are safe as a SQL literal.
+          PW_SQL=''${PASSWORD//\'/\'\'}
 
           SQL=$(cat <<EOSQL
         DO \$\$
@@ -81,7 +76,7 @@
           END IF;
         END
         \$\$;
-        ALTER USER $db_name WITH PASSWORD '$PASSWORD';
+        ALTER USER $db_name WITH PASSWORD '$PW_SQL';
         SELECT 'CREATE DATABASE $db_name OWNER $db_name'
         WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = '$db_name')\gexec
         EOSQL
@@ -90,7 +85,7 @@
           echo "$SQL" | ${runuser} -u postgres -- ${psql}
         done
 
-        echo "All Postgres databases updated"
+        echo "All Postgres databases applied"
       '';
     };
 }
