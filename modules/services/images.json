@@ -160,5 +160,9 @@
   "unsloth/unsloth": {
     "tag": "latest",
     "digest": "sha256:f21629b9ae4ed11231768edfaed0f40d41d85d6ea9a71e8096a3d96ea0311772"
+  },
+  "ghcr.io/umami-software/umami": {
+    "tag": "latest",
+    "digest": "sha256:8edfe4beaef13f9d1300619fa264ef250a3688df9cc54d24ca830ca31cb475ec"
   }
 }

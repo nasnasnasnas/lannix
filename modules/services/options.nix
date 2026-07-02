@@ -29,7 +29,7 @@ in {
 
     # Convert a simplified service definition to Arion service format by removing meta keys and moving service.out to out.service.
     mkArionService = serviceDef: let
-      metaKeys = ["caddy_port" "domains" "out" "postgres" "postgresEnv" "envSecrets" "fileSecrets" "caddyRaw"];
+      metaKeys = ["caddy_port" "domains" "out" "postgres" "postgresEnv" "envSecrets" "fileSecrets" "caddyRaw" "pgUrlSpec"];
       serviceAttrs = removeAttrs serviceDef metaKeys;
       outAttrs = serviceDef.out or {};
     in {
@@ -81,11 +81,12 @@ in {
       envSecretNames = builtins.attrNames envSecrets;
       hasEnvSecrets = envSecrets != {};
       hasFileSecrets = fileSecrets != {};
+      hasRuntimeEnv = hasEnvSecrets || (s ? pgUrlSpec);
       environmentWithoutSecrets = builtins.removeAttrs (s.environment or {}) envSecretNames;
       fileSecretVolumes = map (containerPath: "${config.flake.lib.fileSecretPath serviceName containerPath}:${containerPath}:ro") (builtins.attrNames fileSecrets);
     in
       s
-      // lib.optionalAttrs hasEnvSecrets {
+      // lib.optionalAttrs hasRuntimeEnv {
         environment = environmentWithoutSecrets;
         env_file = (s.env_file or []) ++ [(config.flake.lib.envFilePath serviceName)];
       }
@@ -120,11 +121,20 @@ in {
       builtins.listToAttrs (envSecretAttrs ++ fileSecretAttrs);
 
     mkSecretEnvScript = pkgs: projectName: services: let
-      servicesWithEnvSecrets = builtins.filter (s: (s.envSecrets or {}) != {}) services;
+      needsRuntimeEnv = s: (s.envSecrets or {}) != {} || (s ? pgUrlSpec);
+      servicesWithRuntimeEnv = builtins.filter needsRuntimeEnv services;
       mkServiceBlock = s: let
         envDir = "${config.flake.lib.secretBaseDir s.container_name}/env";
         envFile = config.flake.lib.envFilePath s.container_name;
-        lines = lib.mapAttrsToList (envName: _ref: "printf '%s=%s\\n' ${lib.escapeShellArg envName} \"$(tr -d '\\n' < ${lib.escapeShellArg (config.flake.lib.envSecretPath s.container_name envName)})\"") (s.envSecrets or {});
+        envSecretLines = lib.mapAttrsToList (envName: _ref: "printf '%s=%s\\n' ${lib.escapeShellArg envName} \"$(tr -d '\\n' < ${lib.escapeShellArg (config.flake.lib.envSecretPath s.container_name envName)})\"") (s.envSecrets or {});
+        # A single connection string (postgresEnv.url) is assembled here at runtime because
+        # the password only exists as a secret file; it is URL-encoded via jq @uri since
+        # postgres-puppy generates base64/symbol passwords with URL-reserved characters.
+        urlLines = lib.optional (s ? pgUrlSpec) (
+          let u = s.pgUrlSpec;
+          in "pgpass=$(tr -d '\\n' < ${lib.escapeShellArg u.passwordHostPath}); pgenc=$(${pkgs.jq}/bin/jq -rn --arg p \"$pgpass\" '$p|@uri'); printf '%s=%s://%s:%s@%s:%s/%s\\n' ${lib.escapeShellArg u.var} ${lib.escapeShellArg u.scheme} ${lib.escapeShellArg u.user} \"$pgenc\" ${lib.escapeShellArg u.host} ${lib.escapeShellArg u.port} ${lib.escapeShellArg u.database}"
+        );
+        lines = envSecretLines ++ urlLines;
       in ''
         install -d -m 0700 ${lib.escapeShellArg envDir}
         umask 0077
@@ -133,7 +143,7 @@ in {
         } > ${lib.escapeShellArg envFile}
       '';
     in
-      pkgs.writeShellScript "${projectName}-secret-env" (lib.concatStringsSep "\n" (map mkServiceBlock servicesWithEnvSecrets));
+      pkgs.writeShellScript "${projectName}-secret-env" (lib.concatStringsSep "\n" (map mkServiceBlock servicesWithRuntimeEnv));
 
     processDockerServices = {
       name,
@@ -192,6 +202,18 @@ in {
           userVar = pgEnv.user or "DATABASE_USER";
           databaseName = pgEnv.overrideDatabase or s.container_name;
           passwordPath = "/run/secrets/db_password";
+          urlAttrs =
+            lib.optionalAttrs ((pgEnv.url or null) != null) {
+              pgUrlSpec = {
+                var = pgEnv.url;
+                scheme = pgEnv.urlScheme or "postgres";
+                user = databaseName;
+                host = "host.docker.internal";
+                port = "5432";
+                database = databaseName;
+                passwordHostPath = config.flake.lib.fileSecretPath s.container_name passwordPath;
+              };
+            };
         in
           s
           // {
@@ -211,6 +233,7 @@ in {
                 ${userVar} = databaseName;
               };
           }
+          // urlAttrs
         else s;
 
       processedUserServices = map config.flake.lib.processServiceSecrets (map addPostgresEnvAndSecrets (map addCaddyNetwork services));
@@ -280,9 +303,12 @@ in {
     #   - DATABASE_HOST, DATABASE_PORT, DATABASE_NAME, DATABASE_USER env vars
     #   - extra_hosts entry for host.docker.internal
     #   - Generic fileSecret mounted at /run/secrets/db_password
+    #   - Optionally a single connection-string env var via postgresEnv.url
+    #     (e.g. DATABASE_URL); the password is URL-encoded and injected at runtime
     #
     # Customize env var names per service with postgresEnv:
     #   (myapp { postgres = true; postgresEnv.passwordFile = "MY_DB_PASS_FILE"; })
+    #   (myapp { postgres = true; postgresEnv.url = "DATABASE_URL"; postgresEnv.urlScheme = "postgresql"; })
     #
     # Example:
     #   flake.modules.nixos.myhost = inputs.self.lib.mkHostServices {
@@ -314,7 +340,7 @@ in {
       };
       allSecretAttrs = flakeConfig.flake.lib.mkServiceSecretRegistrations processed.allServicesList;
       hasSecrets = allSecretAttrs != {};
-      hasEnvSecrets = builtins.any (s: (s.envSecrets or {}) != {}) processed.allServicesList;
+      hasRuntimeEnv = builtins.any (s: (s.envSecrets or {}) != {} || (s ? pgUrlSpec)) processed.allServicesList;
     in {
       imports = [inputs.self.modules.nixos.arion inputs.self.modules.nixos.opnix];
 
@@ -339,7 +365,7 @@ in {
             wants = ["postgres-puppy.service"];
           };
         }
-        // lib.optionalAttrs hasEnvSecrets {
+        // lib.optionalAttrs hasRuntimeEnv {
           "${projectName}-secret-env" = {
             description = "Prepare ${projectName} container secret env files";
             after = ["opnix-secrets.service"];
@@ -355,8 +381,8 @@ in {
         }
         // lib.optionalAttrs hasSecrets {
           ${projectName} = {
-            after = ["opnix-secrets.service"] ++ lib.optional hasEnvSecrets "${projectName}-secret-env.service";
-            wants = ["opnix-secrets.service"] ++ lib.optional hasEnvSecrets "${projectName}-secret-env.service";
+            after = ["opnix-secrets.service"] ++ lib.optional hasRuntimeEnv "${projectName}-secret-env.service";
+            wants = ["opnix-secrets.service"] ++ lib.optional hasRuntimeEnv "${projectName}-secret-env.service";
           };
         };
 

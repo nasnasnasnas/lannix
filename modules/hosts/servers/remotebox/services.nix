@@ -72,6 +72,7 @@
           PUBLIC_BASE_URL = "https://realtime.szpunar.cloud";
         };
       })
+      (umami {domains = ["https://umami.szpunar.cloud"];})
     ];
   };
 }
