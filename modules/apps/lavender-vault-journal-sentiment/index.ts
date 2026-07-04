@@ -28,6 +28,9 @@ const database = vault.pluginDb("lavender-manager-next", "lavender");
 const existingJournalNames = (await database.query("SELECT day FROM journal_sentiments")).rows.map(row => row[0]);
 const newJournalEntries = journalFileNames.filter(journalName => !existingJournalNames.includes(journalName));
 
+// list member names
+const memberNames = (await vault.notes.list()).filter(note => note.path.startsWith("Members/")).map(note => note.path.split("/").pop()!.split(".")[0]!);
+
 // do sentiment analysis on each
 for (const journalEntryName of newJournalEntries) {
 	const [year, month] = journalEntryName.split("-");
@@ -83,6 +86,7 @@ for (const journalEntryName of newJournalEntries) {
 	const statements = [{ sql: "INSERT INTO journal_sentiments (day, note) VALUES (?, ?)", params: [journalEntryName, sentimentAnalysis.note?.trim() !== "" ? sentimentAnalysis.note : null] }];
 	for (const member of sentimentAnalysis.members) {
 		const { name, score, note } = member;
+		if (!memberNames.includes(name)) continue;
 		statements.push({ sql: "INSERT INTO journal_sentiment_members (day, member, score, note) VALUES (?, ?, ?, ?)", params: [journalEntryName, name, score, note?.trim() !== "" ? note : null] });
 	}
 	await database.execute(statements);
