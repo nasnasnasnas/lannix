@@ -41,7 +41,7 @@ for (const journalEntryName of newJournalEntries) {
 	const processedBody = await preprocessJournalBody(body);
 	
 	const ollamaResponse = await ollama.generate({
-		model: "gemma4:12b",
+		model: "gemma4:e4b",
 		prompt: processedBody,
 		system: systemPrompt,
 		format: {
@@ -51,7 +51,7 @@ for (const journalEntryName of newJournalEntries) {
 			properties: {
 				note: {
 					type: "string",
-					description: "A short (~200-300 characters) description of the day in general."
+					description: "A optional short (~150-200 characters max) description of the day in general."
 				},
 				members: {
 					type: "array",
@@ -71,7 +71,7 @@ for (const journalEntryName of newJournalEntries) {
 							},
 							note: {
 								type: "string",
-								description: "An optional short (~150-200 characters) note of the day for this member."
+								description: "An optional short (~100-150 characters max) note of the day for this member."
 							}
 						},
 					}
