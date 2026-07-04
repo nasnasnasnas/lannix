@@ -25,7 +25,9 @@
             # TODO: move these to somewhere that isn't here
             nix.settings.experimental-features = ["nix-command" "flakes" "pipe-operators"];
             nixpkgs.overlays = [
-              (final: _prev: {
+              (final: _prev:
+                (inputs.self.packages.${system} or {})
+                // {
                 unstable = import inputs.nixpkgs-unstable {
                   inherit (final) config;
                   system = pkgs.stdenv.hostPlatform.system;
