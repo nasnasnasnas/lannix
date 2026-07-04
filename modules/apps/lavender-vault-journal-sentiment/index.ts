@@ -41,7 +41,7 @@ for (const journalEntryName of newJournalEntries) {
 	const processedBody = await preprocessJournalBody(body);
 	
 	const ollamaResponse = await ollama.generate({
-		model: "gemma4:e4b-it-qat",
+		model: "gemma4:26b",
 		prompt: processedBody,
 		system: systemPrompt,
 		format: {
