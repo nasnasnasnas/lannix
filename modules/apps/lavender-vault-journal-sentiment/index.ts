@@ -41,7 +41,7 @@ for (const journalEntryName of newJournalEntries) {
 	const processedBody = await preprocessJournalBody(body);
 	
 	const ollamaResponse = await ollama.generate({
-		model: "gemma4:26b",
+		model: "gemma4:12b",
 		prompt: processedBody,
 		system: systemPrompt,
 		format: {
@@ -95,7 +95,7 @@ for (const journalEntryName of newJournalEntries) {
 	await database.execute(statements);
 	console.log(ollamaResponse);
 	
-	console.log(`Sentiment analysis complete for ${journalEntryName} in ${ollamaResponse.total_duration / 1_000_000_000}: <thinking>${ollamaResponse.thinking}</thinking> ${ollamaResponse.response}`);
+	console.log(`Sentiment analysis complete for ${journalEntryName} in ${ollamaResponse.total_duration / 1_000_000_000} seconds: <thinking>${ollamaResponse.thinking}</thinking> ${ollamaResponse.response}`);
 }
 
 const switchRegex = /> \[!switch] ([A-Z0-9]{26})/gm;
