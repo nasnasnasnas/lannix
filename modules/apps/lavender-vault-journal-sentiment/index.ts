@@ -86,7 +86,10 @@ for (const journalEntryName of newJournalEntries) {
 	const statements = [{ sql: "INSERT INTO journal_sentiments (day, note) VALUES (?, ?)", params: [journalEntryName, sentimentAnalysis.note?.trim() !== "" ? sentimentAnalysis.note : null] }];
 	for (const member of sentimentAnalysis.members) {
 		const { name, score, note } = member;
-		if (!memberNames.includes(name)) continue;
+		if (!memberNames.includes(name)) {
+			console.warn(`Member ${name} not found in Members folder. Skipping.`);
+			continue;
+		}
 		statements.push({ sql: "INSERT INTO journal_sentiment_members (day, member, score, note) VALUES (?, ?, ?, ?)", params: [journalEntryName, name, score, note?.trim() !== "" ? note : null] });
 	}
 	await database.execute(statements);
