@@ -82,6 +82,7 @@ for (const journalEntryName of newJournalEntries) {
 		stream: false,
 	})
 
+	console.log(ollamaResponse);
 	const sentimentAnalysis = JSON.parse(ollamaResponse.response);
 	const statements = [{ sql: "INSERT INTO journal_sentiments (day, note) VALUES (?, ?)", params: [journalEntryName, sentimentAnalysis.note?.trim() !== "" ? sentimentAnalysis.note : null] }];
 	for (const member of sentimentAnalysis.members) {
@@ -93,7 +94,6 @@ for (const journalEntryName of newJournalEntries) {
 		statements.push({ sql: "INSERT INTO journal_sentiment_members (day, member, score, note) VALUES (?, ?, ?, ?)", params: [journalEntryName, name, score, note?.trim() !== "" ? note : null] });
 	}
 	await database.execute(statements);
-	console.log(ollamaResponse);
 	
 	console.log(`Sentiment analysis complete for ${journalEntryName} in ${ollamaResponse.total_duration / 1_000_000_000} seconds: <thinking>${ollamaResponse.thinking}</thinking> ${ollamaResponse.response}`);
 }
