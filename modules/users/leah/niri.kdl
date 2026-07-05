@@ -108,15 +108,15 @@ output "eDP-1" {
     // If the position is unset or results in an overlap, the output is instead placed
     // automatically.
     // position x=1280 y=0
-    position x=2560 y=1100
+    position x=0 y=1100
 }
 
 output "ASUSTek COMPUTER INC ASUS PA279CV W2LMTR019526" {
-    position x=0 y=0
+    position x=1694 y=0
 }
 
-output "LG Electronics LG HDR 4K 0x00045AC9" {
-    position x=2560 y=-340
+output "Ancor Communications Inc ASUS PB277 0x00029259" {
+    position x=4254 y=0
 }
 
 // Settings that influence how windows are positioned and sized.
