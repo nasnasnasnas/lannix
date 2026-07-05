@@ -26,7 +26,9 @@ const journalFileNames = journalFiles.map(note => note.path.split("/").pop()!.sp
 // filter journals that already have sentiment analysis in sqlite
 const database = vault.pluginDb("lavender-manager-next", "lavender");
 const existingJournalNames = (await database.query("SELECT day FROM journal_sentiments")).rows.map(row => row[0]);
-const newJournalEntries = journalFileNames.filter(journalName => !existingJournalNames.includes(journalName));
+// sort chronologically (ISO date strings sort correctly) so each day's
+// recent-context lookup sees the correctly-ordered prior days during a backfill
+const newJournalEntries = journalFileNames.filter(journalName => !existingJournalNames.includes(journalName)).sort();
 
 // list member names
 const memberNames = (await vault.notes.list()).filter(note => note.path.startsWith("Members/")).map(note => note.path.split("/").pop()!.split(".")[0]!);
@@ -39,10 +41,14 @@ for (const journalEntryName of newJournalEntries) {
 	const journalEntry = await vault.notes.read(`Journal/${year}/${month}/${journalEntryName}.md`);
 	const body = journalEntry.content;
 	const processedBody = await preprocessJournalBody(body);
-	
+	const recentContext = await buildRecentContext(journalEntryName);
+	const prompt = recentContext
+		? `${recentContext}\n\n---\n\nToday's entry (${journalEntryName}):\n${processedBody}`
+		: processedBody;
+
 	const ollamaResponse = await ollama.generate({
 		model: "gemma4:e4b",
-		prompt: processedBody,
+		prompt,
 		system: systemPrompt,
 		format: {
 			"$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -72,6 +78,10 @@ for (const journalEntryName of newJournalEntries) {
 							note: {
 								type: "string",
 								description: "An optional short (~100-150 characters max) note of the day for this member."
+							},
+							memo: {
+								type: "string",
+								description: "Optional carry-forward facts about this member that will help interpret their FUTURE journal entries (e.g. ongoing situations, upcoming events like 'exams this week' or 'started a new job'). Not a restatement of mood or a score justification. Omit unless there's a concrete fact worth remembering across days."
 							}
 						},
 					}
@@ -86,16 +96,47 @@ for (const journalEntryName of newJournalEntries) {
 	const sentimentAnalysis = JSON.parse(ollamaResponse.response);
 	const statements = [{ sql: "INSERT INTO journal_sentiments (day, note) VALUES (?, ?)", params: [journalEntryName, sentimentAnalysis.note?.trim() !== "" ? sentimentAnalysis.note : null] }];
 	for (const member of sentimentAnalysis.members) {
-		const { name, score, note } = member;
+		const { name, score, note, memo } = member;
 		if (!memberNames.includes(name)) {
 			console.warn(`Member ${name} not found in Members folder. Skipping.`);
 			continue;
 		}
-		statements.push({ sql: "INSERT INTO journal_sentiment_members (day, member, score, note) VALUES (?, ?, ?, ?)", params: [journalEntryName, name, score, note?.trim() !== "" ? note : null] });
+		statements.push({ sql: "INSERT INTO journal_sentiment_members (day, member, score, note, memo) VALUES (?, ?, ?, ?, ?)", params: [journalEntryName, name, score, note?.trim() ? note : null, memo?.trim() ? memo : null] });
 	}
 	await database.execute(statements);
 	
-	console.log(`Sentiment analysis complete for ${journalEntryName} in ${ollamaResponse.total_duration / 1_000_000_000} seconds: <thinking>${ollamaResponse.thinking}</thinking> ${ollamaResponse.response}`);
+	console.log(`Sentiment analysis complete for ${journalEntryName} in ${ollamaResponse.total_duration / 1_000_000_000} seconds: <input>${processedBody}</input> <thinking>${ollamaResponse.thinking}</thinking> ${ollamaResponse.response}`);
+}
+
+// Build a compact digest of carry-forward facts (memos) from the prior few
+// days, so the model has continuity without anchoring today's score to past
+// scores. Facts only — scores are deliberately NOT fed back.
+async function buildRecentContext(beforeDay: string, windowDays = 7, maxDays = 4): Promise<string> {
+	// cutoff so a long gap between entries doesn't drag in stale context
+	const cutoff = new Date(beforeDay);
+	cutoff.setDate(cutoff.getDate() - windowDays);
+	const cutoffISO = cutoff.toISOString().split("T")[0]!;
+
+	const rows = (await database.query(
+		"SELECT day, member, memo FROM journal_sentiment_members WHERE day < ? AND day >= ? AND memo IS NOT NULL ORDER BY day ASC LIMIT ?",
+		{ params: [beforeDay, cutoffISO, maxDays * 6] }
+	)).rows as [string, string, string][];
+	if (rows.length === 0) return "";
+
+	// keep only the most recent `maxDays` distinct days, then render oldest→newest
+	const days = [...new Set(rows.map(([day]) => day))].slice(-maxDays);
+	const kept = new Set(days);
+	const byDay = new Map<string, string[]>();
+	for (const [day, member, memo] of rows) {
+		if (!kept.has(day)) continue;
+		(byDay.get(day) ?? byDay.set(day, []).get(day)!).push(`${member}: ${memo}`);
+	}
+
+	const lines = days.map(day => `${day}  ${(byDay.get(day) ?? []).join("   ")}`);
+	return [
+		"Recent context (facts to keep in mind — score today independently, do not copy):",
+		...lines,
+	].join("\n");
 }
 
 const switchRegex = /> \[!switch] ([A-Z0-9]{26})/gm;
