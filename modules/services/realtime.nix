@@ -22,6 +22,10 @@
       inherit networks;
       caddy_port = 8081;
       volumes = volumes ++ ["${dataDir}:/data"];
+      out.service.ulimits.nofile = {
+        soft = 524288;
+        hard = 524288;
+      };
     }
     // (
       if env_file == []
