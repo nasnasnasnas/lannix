@@ -116,7 +116,8 @@
       desktopManager.plasma6.enable = true;
 
       displayManager = {
-        plasma-login-manager.enable = true;
+        sddm.enable = true;
+        sddm.wayland.enable = true;
         autoLogin.enable = true;
         autoLogin.user = "magicplank";
       };
