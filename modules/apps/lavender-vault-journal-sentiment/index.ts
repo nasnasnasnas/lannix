@@ -59,6 +59,10 @@ for (const journalEntryName of newJournalEntries) {
 					type: "string",
 					description: "A optional short (~150-200 characters max) description of the day in general."
 				},
+				memo: {
+					type: "string",
+					description: "Optional carry-forward facts about the SYSTEM as a whole (not tied to any single member) that will help interpret FUTURE journal entries (e.g. a shared upcoming event, a move, a household-wide situation, a group decision). Not a restatement of the day's mood or of the note. Omit unless there's a concrete fact worth remembering across days."
+				},
 				members: {
 					type: "array",
 					description: "One for each member who wrote in the journal this day.",
@@ -94,7 +98,7 @@ for (const journalEntryName of newJournalEntries) {
 
 	console.log(ollamaResponse);
 	const sentimentAnalysis = JSON.parse(ollamaResponse.response);
-	const statements = [{ sql: "INSERT INTO journal_sentiments (day, note) VALUES (?, ?)", params: [journalEntryName, sentimentAnalysis.note?.trim() !== "" ? sentimentAnalysis.note : null] }];
+	const statements = [{ sql: "INSERT INTO journal_sentiments (day, note, memo) VALUES (?, ?, ?)", params: [journalEntryName, sentimentAnalysis.note?.trim() ? sentimentAnalysis.note : null, sentimentAnalysis.memo?.trim() ? sentimentAnalysis.memo : null] }];
 	for (const member of sentimentAnalysis.members) {
 		const { name, score, note, memo } = member;
 		if (!memberNames.includes(name)) {
@@ -117,30 +121,46 @@ async function buildRecentContext(beforeDay: string, windowDays = 7, maxDays = 4
 	cutoff.setDate(cutoff.getDate() - windowDays);
 	const cutoffISO = cutoff.toISOString().split("T")[0]!;
 
-	const rows = (await database.query(
+	const memberRows = (await database.query(
 		"SELECT day, member, memo FROM journal_sentiment_members WHERE day < ? AND day >= ? AND memo IS NOT NULL ORDER BY day ASC LIMIT ?",
 		{ params: [beforeDay, cutoffISO, maxDays * 6] }
 	)).rows as [string, string, string][];
-	if (rows.length === 0) return "";
+	// system-wide memos live on journal_sentiments, one per day
+	const systemRows = (await database.query(
+		"SELECT day, memo FROM journal_sentiments WHERE day < ? AND day >= ? AND memo IS NOT NULL ORDER BY day ASC LIMIT ?",
+		{ params: [beforeDay, cutoffISO, maxDays] }
+	)).rows as [string, string][];
+	if (memberRows.length === 0 && systemRows.length === 0) return "";
 
-	// keep only the most recent `maxDays` distinct days, then render oldest→newest
-	const days = [...new Set(rows.map(([day]) => day))].slice(-maxDays);
+	// keep only the most recent `maxDays` distinct days across both sources, oldest→newest
+	const days = [...new Set([...systemRows.map(([day]) => day), ...memberRows.map(([day]) => day)])].sort().slice(-maxDays);
 	const kept = new Set(days);
+	const systemByDay = new Map(systemRows.filter(([day]) => kept.has(day)));
 	const byDay = new Map<string, string[]>();
-	for (const [day, member, memo] of rows) {
+	for (const [day, member, memo] of memberRows) {
 		if (!kept.has(day)) continue;
 		(byDay.get(day) ?? byDay.set(day, []).get(day)!).push(`${member}: ${memo}`);
 	}
 
-	const lines = days.map(day => `${day}  ${(byDay.get(day) ?? []).join("   ")}`);
+	const lines = days.map(day => {
+		const parts = [...(systemByDay.has(day) ? [`system: ${systemByDay.get(day)}`] : []), ...(byDay.get(day) ?? [])];
+		return `${day}  ${parts.join("   ")}`;
+	});
 	return [
 		"Recent context (facts to keep in mind — score today independently, do not copy):",
 		...lines,
 	].join("\n");
 }
 
-const switchRegex = /> \[!switch] ([A-Z0-9]{26})/gm;
+// tolerate fold markers ([!switch]+ / [!switch]-), flexible spacing, and
+// case variations in both the callout name and the ULID
+const switchRegex = />[ \t]*\[!switch\][+-]?[ \t]+([A-Z0-9]{26})/gim;
+// the lavender-summary callout (header line plus any `>` continuation lines)
+// is generated output, not journal content — strip it before analysis
+const lavenderSummaryRegex = /^[ \t]*>[ \t]*\[!lavender-summary\].*(?:\n[ \t]*>.*)*\n?/gim;
 async function preprocessJournalBody(body: string) {
+	body = body.replace(lavenderSummaryRegex, "").trimStart();
+
 	// String.replace runs its callback synchronously, so gather the unique
 	// switch ids first, resolve them asynchronously, then replace using the map.
 	const switchIds = [...new Set([...body.matchAll(switchRegex)].map(([, switchId]) => switchId).filter((id): id is string => id !== undefined))];
@@ -148,9 +168,12 @@ async function preprocessJournalBody(body: string) {
 	const replacements = new Map<string, string>();
 	await Promise.all(switchIds.map(async (switchId) => {
 		const row = (await database.query("SELECT ts, notes, created_at FROM switches WHERE id = ? LIMIT 1", { params: [switchId] })).rows[0];
-		if (!row) return;
+		if (!row) {
+			console.warn(`Switch ${switchId} not found in switches table. Leaving callout as-is.`);
+			return;
+		}
 		const [switchTs, notes, created_at] = row;
-		const memberDetails = (await database.query("SELECT member, role FROM switch_members WHERE switch_id = ? LIMIT 1", { params: [switchId] })).rows.map(([member, role]) => `${member}: ${role}`).join('\n')
+		const memberDetails = (await database.query("SELECT member, role FROM switch_members WHERE switch_id = ?", { params: [switchId] })).rows.map(([member, role]) => `${member}: ${role}`).join('\n')
 		replacements.set(switchId, `> [!switch] ${switchId}
 > Created at: ${created_at}
 > Notes: ${notes}
