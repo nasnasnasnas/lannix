@@ -105,7 +105,7 @@ for (const journalEntryName of newJournalEntries) {
 	}
 	await database.execute(statements);
 	
-	console.log(`Sentiment analysis complete for ${journalEntryName} in ${ollamaResponse.total_duration / 1_000_000_000} seconds: <input>${processedBody}</input> <thinking>${ollamaResponse.thinking}</thinking> ${ollamaResponse.response}`);
+	console.log(`Sentiment analysis complete for ${journalEntryName} in ${ollamaResponse.total_duration / 1_000_000_000} seconds (${ollamaResponse.eval_count / ollamaResponse.eval_duration / 1_000_000_000} tok/s): <input>${processedBody}</input> <thinking>${ollamaResponse.thinking}</thinking> ${ollamaResponse.response}`);
 }
 
 // Build a compact digest of carry-forward facts (memos) from the prior few
