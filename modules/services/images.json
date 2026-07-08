@@ -126,7 +126,7 @@
   "postgres:15-alpine": {
     "name": "postgres",
     "tag": "15-alpine",
-    "digest": "sha256:f2255d9d4992c7409189e81414c153d9583bf1bd33dc593590a5e42743169a3e"
+    "digest": "sha256:57e5b9f69e672385cdf630f42b1306b5ca934c9bf8278b5f8b1948533d75a20b"
   },
   "postgres:latest": {
     "name": "postgres",
