@@ -35,7 +35,7 @@
     # Use nixpkgs-master only for kdePackages (Plasma 6 etc.)
     nixpkgs.overlays = [
       (final: _prev: {
-        kdePackages = final.master.kdePackages;
+        kdePackages = final.unstable.kdePackages;
       })
       inputs.nix-cachyos-kernel.overlays.default
     ];
