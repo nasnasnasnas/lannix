@@ -43,17 +43,7 @@ in {
     };
 
     nixpkgs.overlays = [
-      inputs.llm-agents.overlays.default
-      # omp's installCheckPhase runs a Bun sync-worker smoke test that times out
-      # ("sync worker did not pong within 5000ms") inside the Nix build sandbox.
-      # The build itself is fine; skip the flaky runtime check.
-      (_final: prev: {
-        llm-agents =
-          prev.llm-agents
-          // {
-            omp = prev.llm-agents.omp.overrideAttrs (_: {doInstallCheck = false;});
-          };
-      })
+      inputs.llm-agents.overlays.shared-nixpkgs
     ];
 
     # Allow unfree packages
