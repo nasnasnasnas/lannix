@@ -112,16 +112,16 @@
     services.tlp.enable = false;
     powerManagement.cpuFreqGovernor = "performance";
 
-    services = {
-      desktopManager.plasma6.enable = true;
+    # services = {
+    #   desktopManager.plasma6.enable = true;
 
-      displayManager = {
-        sddm.enable = true;
-        sddm.wayland.enable = true;
-        autoLogin.enable = true;
-        autoLogin.user = "magicplank";
-      };
-    };
+    #   displayManager = {
+    #     sddm.enable = true;
+    #     sddm.wayland.enable = true;
+    #     autoLogin.enable = true;
+    #     autoLogin.user = "magicplank";
+    #   };
+    # };
     programs.kdeconnect.enable = true;
 
     programs.steam.package = pkgs.steam.override {
