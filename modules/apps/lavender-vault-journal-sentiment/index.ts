@@ -44,7 +44,7 @@ const newJournalEntries = journalFileNames
 
 // list member names
 const memberNames = (await vault.notes.list())
-	.filter((note) => note.path.startsWith("Members/"))
+	.filter((note) => note.path.startsWith("Headmates/"))
 	.map((note) => note.path.split("/").pop()!.split(".")[0]!);
 
 // Match a complete switch callout header and any existing body lines. Stop
