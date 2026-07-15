@@ -28,6 +28,14 @@ in {
 
     programs.fish.enable = true;
 
+    environment.systemPackages = with pkgs; [
+      _1password-gui
+      _1password-cli
+      unstable.bun
+      git
+      ghostty-bin
+    ];
+
     # user-scoped system options (homebrew, system.defaults, ...) apply to this user
     system.primaryUser = username;
 

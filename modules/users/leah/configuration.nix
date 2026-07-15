@@ -30,12 +30,6 @@ in {
     };
     programs.fish.enable = true;
 
-    environment.systemPackages = with pkgs; [
-      _1password-gui
-      _1password-cli
-      unstable.bun
-    ];
-
     fonts.enableDefaultPackages = true;
     fonts.packages = with pkgs; [
       noto-fonts
