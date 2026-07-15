@@ -53,6 +53,7 @@
     mkDarwin = system: name: {
       ${name} = inputs.nix-darwin.lib.darwinSystem {
         modules = [
+          inputs.self.modules.nixos.nix-cache
           inputs.self.modules.darwin.${name}
           {nixpkgs.hostPlatform = lib.mkDefault system;}
           ({pkgs, ...}: {
