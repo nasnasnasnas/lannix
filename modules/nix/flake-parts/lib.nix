@@ -28,16 +28,16 @@
               (final: _prev:
                 (inputs.self.packages.${system} or {})
                 // {
-                unstable = import inputs.nixpkgs-unstable {
-                  inherit (final) config;
-                  system = pkgs.stdenv.hostPlatform.system;
-                };
+                  unstable = import inputs.nixpkgs-unstable {
+                    inherit (final) config;
+                    system = pkgs.stdenv.hostPlatform.system;
+                  };
 
-                master = import inputs.nixpkgs-master {
-                  inherit (final) config;
-                  system = pkgs.stdenv.hostPlatform.system;
-                };
-              })
+                  master = import inputs.nixpkgs-master {
+                    inherit (final) config;
+                    system = pkgs.stdenv.hostPlatform.system;
+                  };
+                })
             ];
 
             nixpkgs.config.allowUnfree = true;
@@ -64,16 +64,16 @@
               (final: _prev:
                 (inputs.self.packages.${system} or {})
                 // {
-                unstable = import inputs.nixpkgs-unstable {
-                  inherit (final) config;
-                  system = pkgs.stdenv.hostPlatform.system;
-                };
+                  unstable = import inputs.nixpkgs-unstable {
+                    inherit (final) config;
+                    system = pkgs.stdenv.hostPlatform.system;
+                  };
 
-                master = import inputs.nixpkgs-master {
-                  inherit (final) config;
-                  system = pkgs.stdenv.hostPlatform.system;
-                };
-              })
+                  master = import inputs.nixpkgs-master {
+                    inherit (final) config;
+                    system = pkgs.stdenv.hostPlatform.system;
+                  };
+                })
             ];
           })
         ];

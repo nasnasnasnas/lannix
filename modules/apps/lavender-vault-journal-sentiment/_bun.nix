@@ -11,8 +11,7 @@
   fetchgit,
   fetchurl,
   ...
-}:
-{
+}: {
   "@realtime-md/sdk@0.2.0" = fetchurl {
     url = "https://registry.npmjs.org/@realtime-md/sdk/-/sdk-0.2.0.tgz";
     hash = "sha512-Z8ZsARcLUz8FZ3oTFk6dHIthS5+WmdvTcL45qrw9ayZKJl33GYYJrVvufop7S3EWvxc7VQCZbZS7DnyehoeG8g==";

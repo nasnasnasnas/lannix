@@ -20,12 +20,11 @@ in {
       lib.concatMap (s: s.domains or []) services;
 
     # Resolve an image key from images.json to a digest-pinned reference: "name:tag@sha256:…"
-    image = key:
-      let
-        pins = lib.importJSON ./images.json;
-        e = pins.${key} or (throw "image-pin: no entry for ${key}");
-        name = e.name or key;
-      in "${name}:${e.tag}@${e.digest}";
+    image = key: let
+      pins = lib.importJSON ./images.json;
+      e = pins.${key} or (throw "image-pin: no entry for ${key}");
+      name = e.name or key;
+    in "${name}:${e.tag}@${e.digest}";
 
     # Convert a simplified service definition to Arion service format by removing meta keys and moving service.out to out.service.
     mkArionService = serviceDef: let
@@ -131,7 +130,8 @@ in {
         # the password only exists as a secret file; it is URL-encoded via jq @uri since
         # postgres-puppy generates base64/symbol passwords with URL-reserved characters.
         urlLines = lib.optional (s ? pgUrlSpec) (
-          let u = s.pgUrlSpec;
+          let
+            u = s.pgUrlSpec;
           in "pgpass=$(tr -d '\\n' < ${lib.escapeShellArg u.passwordHostPath}); pgenc=$(${pkgs.jq}/bin/jq -rn --arg p \"$pgpass\" '$p|@uri'); printf '%s=%s://%s:%s@%s:%s/%s\\n' ${lib.escapeShellArg u.var} ${lib.escapeShellArg u.scheme} ${lib.escapeShellArg u.user} \"$pgenc\" ${lib.escapeShellArg u.host} ${lib.escapeShellArg u.port} ${lib.escapeShellArg u.database}"
         );
         lines = envSecretLines ++ urlLines;
@@ -202,18 +202,17 @@ in {
           userVar = pgEnv.user or "DATABASE_USER";
           databaseName = pgEnv.overrideDatabase or s.container_name;
           passwordPath = "/run/secrets/db_password";
-          urlAttrs =
-            lib.optionalAttrs ((pgEnv.url or null) != null) {
-              pgUrlSpec = {
-                var = pgEnv.url;
-                scheme = pgEnv.urlScheme or "postgres";
-                user = databaseName;
-                host = "host.docker.internal";
-                port = "5432";
-                database = databaseName;
-                passwordHostPath = config.flake.lib.fileSecretPath s.container_name passwordPath;
-              };
+          urlAttrs = lib.optionalAttrs ((pgEnv.url or null) != null) {
+            pgUrlSpec = {
+              var = pgEnv.url;
+              scheme = pgEnv.urlScheme or "postgres";
+              user = databaseName;
+              host = "host.docker.internal";
+              port = "5432";
+              database = databaseName;
+              passwordHostPath = config.flake.lib.fileSecretPath s.container_name passwordPath;
             };
+          };
         in
           s
           // {

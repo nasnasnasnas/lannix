@@ -39,7 +39,20 @@
           "remotebox-native:host"
         ];
         hostPackages = with pkgs; [
-          bash coreutils curl gawk git gnused nodejs wget nix attic-client nix-fast-build jq openssh nixos-rebuild
+          bash
+          coreutils
+          curl
+          gawk
+          git
+          gnused
+          nodejs
+          wget
+          nix
+          attic-client
+          nix-fast-build
+          jq
+          openssh
+          nixos-rebuild
         ];
         settings = {
           runner.capacity = 2;
