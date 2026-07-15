@@ -19,6 +19,7 @@ in {
       imports = [
         # home manager modules for leah (including home.nix right next to us)
         inputs.self.modules.homeManager."${username}"
+        inputs.self.modules.homeManager."${username}-linux"
       ];
     };
 

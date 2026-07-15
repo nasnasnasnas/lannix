@@ -36,7 +36,7 @@
     llm-agents.url = "github:numtide/llm-agents.nix";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nix-darwin = {
-      url = "github:nix-darwin/nix-darwin/nix-darwin-25.05";
+      url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";

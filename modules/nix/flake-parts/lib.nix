@@ -55,7 +55,27 @@
         modules = [
           inputs.self.modules.darwin.${name}
           {nixpkgs.hostPlatform = lib.mkDefault system;}
-          ({...}: {networking.hostName = name;})
+          ({pkgs, ...}: {
+            networking.hostName = name;
+            nixpkgs.config.allowUnfree = true;
+            # TODO: move these to somewhere that isn't here
+            nix.settings.experimental-features = ["nix-command" "flakes" "pipe-operators"];
+            nixpkgs.overlays = [
+              (final: _prev:
+                (inputs.self.packages.${system} or {})
+                // {
+                unstable = import inputs.nixpkgs-unstable {
+                  inherit (final) config;
+                  system = pkgs.stdenv.hostPlatform.system;
+                };
+
+                master = import inputs.nixpkgs-master {
+                  inherit (final) config;
+                  system = pkgs.stdenv.hostPlatform.system;
+                };
+              })
+            ];
+          })
         ];
       };
     };

@@ -1,11 +1,7 @@
 {inputs, ...}: let
   username = "leah";
 in {
-  flake.modules.homeManager."${username}" = {
-    pkgs,
-    lib,
-    ...
-  }: {
+  flake.modules.homeManager."${username}-linux" = {
     imports = [
       inputs.noctalia.homeModules.default
     ];
