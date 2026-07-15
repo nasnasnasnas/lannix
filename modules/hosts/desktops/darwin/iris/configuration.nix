@@ -6,6 +6,7 @@
 
     environment.systemPackages = with pkgs; [
       git
+      ghostty-bin
     ];
 
     nix.enable = false; # using determinate nix
