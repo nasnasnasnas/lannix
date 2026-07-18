@@ -16,6 +16,7 @@ in {
         # (linux-only bits live in homeManager.leah-linux and are not imported here)
         inputs.self.modules.homeManager."${username}"
       ];
+      home.username = lib.mkForce username;
     };
 
     users.users."${username}" = {
