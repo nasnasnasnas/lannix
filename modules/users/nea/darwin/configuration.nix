@@ -1,5 +1,5 @@
 {inputs, ...}: let
-  username = "lavender";
+  username = "nea";
 in {
   flake.modules.darwin."${username}" = {
     pkgs,
@@ -14,14 +14,12 @@ in {
       imports = [
         # leah's cross-platform home manager config
         # (linux-only bits live in homeManager.leah-linux and are not imported here)
-        inputs.self.modules.homeManager.leah
+        inputs.self.modules.homeManager."${username}"
       ];
-      # the account on this mac is "lavender", not "leah"
-      home.username = lib.mkForce username;
     };
 
     users.users."${username}" = {
-      name = "Lavender System";
+      name = "Nea Szpunar";
       home = "/Users/${username}";
       shell = pkgs.fish;
     };

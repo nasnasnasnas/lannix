@@ -1,3 +1,5 @@
 Pulumi.yaml
 result
 .idea
+.DS_Store
+.fresh
