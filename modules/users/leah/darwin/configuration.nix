@@ -21,7 +21,7 @@ in {
     };
 
     users.users."${username}" = {
-      name = "Lavender System";
+      description = "Lavender System";
       home = "/Users/${username}";
       shell = pkgs.fish;
     };

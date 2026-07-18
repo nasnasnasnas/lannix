@@ -20,7 +20,7 @@ in {
     };
 
     users.users."${username}" = {
-      name = "Nea Szpunar";
+      description = "Nea Szpunar";
       home = "/Users/${username}";
       shell = pkgs.fish;
     };

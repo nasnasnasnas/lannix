@@ -12,10 +12,6 @@
     ];
 
     system.primaryUser = "lavender";
-    users.users.nea = {
-      uid = 502;
-    };
-    users.knownUsers = ["nea"];
 
     # nix-darwin equivalent of NixOS system.stateVersion; don't change after install
     system.stateVersion = 6;
