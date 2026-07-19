@@ -71,6 +71,8 @@
 
     nix.settings.trusted-users = ["magicbox"];
 
+    services.dbus.packages = [pkgs.systemd];
+
     programs.nix-ld = {
       enable = true;
     };
