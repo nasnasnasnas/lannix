@@ -58,9 +58,9 @@
           {nixpkgs.hostPlatform = lib.mkDefault system;}
           ({pkgs, ...}: {
             networking.hostName = name;
-            nixpkgs.config.allowUnfree = true;
             # TODO: move these to somewhere that isn't here
             nix.settings.experimental-features = ["nix-command" "flakes" "pipe-operators"];
+            nixpkgs.config.allowUnfree = true;
             nixpkgs.overlays = [
               (final: _prev:
                 (inputs.self.packages.${system} or {})

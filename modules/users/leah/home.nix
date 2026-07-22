@@ -27,6 +27,10 @@ in {
         email = "catgirl@catgirlin.space";
       };
     };
+    
+    targets.darwin.defaults.NSGlobalDomain = {
+      NSAutomaticCapitalizationEnabled = false;
+    };
   };
 
   # linux-only home manager bits (niri, noctalia, ...); imported by the nixos
