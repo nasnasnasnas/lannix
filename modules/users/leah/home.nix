@@ -27,15 +27,17 @@ in {
         email = "catgirl@catgirlin.space";
       };
     };
-    
-    targets.darwin.defaults.NSGlobalDomain = {
-      NSAutomaticCapitalizationEnabled = false;
-    };
   };
 
   # linux-only home manager bits (niri, noctalia, ...); imported by the nixos
   # user module in configuration.nix but left out of the darwin one
   flake.modules.homeManager."${username}-linux" = {
     xdg.configFile."niri/config.kdl".source = ./niri.kdl;
+  };
+  
+  flake.modules.homeManager."${username}-darwin" = {
+    targets.darwin.defaults.NSGlobalDomain = {
+      NSAutomaticCapitalizationEnabled = false;
+    };
   };
 }

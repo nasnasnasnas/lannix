@@ -15,6 +15,7 @@ in {
         # leah's cross-platform home manager config
         # (linux-only bits live in homeManager.leah-linux and are not imported here)
         inputs.self.modules.homeManager.leah
+        inputs.self.modules.homeManager.leah-darwin
       ];
       # the account on this mac is "lavender", not "leah"
       home.username = lib.mkForce username;
