@@ -38,6 +38,7 @@ in {
   flake.modules.homeManager."${username}-darwin" = {
     targets.darwin.defaults.NSGlobalDomain = {
       NSAutomaticCapitalizationEnabled = false;
+      targets.darwin.defaults."com.apple.menuextra.clock".ShowSeconds = true;
     };
   };
 }

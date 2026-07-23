@@ -9,7 +9,7 @@ in {
     nixpkgs.overlays = [
       inputs.llm-agents.overlays.shared-nixpkgs
     ];
-      
+
     environment.systemPackages = with pkgs; [
       _1password-gui
       _1password-cli
@@ -20,7 +20,7 @@ in {
       fresh-editor
       vscode
       nil
-      
+
       llm-agents.claude-code
       llm-agents.omp
       llm-agents.opencode
