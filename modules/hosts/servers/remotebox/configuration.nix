@@ -69,6 +69,12 @@
         fresh-editor
       ]);
 
+    nix.gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 30d";
+    };
+
     nix.settings.trusted-users = ["magicbox"];
 
     services.dbus.packages = [pkgs.systemd];
