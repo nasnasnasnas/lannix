@@ -34,11 +34,4 @@ in {
   flake.modules.homeManager."${username}-linux" = {
     xdg.configFile."niri/config.kdl".source = ./niri.kdl;
   };
-  
-  flake.modules.homeManager."${username}-darwin" = {
-    targets.darwin.defaults.NSGlobalDomain = {
-      NSAutomaticCapitalizationEnabled = false;
-      targets.darwin.defaults."com.apple.menuextra.clock".ShowSeconds = true;
-    };
-  };
 }
