@@ -21,7 +21,7 @@
       '')
     ];
 
-    hardware.graphics.enable = false;
+    hardware.graphics.enable = lib.mkForce false;
 
     services.xserver.videoDrivers = ["nvidia"];
 
