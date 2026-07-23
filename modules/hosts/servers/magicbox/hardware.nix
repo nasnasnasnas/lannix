@@ -2,11 +2,26 @@
   flake.modules.nixos.magicbox = {
     config,
     lib,
+    pkgs,
     ...
   }: {
-    hardware.enableRedistributableFirmware = true;
+    hardware.enableRedistributableFirmware = false;
 
-    hardware.graphics.enable = true;
+    # Keep AMD CPU security/stability microcode updates.
+    hardware.cpu.amd.updateMicrocode = true;
+  
+    # Keep this if Wi-Fi may be used.
+    hardware.wirelessRegulatoryDatabase = true;
+  
+    hardware.firmware = [
+      (pkgs.runCommand "rtw8852a-firmware" {} ''
+        install -Dm644 \
+          ${pkgs.linux-firmware}/lib/firmware/rtw89/rtw8852a_fw.bin.zst \
+          $out/lib/firmware/rtw89/rtw8852a_fw.bin.zst
+      '')
+    ];
+
+    hardware.graphics.enable = false;
 
     services.xserver.videoDrivers = ["nvidia"];
 
