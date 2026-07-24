@@ -5,21 +5,7 @@
     pkgs,
     ...
   }: {
-    hardware.enableRedistributableFirmware = false;
-
-    # Keep AMD CPU security/stability microcode updates.
-    hardware.cpu.amd.updateMicrocode = true;
-  
-    # Keep this if Wi-Fi may be used.
-    hardware.wirelessRegulatoryDatabase = true;
-  
-    hardware.firmware = [
-      (pkgs.runCommand "rtw8852a-firmware" {} ''
-        install -Dm644 \
-          ${pkgs.linux-firmware}/lib/firmware/rtw89/rtw8852a_fw.bin.zst \
-          $out/lib/firmware/rtw89/rtw8852a_fw.bin.zst
-      '')
-    ];
+    hardware.enableRedistributableFirmware = true;
 
     hardware.graphics.enable = lib.mkForce false;
 
@@ -74,6 +60,6 @@
     networking.useDHCP = lib.mkDefault true;
 
     nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-    # hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
 }
