@@ -9,15 +9,16 @@
       runtimeInputs = [
         inputs.noctalia.packages.${system}.default
         pkgs.alejandra
-        pkgs.bun
+        pkgs.coreutils
         pkgs.git
         pkgs.nix
         pkgs.nixos-rebuild
       ];
-      text = ''
-        export NOCTALIA_CONFIG_SYNC_NIXPKGS="${pkgs.path}"
-        exec bun ${./noctalia-config-sync.ts} "$@"
-      '';
+      text =
+        ''
+          export NOCTALIA_CONFIG_SYNC_NIXPKGS="${pkgs.path}"
+        ''
+        + builtins.readFile ./noctalia-config-sync.sh;
     };
   };
 }
