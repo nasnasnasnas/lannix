@@ -7,6 +7,7 @@ in {
     ];
 
     programs.noctalia.enable = true;
+    programs.noctalia.validateConfig = true;
     programs.noctalia.settings = {
       backdrop = {
         enabled = true;
