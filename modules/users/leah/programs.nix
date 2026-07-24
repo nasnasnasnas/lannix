@@ -150,7 +150,7 @@ in {
       unstable.jetbrains.clion
       unstable.jetbrains.phpstorm
       unstable.jetbrains-toolbox
-      unstable.antigravity-fhs
+      unstable.antigravity-ide-fhs
 
       unstable.fresh-editor
       # inputs.fresh.packages.${pkgs.stdenv.hostPlatform.system}.default # replaced by above
