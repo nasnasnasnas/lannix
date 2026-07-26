@@ -12,5 +12,5 @@
     };
   };
 
-  # imports = [ inputs.nix-homebrew.flakeModules.nix-homebrew ];
+  # imports = [ inputs.nix-homebrew.darwinModules.nix-homebrew ];
 }
