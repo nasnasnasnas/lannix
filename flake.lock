@@ -17,7 +17,7 @@
         "type": "github"
       },
       "original": {
-        "owner": "hercules-ci",
+        "owner": "hercules-ci", 
         "repo": "arion",
         "type": "github"
       }
