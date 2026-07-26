@@ -60,8 +60,8 @@ jobs:
       - name: Evaluate all host configurations
         run: |
           set -euo pipefail
-          nix eval --show-trace --raw .#checks.x86_64-linux \
-            --apply 'cs: toString (map (c: c.drvPath) (builtins.attrValues cs))'
+          nix eval --show-trace --json .#checks \
+            --apply 'systems: builtins.mapAttrs (_system: checks: builtins.mapAttrs (_name: check: check.drvPath) checks) systems'
 
       - name: Cleanup
         if: always()

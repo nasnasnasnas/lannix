@@ -3,12 +3,16 @@
   lib,
   ...
 }: {
-  perSystem = {system, ...}: {
-    checks =
+  perSystem = {system, ...}: let
+    mkToplevelChecks = configurations:
       lib.mapAttrs'
       (name: cfg: lib.nameValuePair "toplevel-${name}" cfg.config.system.build.toplevel)
       (lib.filterAttrs
         (_: cfg: cfg.config.nixpkgs.hostPlatform.system == system)
-        config.flake.nixosConfigurations);
+        configurations);
+  in {
+    checks =
+      mkToplevelChecks config.flake.nixosConfigurations
+      // mkToplevelChecks config.flake.darwinConfigurations;
   };
 }
