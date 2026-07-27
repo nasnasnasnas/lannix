@@ -402,7 +402,7 @@
   };
   theme = {
     builtin = "Tokyo-Night";
-    mode = "auto";
+    mode = "dark";
     source = "builtin";
     templates = {
       builtin_ids = [
