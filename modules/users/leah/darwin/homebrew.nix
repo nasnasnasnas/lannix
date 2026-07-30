@@ -12,6 +12,7 @@ in {
       masApps = {
         "1Password for Safari" = 1569813296;
         "Kagi for Safari" = 1622835804;
+        "uBlock Origin Lite" = 6745342698;
       };
     };
   };
