@@ -135,7 +135,7 @@
   },
   "rclone/rclone": {
     "tag": "latest",
-    "digest": "sha256:623378ad0ff3ebd5cebf77720843c0e02edfe46e2d5b5ac6bed54c6371780dfb"
+    "digest": "sha256:b06aed988cf5967de7c25be5925240983981c757f4ed1ac9d2fa659d51d60548"
   },
   "redis": {
     "tag": "7-alpine",
