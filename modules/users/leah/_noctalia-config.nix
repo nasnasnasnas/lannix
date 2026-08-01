@@ -216,7 +216,6 @@
           show_caps_lock = true;
           show_keyboard_layout = true;
           show_login_button = true;
-          show_password_hint = true;
         };
         type = "login_box";
       };
@@ -236,7 +235,6 @@
           show_caps_lock = true;
           show_keyboard_layout = true;
           show_login_button = true;
-          show_password_hint = true;
         };
         type = "login_box";
       };
@@ -256,7 +254,6 @@
           show_caps_lock = true;
           show_keyboard_layout = true;
           show_login_button = true;
-          show_password_hint = true;
         };
         type = "login_box";
       };
@@ -276,7 +273,6 @@
           show_caps_lock = true;
           show_keyboard_layout = true;
           show_login_button = true;
-          show_password_hint = true;
         };
         type = "login_box";
       };
@@ -296,7 +292,6 @@
           show_caps_lock = true;
           show_keyboard_layout = true;
           show_login_button = true;
-          show_password_hint = true;
         };
         type = "login_box";
       };
@@ -316,7 +311,6 @@
           show_caps_lock = true;
           show_keyboard_layout = true;
           show_login_button = true;
-          show_password_hint = true;
         };
         type = "login_box";
       };
@@ -415,10 +409,9 @@
       ];
       community_ids = [
         "pi-agent"
-        "zen-browser"
+        "discord"
         "neovim"
         "obsidian"
-        "discord"
         "steam"
       ];
     };
