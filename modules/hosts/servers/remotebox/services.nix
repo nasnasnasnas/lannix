@@ -78,7 +78,7 @@
         dataDir = "/home/magicbox/data/wokecraft";
         pack = "wokecraft";
         loaderVersion = "21.1.248";
-        memory = "6G";
+        memory = "4G";
         environment = {
           DIFFICULTY = "normal";
           ENABLE_WHITELIST = "true";
