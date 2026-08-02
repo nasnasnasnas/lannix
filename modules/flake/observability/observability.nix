@@ -7,11 +7,20 @@
     config,
     ...
   }: let
-    extraPrometheusScrapes = lib.concatStringsSep "\n" (lib.mapAttrsToList (jobName: targets: ''
+    renderAlloyAttrs = attrs: let
+      assignments =
+        lib.mapAttrsToList (name: value: "${builtins.toJSON name} = ${builtins.toJSON value}") attrs;
+    in
+      "{ ${lib.concatStringsSep ", " assignments} }";
+    extraPrometheusScrapes = lib.concatStringsSep "\n" (lib.mapAttrsToList (jobName: targets: let
+      targetLabels = config.server-observability.extraPrometheusScrapeTargetLabels.${jobName} or {};
+      renderTarget = target:
+        "${renderAlloyAttrs (targetLabels // {"__address__" = target;})},";
+    in ''
       prometheus.scrape ${builtins.toJSON jobName} {
         job_name = ${builtins.toJSON jobName}
         targets = [
-          ${lib.concatMapStringsSep "\n  " (target: "{ \"__address__\" = ${builtins.toJSON target} },") targets}
+          ${lib.concatMapStringsSep "\n  " renderTarget targets}
         ]
         forward_to = [prometheus.remote_write.default.receiver]
       }
@@ -67,6 +76,11 @@
         type = lib.types.attrsOf (lib.types.listOf lib.types.str);
         default = {};
         description = "Additional Prometheus scrape jobs, keyed by job name with host:port targets.";
+      };
+      extraPrometheusScrapeTargetLabels = lib.mkOption {
+        type = lib.types.attrsOf (lib.types.attrsOf lib.types.str);
+        default = {};
+        description = "Static labels applied to every target in the corresponding additional scrape job.";
       };
       dockerLogContainers = lib.mkOption {
         type = lib.types.listOf lib.types.str;

@@ -81,7 +81,7 @@
       "targets": [
         {
           "datasource": { "type": "victoriametrics-metrics-datasource", "uid": "victoriametrics" },
-          "expr": "mc_player_list{instance=\"127.0.0.1:19565\"} == 1",
+          "expr": "mc_player_list{instance=\"wokecraft\"} == 1",
           "format": "table",
           "instant": true,
           "refId": "A"
@@ -118,7 +118,7 @@
       "targets": [
         {
           "datasource": { "type": "victoriametrics-metrics-datasource", "uid": "victoriametrics" },
-          "expr": "clamp_max(rate(mc_server_tick_seconds_count{instance=\"127.0.0.1:19565\"}[5m]) / rate(mc_server_tick_seconds_sum{instance=\"127.0.0.1:19565\"}[5m]), 20)",
+          "expr": "clamp_max(rate(mc_server_tick_seconds_count{instance=\"wokecraft\"}[5m]) / rate(mc_server_tick_seconds_sum{instance=\"wokecraft\"}[5m]), 20)",
           "legendFormat": "TPS",
           "refId": "A"
         }

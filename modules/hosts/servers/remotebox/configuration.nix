@@ -55,6 +55,7 @@
         minecraft = ["127.0.0.1:8080"];
         minecraft_details = ["127.0.0.1:19565"];
       };
+      extraPrometheusScrapeTargetLabels.minecraft_details.instance = "wokecraft";
       dockerLogContainers = ["wokecraft"];
     };
 
