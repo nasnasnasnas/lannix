@@ -1,5 +1,14 @@
 {...}: {
-  flake.modules.nixos.magicbox = {pkgs, ...}: {
+  flake.modules.nixos.magicbox = {pkgs, ...}: let
+    mountConsumerUnits = map (project: "magicbox-${project}.service") [
+      "media"
+      "sonarr"
+      "radarr"
+      "lidarr"
+      "mylar"
+      "bazarr"
+    ];
+  in {
     environment.systemPackages = with pkgs; [
       git
       wget
@@ -24,7 +33,7 @@
       # Ensure bind-mount and mountpoint directories exist
       mkdir -p \
         /home/magicbox/config/{bazarr,jellyfin,lidarr,mylar,nzbdav,postgres,prowlarr,radarr,rclone-nzbdav,sabnzbd,sonarr,zurg-testing} \
-        /home/magicbox/data/{caddy,grafana,jellyfin,postgres,pyroscope,termix,victorialogs,victoriametrics,zurg-testing} \
+        /home/magicbox/data/{caddy,jellyfin,postgres,termix,zurg-testing} \
         /home/magicbox/media/usenet \
         /home/magicbox/manual-media
 
@@ -82,8 +91,8 @@
 
     systemd.services.magicbox-stale-mount-cleanup = {
       description = "Clean up stale Magicbox rclone mountpoints";
-      before = ["magicbox.service"];
-      wantedBy = ["magicbox.service"];
+      before = mountConsumerUnits;
+      wantedBy = mountConsumerUnits;
       serviceConfig = {
         Type = "oneshot";
         RemainAfterExit = true;
@@ -106,40 +115,7 @@
       };
     };
 
-    systemd.services.magicbox = {
-      after = ["magicbox-stale-mount-cleanup.service"];
-      wants = ["magicbox-stale-mount-cleanup.service"];
-    };
-
-    services.alloy.enable = true;
-    environment.etc."alloy/config.alloy".text = ''
-      prometheus.exporter.self "default" {
-
-      }
-
-      prometheus.scrape "metamonitoring" {
-        targets    = prometheus.exporter.self.default.targets
-        forward_to = [prometheus.remote_write.default.receiver]
-      }
-
-      prometheus.remote_write "default" {
-        endpoint {
-          url = "https://victoriametrics.szpunar.cloud/prometheus/api/v1/write"
-        }
-      }
-
-      logging {
-      //   level    = "<LOG_LEVEL>"
-      //   format   = "<LOG_FORMAT>"
-        write_to = [loki.write.default.receiver]
-      }
-
-      loki.write "default" {
-        endpoint {
-          url = "https://victorialogs.szpunar.cloud/insert/loki/api/v1/push"
-        }
-      }
-    '';
+    server-observability.enable = true;
 
     system.stateVersion = "25.05";
   };

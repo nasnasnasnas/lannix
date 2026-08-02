@@ -23,6 +23,13 @@
     inherit image;
     inherit restart;
     inherit networks;
+    healthcheck = {
+      test = ["CMD" "wget" "-q" "-O" "/dev/null" "http://127.0.0.1:${builtins.toString port}/health"];
+      interval = "30s";
+      timeout = "5s";
+      retries = 3;
+      start_period = "30s";
+    };
     caddy_port = port;
     environment =
       {

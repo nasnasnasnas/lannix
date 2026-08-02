@@ -4,8 +4,12 @@
     image ? config.flake.lib.image "nextcloud",
     volumes ? [],
     dataDir ? "/home/magicbox/data/nextcloud",
+    depends_on ? {
+      nextcloud = {condition = "service_healthy";};
+    },
   }: {
     container_name = "nextcloud-cron";
+    inherit depends_on;
     entrypoint = "/cron.sh";
     postgres = true;
     postgresEnv = {

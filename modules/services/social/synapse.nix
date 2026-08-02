@@ -23,7 +23,9 @@
     image ? config.flake.lib.image "docker.io/matrixdotorg/synapse",
     restart ? "unless-stopped",
     port ? 8008,
-    depends_on ? ["synapse-db"],
+    depends_on ? {
+      "synapse-db" = {condition = "service_healthy";};
+    },
   }: {
     inherit domains container_name image restart networks depends_on;
     caddy_port = port;

@@ -14,7 +14,7 @@
     webPort ? null,
     image ? config.flake.lib.image "dock.mau.dev/mautrix/${bridge}",
     restart ? "unless-stopped",
-    depends_on ? ["synapse"],
+    depends_on ? { synapse = { condition = "service_healthy"; }; },
   }:
     {
       container_name = "mautrix-${bridge}";

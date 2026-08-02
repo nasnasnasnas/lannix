@@ -23,5 +23,12 @@
     caddy_port = 80;
     inherit networks;
     volumes = volumes ++ ["${dataDir}:/var/www/html:z"];
+    healthcheck = {
+      test = ["CMD" "curl" "-fsS" "http://127.0.0.1/status.php"];
+      interval = "30s";
+      timeout = "10s";
+      retries = 5;
+      start_period = "180s";
+    };
   };
 }

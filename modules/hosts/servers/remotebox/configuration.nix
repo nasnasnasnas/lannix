@@ -49,6 +49,11 @@
     #   #inputs.arion.nixosModules.arion
     # ];
 
+    server-observability = {
+      enable = true;
+      extraPrometheusScrapeTargets.minecraft = ["127.0.0.1:8080"];
+    };
+
     environment.systemPackages = with pkgs;
       [
         git
@@ -65,7 +70,6 @@
         dua
         postgresql
         nodejs
-        telegraf
         screen
       ]
       ++ (with unstable; [

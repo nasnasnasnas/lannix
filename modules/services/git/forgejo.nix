@@ -26,5 +26,12 @@
     ports = ["2222:22"];
     inherit networks;
     volumes = volumes ++ ["${dataDir}:/data" "/etc/localtime:/etc/localtime:ro"];
+    healthcheck = {
+      test = ["CMD" "wget" "-q" "-O" "/dev/null" "http://127.0.0.1:3000/api/healthz"];
+      interval = "30s";
+      timeout = "5s";
+      retries = 5;
+      start_period = "120s";
+    };
   };
 }

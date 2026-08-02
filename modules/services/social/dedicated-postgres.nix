@@ -29,5 +29,12 @@
       )
       // environment;
     volumes = ["${dataDir}:/var/lib/postgresql/data"];
+    healthcheck = {
+      test = ["CMD" "pg_isready" "-h" "127.0.0.1"];
+      interval = "10s";
+      timeout = "5s";
+      retries = 5;
+      start_period = "60s";
+    };
   };
 }

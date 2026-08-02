@@ -124,6 +124,13 @@ in {
         ${loaderEnv.${p.loader}} = loaderVersion;
       }
       // environment;
+    healthcheck = {
+      test = ["CMD" "/usr/local/bin/mc-monitor" "status" "-host" "127.0.0.1" "-port" "25565"];
+      interval = "30s";
+      timeout = "10s";
+      retries = 5;
+      start_period = "5m";
+    };
     volumes =
       [
         "${dataDir}:/data"
@@ -134,6 +141,38 @@ in {
     out = {
       tty = true;
       stdin_open = true;
+    };
+  };
+
+  flake.services.minecraft-monitor = {
+    container_name ? "minecraft-monitor",
+    image ? config.flake.lib.image "itzg/mc-monitor",
+    restart ? "unless-stopped",
+    networks ? [],
+    serverHost ? "minecraft",
+    serverPort ? 25565,
+    metricsPort ? 8080,
+    timeout ? "10s",
+    depends_on ? null,
+  }: {
+    inherit container_name image restart networks;
+    depends_on =
+      if depends_on == null
+      then {${serverHost} = {condition = "service_started";};}
+      else depends_on;
+    command = ["export-for-prometheus"];
+    environment = {
+      EXPORT_SERVERS = "${serverHost}:${toString serverPort}";
+      EXPORT_PORT = toString metricsPort;
+      TIMEOUT = timeout;
+    };
+    ports = ["127.0.0.1:${toString metricsPort}:${toString metricsPort}"];
+    healthcheck = {
+      test = ["CMD" "/mc-monitor" "status" "-host" serverHost "-port" (toString serverPort)];
+      interval = "30s";
+      timeout = "10s";
+      retries = 5;
+      start_period = "5m";
     };
   };
 }

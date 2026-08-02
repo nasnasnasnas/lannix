@@ -1,7 +1,7 @@
 {config, ...}: {
   # lk-jwt-service: mints LiveKit JWTs for Matrix RTC. No domain of its own — it is reached
   # by caddy on /sfu/get via the combined matrix-rtc.szp.lol block defined in the livekit
-  # service (both sit on the same app network, which caddy joins via caddy.extraNetworks).
+  # service (it is attached to the host proxy network via caddyExtraBackends).
   flake.services.lk-jwt = {
     networks ? [],
     livekitUrl,

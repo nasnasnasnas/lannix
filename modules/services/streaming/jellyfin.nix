@@ -45,6 +45,13 @@
       inherit volumes;
       inherit command;
       inherit depends_on;
+      healthcheck = {
+        test = ["CMD" "curl" "-fsS" "http://127.0.0.1:8096/health"];
+        interval = "30s";
+        timeout = "10s";
+        retries = 5;
+        start_period = "120s";
+      };
     }
     // (
       if nvidia == true

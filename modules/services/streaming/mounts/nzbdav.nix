@@ -30,11 +30,11 @@
       // environment;
     volumes = volumes ++ ["${configDir}:/config"];
     healthcheck = {
-      test = ["CMD-SHELL" "curl" "-f" "http://localhost:3000/health" "||" "exit" "1"];
-      interval = "1m";
-      retries = 3;
-      start_period = "5s";
+      test = ["CMD" "curl" "-fsS" "http://127.0.0.1:3000/health"];
+      interval = "30s";
       timeout = "5s";
+      retries = 3;
+      start_period = "30s";
     };
   };
 
@@ -65,9 +65,11 @@
     ],
     environment ? {},
     volumes ? [],
-    depends_on ? [
-      "nzbdav"
-    ],
+    depends_on ? {
+      nzbdav = {
+        condition = "service_healthy";
+      };
+    },
   }: let
     parts = builtins.match "([^:]+):([^:]+)" user;
     uid = builtins.elemAt parts 0;
@@ -86,6 +88,13 @@
       }
       // environment;
     inherit volumes;
+    healthcheck = {
+      test = ["CMD" "rclone" "lsf" "/mnt/nzbdav" "--max-depth" "1"];
+      interval = "30s";
+      timeout = "10s";
+      retries = 3;
+      start_period = "60s";
+    };
     inherit depends_on;
     capabilities = {
       SYS_ADMIN = true;

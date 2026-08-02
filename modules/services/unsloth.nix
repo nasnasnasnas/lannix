@@ -19,6 +19,13 @@
   }: {
     inherit domains container_name image restart networks environment;
     caddy_port = port;
+    healthcheck = {
+      test = ["CMD" "python3" "-c" "import urllib.request as u,sys;sys.exit(0 if u.urlopen('http://127.0.0.1:8000/api/status',timeout=5).status==200 else 1)"];
+      interval = "30s";
+      timeout = "10s";
+      retries = 5;
+      start_period = "300s";
+    };
     volumes = volumes ++ ["${dataDir}/work:/workspace/work"];
   };
 }

@@ -21,6 +21,13 @@
       restart = "unless-stopped";
       inherit networks;
       caddy_port = 8081;
+      healthcheck = {
+        test = ["CMD" "node" "-e" "fetch('http://127.0.0.1:8081/').then(r=>process.exit(r.status<500?0:1)).catch(()=>process.exit(1))"];
+        interval = "30s";
+        timeout = "5s";
+        retries = 3;
+        start_period = "60s";
+      };
       volumes = volumes ++ ["${dataDir}:/data"];
       out.ulimits.nofile = {
         soft = 524288;

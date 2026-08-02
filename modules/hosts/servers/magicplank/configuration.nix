@@ -14,6 +14,15 @@
     #   #inputs.arion.nixosModules.arion
     # ];
 
+    server-observability.enable = true;
+
+    systemd.tmpfiles.rules = [
+      "d /home/magicbox/data/grafana 0755 magicbox users -"
+      "d /home/magicbox/data/pyroscope 0755 magicbox users -"
+      "d /home/magicbox/data/victorialogs 0755 magicbox users -"
+      "d /home/magicbox/data/victoriametrics 0755 magicbox users -"
+    ];
+
     environment.systemPackages = with pkgs; [
       git
       wget

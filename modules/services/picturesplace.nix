@@ -16,6 +16,13 @@
       inherit envSecrets;
       restart = "unless-stopped";
       caddy_port = 3000;
+      healthcheck = {
+        test = ["CMD" "bun" "-e" "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.status<500?0:1)).catch(()=>process.exit(1))"];
+        interval = "30s";
+        timeout = "5s";
+        retries = 3;
+        start_period = "60s";
+      };
       inherit networks;
       volumes = volumes ++ ["${dataDir}:/data"];
       environment =

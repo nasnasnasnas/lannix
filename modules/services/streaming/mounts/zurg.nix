@@ -60,7 +60,11 @@
     ],
     environment ? {},
     volumes ? [],
-    depends_on ? ["zurg"],
+    depends_on ? {
+      zurg = {
+        condition = "service_healthy";
+      };
+    },
   }: let
     parts = builtins.match "([^:]+):([^:]+)" user;
     uid = builtins.elemAt parts 0;
@@ -79,6 +83,13 @@
       }
       // environment;
     inherit volumes;
+    healthcheck = {
+      test = ["CMD" "rclone" "lsf" "/data" "--max-depth" "1"];
+      interval = "30s";
+      timeout = "10s";
+      retries = 3;
+      start_period = "60s";
+    };
     inherit depends_on;
     capabilities = {
       SYS_ADMIN = true;

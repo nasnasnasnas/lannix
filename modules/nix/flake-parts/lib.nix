@@ -16,6 +16,7 @@
         modules = [
           inputs.self.modules.nixos.${name}
           inputs.self.modules.nixos.host-dns
+          inputs.self.modules.nixos.server-observability
           inputs.self.modules.nixos.postgres-puppy
           inputs.self.modules.nixos.nix-cache
           {nixpkgs.hostPlatform = lib.mkDefault system;}

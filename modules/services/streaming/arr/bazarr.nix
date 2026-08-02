@@ -31,6 +31,13 @@
         }
         // environment;
       volumes = volumes ++ ["${configDir}:/config"];
+      healthcheck = {
+        test = ["CMD" "curl" "-fsS" "http://127.0.0.1:6767/"];
+        interval = "30s";
+        timeout = "5s";
+        retries = 3;
+        start_period = "60s";
+      };
     }
     // (
       if ports == []

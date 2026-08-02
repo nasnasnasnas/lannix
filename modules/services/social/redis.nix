@@ -9,5 +9,12 @@
   }: {
     inherit container_name image restart networks;
     volumes = ["${dataDir}:/data"];
+    healthcheck = {
+      test = ["CMD" "redis-cli" "ping"];
+      interval = "10s";
+      timeout = "3s";
+      retries = 5;
+      start_period = "10s";
+    };
   };
 }

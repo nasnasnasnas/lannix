@@ -14,7 +14,9 @@
     image ? config.flake.lib.image "hif1/heisenbridge",
     restart ? "unless-stopped",
     mediaPort ? 9898,
-    depends_on ? ["synapse"],
+    depends_on ? {
+      synapse = {condition = "service_healthy";};
+    },
   }: let
     container_name =
       if media
@@ -31,6 +33,13 @@
         "/data/heisenbridge.yaml" = configSecret;
       };
       volumes = ["${dataDir}:/data"];
+      healthcheck = {
+        test = ["CMD-SHELL" "grep -Fq '/usr/bin/heisenbridge' /proc/1/cmdline"];
+        interval = "30s";
+        timeout = "5s";
+        retries = 3;
+        start_period = "30s";
+      };
     }
     // (
       if media

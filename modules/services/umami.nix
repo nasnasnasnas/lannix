@@ -25,6 +25,13 @@
     inherit image;
     restart = "unless-stopped";
     caddy_port = 3000;
+    healthcheck = {
+      test = ["CMD" "curl" "-fsS" "http://127.0.0.1:3000/"];
+      interval = "30s";
+      timeout = "10s";
+      retries = 5;
+      start_period = "120s";
+    };
     inherit networks volumes;
   };
 }

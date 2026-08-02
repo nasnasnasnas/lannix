@@ -79,6 +79,10 @@
     "tag": "latest",
     "digest": "sha256:4648b0987d37ea9f398e93940bafb32b4f0fa0ff1a7611af993a35ea4debc03f"
   },
+  "itzg/mc-monitor": {
+    "tag": "latest",
+    "digest": "sha256:0d6b89c29d93cfcfcfee7bfd8e3758ddf00e20eb157e3e9a6560a93fe7fe84d1"
+  },
   "itzg/minecraft-server": {
     "tag": "java21",
     "digest": "sha256:4b6a75fd5cbca70ca3580ae8c0ea67286dd99c303554bb57e95bb2bade32f428"
