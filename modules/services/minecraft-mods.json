@@ -238,7 +238,10 @@
         "version": "3.0.0",
         "filename": "caverns_and_chasms-1.21.1-3.0.0.jar",
         "url": "https://cdn.modrinth.com/data/tfjmPSbI/versions/xDwRcEoZ/caverns_and_chasms-1.21.1-3.0.0.jar",
-        "hash": "sha512-02DXgj+KC7KDtn0JE48psXmBC4qsXXY6bSxA6nmE3lXjgd1Kg3bLgfjXlhI/EnzsOyA4tVBFkTJqEw5GbhJK6A=="
+        "hash": "sha512-02DXgj+KC7KDtn0JE48psXmBC4qsXXY6bSxA6nmE3lXjgd1Kg3bLgfjXlhI/EnzsOyA4tVBFkTJqEw5GbhJK6A==",
+        "serverPatches": [
+          "caverns-and-chasms-dedicated-config"
+        ]
       },
       "cc-tweaked": {
         "project": "cc-tweaked",
