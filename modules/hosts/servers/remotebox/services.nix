@@ -77,7 +77,7 @@
         container_name = "wokecraft";
         dataDir = "/home/magicbox/data/wokecraft";
         pack = "wokecraft";
-        loaderVersion = "21.1.248";
+        loaderVersion = "21.1.247";
         memory = "4G";
         environment = {
           DIFFICULTY = "normal";
