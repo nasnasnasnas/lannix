@@ -556,14 +556,6 @@
         "url": "https://cdn.modrinth.com/data/aq9qUUQG/versions/5xWzE6Yk/create-stuff-additions1.21.1_v2.1.4a.jar",
         "hash": "sha512-Q+n11v6fqvGne3+XnC8bdkOpCwjAVy0G7wnvyyAdMJu2bDLDlq6Dg9aMIhciSpjcdwKQuCkbmO36N8m8P8GaMg=="
       },
-      "create-threaded-trains": {
-        "project": "create-threaded-trains",
-        "rev": "ry1hvo4l",
-        "version": "1.21.1-1.0.0",
-        "filename": "createthreadedtrains-neoforge-1.21.1-1.0.0.jar",
-        "url": "https://cdn.modrinth.com/data/RYJzdkDr/versions/ry1hvo4l/createthreadedtrains-neoforge-1.21.1-1.0.0.jar",
-        "hash": "sha512-k1EdMujHSE/c/ZBkbUjyl7oxiHiODqZBKQC+OK5rguabwTG7sBFRm1KsByin39UxwKw1ank1M1wG9pGtIOOMaQ=="
-      },
       "create-track-map--unofficial-fork": {
         "project": "create-track-map-(unofficial-fork)",
         "rev": "EYyY9A0V",
@@ -847,15 +839,6 @@
         "filename": "KotlinLangForge-2.12.2-k2.4.10-3.0+neoforge.jar",
         "url": "https://cdn.modrinth.com/data/1vrSzlao/versions/318K66ba/KotlinLangForge-2.12.2-k2.4.10-3.0%2Bneoforge.jar",
         "hash": "sha512-ID+G07SD1Wo5KZFu3ViwW6sMWKZ+BimeVRHsWiQCoqNU1EVoekgQdsDVKyIdc3ZnOpVnLkufk80g9AHiRMbgJQ=="
-      },
-      "krypton-foxified": {
-        "project": "krypton-foxified",
-        "versionType": "alpha",
-        "rev": "TFGMCLED",
-        "version": "0.1.0+mc1.21",
-        "filename": "KryptonFoxified-0.1.0+mc1.21.jar",
-        "url": "https://cdn.modrinth.com/data/rmFH8I1v/versions/TFGMCLED/KryptonFoxified-0.1.0%2Bmc1.21.jar",
-        "hash": "sha512-V/UlLNtzBSH+KygkG2JQxz3z2JVK+QRmGjXKXOaRVCUhbl20ZRnQ0tts0TxKB7z0fBI7B0ZkflFz/dMi1oHVqw=="
       },
       "leashable-collars--unofficial-port": {
         "project": "leashable-collars-(unofficial-port)",
