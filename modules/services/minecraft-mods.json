@@ -1447,14 +1447,6 @@
         "url": "https://cdn.modrinth.com/data/OhduvhIc/versions/syKekkIm/veinminer-neoforge-2.11.2%2B1.21.1.jar",
         "hash": "sha512-GV/f6fE1joUhjncMlTIjgl0QL1S19geFe4iTlZzSFkoEySGYdhGnkzWSuomoOqK9jzzsCx/PfYeiCxaPiLLMBQ=="
       },
-      "voxy-auto-lod": {
-        "project": "voxy-auto-lod",
-        "rev": "GSQ9AL77",
-        "version": "1.1.4",
-        "filename": "voxy_server_lod-1.1.4.jar",
-        "url": "https://cdn.modrinth.com/data/Sef2SVSK/versions/GSQ9AL77/voxy_server_lod-1.1.4.jar",
-        "hash": "sha512-k0GGU6+fMK4WIXPBcllsd4t+8dxF3bcYbT5GGBR0DV6LtQhonkyvWlJlEQzA7eOgw9jbQAI8fu2nN/KUO21RYg=="
-      },
       "waystones": {
         "project": "waystones",
         "rev": "9lyx0L72",
