@@ -86,6 +86,7 @@
           OPS = "neasgay,vaivoe";
           ENABLE_QUERY = "true";
           MOTD = "\\u00A7b\\u00A7lWo\\u00A7d\\u00A7lke\\u00A7f\\u00A7lcr\\u00A7d\\u00A7laf\\u00A7b\\u00A7lt!";
+          REMOVE_OLD_MODS = "true";
         };
       })
     ];
