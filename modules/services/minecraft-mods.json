@@ -1292,6 +1292,14 @@
         "url": "https://cdn.modrinth.com/data/dCCkNFwE/versions/1uYFhgHN/suppsquared-neoforge-1.21-1.2.18.jar",
         "hash": "sha512-45bltGD8vtM/ue5TxuWOR996mKkzVMkdWijUB9guuDW66rvJL+fPQfz+Bw/df1t4seK6MC6xzsFJx8wJ9b262Q=="
       },
+      "tectonic": {
+        "project": "tectonic",
+        "rev": "vNrkxC3z",
+        "version": "3.0.26-neoforge-21.1",
+        "filename": "tectonic-3.0.26-neoforge-21.1.jar",
+        "url": "https://cdn.modrinth.com/data/lWDHr9jE/versions/vNrkxC3z/tectonic-3.0.26-neoforge-21.1.jar",
+        "hash": "sha512-f5H2n2mFz10FM9wKZFKG9AuWJeCmfkBZadFTSXkjqbLmuI5DawF+uWmh++KNAoUNhxUqBvLAHcVXeYFJEtdw7w=="
+      },
       "tinted_dyes-2.1.2-neoforge-1.21.1": {
         "source": "url",
         "filename": "tinted_dyes-2.1.2-neoforge-1.21.1.jar",
