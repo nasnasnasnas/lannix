@@ -96,6 +96,7 @@ in {
     loaderVersion ? null,
     memory ? "6G",
     environment ? {},
+    ports ? [],
     volumes ? [],
     depends_on ? [],
   }: let
@@ -110,7 +111,7 @@ in {
     };
   in {
     inherit container_name image restart networks depends_on;
-    ports = ["${toString port}:25565"];
+    ports = ["${toString port}:25565"] ++ ports;
     environment =
       {
         EULA = "TRUE";

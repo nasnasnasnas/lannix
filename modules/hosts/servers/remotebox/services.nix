@@ -76,6 +76,7 @@
             pack = "wokecraft";
             loaderVersion = "21.1.247";
             memory = "9G";
+            ports = ["127.0.0.1:19565:19565"];
             environment = {
               DIFFICULTY = "normal";
               ENABLE_WHITELIST = "true";
