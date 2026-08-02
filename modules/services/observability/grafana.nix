@@ -31,6 +31,7 @@
       inherit restart;
       inherit networks;
       inherit envSecrets;
+      inherit user;
       caddy_port = port;
       environment =
         {
