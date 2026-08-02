@@ -614,6 +614,15 @@
         "url": "https://cdn.modrinth.com/data/rmDY6fYt/versions/wCR4QGbG/delightlib-26.05.18-1.21-neoforge.jar",
         "hash": "sha512-mjg+z4CgsiHTPOTrE87C+FJ8nS6GgMshR6jZJVpjhMTLCosph6zNIhPNbxUouSkpCdCwIkucDTqqBn+zMgwahA=="
       },
+      "distanthorizons": {
+        "project": "distanthorizons",
+        "versionType": "beta",
+        "rev": "ZpKb4kZp",
+        "version": "3.2.0-b-1.21.1",
+        "filename": "DistantHorizons-3.2.0-b-1.21.1-fabric-neoforge.jar",
+        "url": "https://cdn.modrinth.com/data/uCdwusMi/versions/ZpKb4kZp/DistantHorizons-3.2.0-b-1.21.1-fabric-neoforge.jar",
+        "hash": "sha512-1BmfkvmS+9LHWjsOToHIqYvuiJAT9zR/IUn/piyGdIveIhNemyyCoQh125T6V2VxxmHF7hbS9We9ipPW8lX9Ig=="
+      },
       "domum-ornamentum-1.0.234-snapshot-main": {
         "source": "url",
         "filename": "domum-ornamentum-1.0.234-snapshot-main.jar",
@@ -1199,6 +1208,14 @@
         "filename": "spark-1.10.124-neoforge.jar",
         "url": "https://cdn.modrinth.com/data/l6YH9Als/versions/v5qtqRQi/spark-1.10.124-neoforge.jar",
         "hash": "sha512-+GzjTydZxp34JXjDl/9VtmbIRiYimpj1mEWLlgwhs4yV1r/vR3Kvf5Y8T0ho5eLZrva5nB1RurVb9F4Obmte1A=="
+      },
+      "ssrd": {
+        "project": "ssrd",
+        "rev": "OSM1jkMg",
+        "version": "1.8.5",
+        "filename": "SSRD-1.8.5-1.21.1.jar",
+        "url": "https://cdn.modrinth.com/data/fJ183v3D/versions/OSM1jkMg/SSRD-1.8.5-1.21.1.jar",
+        "hash": "sha512-fyOAaBMUd/+2KJSdNSj46TPN4qsF8sIP+XhumgtTi7joZqm23adGCJkBb6QfI5EAE+5HbMh20aS77wZhQ2oUMA=="
       },
       "structureessentials-1.21.1-5.0": {
         "source": "url",
