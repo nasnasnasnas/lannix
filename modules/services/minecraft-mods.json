@@ -1130,15 +1130,6 @@
         "url": "https://cdn.modrinth.com/data/T9PomCSv/versions/1L6XJqnY/sable-neoforge-1.21.1-2.0.3.jar",
         "hash": "sha512-wTxNoIYAHCBTYZBc06bFmnbjx9TAgiZarzuvL9MMeYCPZjS8qJq6KdtcCWqn2kBm92RUCTwwbDrpHGwNTWOuDQ=="
       },
-      "scalablelux": {
-        "project": "scalablelux",
-        "versionType": "alpha",
-        "rev": "w2yQbU01",
-        "version": "0.3.0-alpha.0.6+1.21.1",
-        "filename": "ScalableLux-neoforge-0.3.0-alpha.0.6-all.jar",
-        "url": "https://cdn.modrinth.com/data/Ps1zyz6x/versions/w2yQbU01/ScalableLux-neoforge-0.3.0-alpha.0.6-all.jar",
-        "hash": "sha512-auOoG96+mCFoLxk8ql6C/dL7qblPcqr6vJzkc5i8ngsJAIx+EzOP9DhAWl23noDz5Nh88LWpdWafZOAxfZQU4w=="
-      },
       "servercore": {
         "project": "servercore",
         "rev": "6N9hXiRa",
