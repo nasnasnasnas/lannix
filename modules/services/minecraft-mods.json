@@ -224,14 +224,6 @@
         "url": "https://cdn.modrinth.com/data/joEfVgkn/versions/PV8oLZ1q/carryon-neoforge-1.21.1-2.2.6.13.jar",
         "hash": "sha512-4JexHW8U4JV7q2wCdrgVQueGy4a5wx2fJZdfjJ+wSnNBiLh5BoMpi7xcaV3D3n1ulHYWogrSbUpyijvrC7eGZw=="
       },
-      "carryon-aeronautics-compat": {
-        "project": "carryon-aeronautics-compat",
-        "rev": "z7xbAdje",
-        "version": "1.1.1",
-        "filename": "CarryOnAeroCompat-1.21.1-1.1.1.jar",
-        "url": "https://cdn.modrinth.com/data/MpnDZ1Lx/versions/z7xbAdje/CarryOnAeroCompat-1.21.1-1.1.1.jar",
-        "hash": "sha512-k2hK9TiGOidiMqi/KjClRXMzQCPP+cCoKQp/9QTCIlYsRHQpvEAuWRBpom5vog6GHltDjQzlA9Xs3zhQZ2Q+0w=="
-      },
       "caverns-and-chasms": {
         "project": "caverns-and-chasms",
         "rev": "xDwRcEoZ",
