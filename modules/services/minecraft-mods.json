@@ -793,22 +793,6 @@
         "url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/tPkJmim6/geckolib-neoforge-1.21.1-4.9.2.jar",
         "hash": "sha512-yRASsWzEDI9I9pt4y44uXABkhq4kMfvSid/AG+ekIXKUvs6iLYOhVdazKzlpRQ34cTUqNpXhRSFouE9BNV97ng=="
       },
-      "geophilic": {
-        "project": "geophilic",
-        "rev": "jDzSPLta",
-        "version": "3.6",
-        "filename": "Geophilic v3.6.mod.jar",
-        "url": "https://cdn.modrinth.com/data/hl5OLM95/versions/jDzSPLta/Geophilic%20v3.6.mod.jar",
-        "hash": "sha512-yd0Sjw5J3EouH5E3BXYpbreNCNjbmd8XEOX9K6Fwi3UFPMSk8VM7F9Cj/+hCu30IM5wGZYbzYEUNG4Q3O/goHw=="
-      },
-      "geophilic-backport": {
-        "project": "geophilic-backport",
-        "rev": "gA1uuNv3",
-        "version": "1.3.3",
-        "filename": "GeophilicBackported-v1.3.3 1.21.1.jar",
-        "url": "https://cdn.modrinth.com/data/uTfd4Kbj/versions/gA1uuNv3/GeophilicBackported-v1.3.3%201.21.1.jar",
-        "hash": "sha512-VoSeB+VGBRjoIhp8fTcxrGOhtSlhV3HAWhHyjMf97C8er7NckDj7uUs9eAQgfr4SYNQ+hVOuiJQgJUWXb8ROAg=="
-      },
       "gravestone-mod": {
         "project": "gravestone-mod",
         "rev": "3a6KIbgL",
@@ -1307,22 +1291,6 @@
         "filename": "suppsquared-neoforge-1.21-1.2.18.jar",
         "url": "https://cdn.modrinth.com/data/dCCkNFwE/versions/1uYFhgHN/suppsquared-neoforge-1.21-1.2.18.jar",
         "hash": "sha512-45bltGD8vtM/ue5TxuWOR996mKkzVMkdWijUB9guuDW66rvJL+fPQfz+Bw/df1t4seK6MC6xzsFJx8wJ9b262Q=="
-      },
-      "terralith": {
-        "project": "terralith",
-        "rev": "IY93YaEe",
-        "version": "2.6.2",
-        "filename": "Terralith_1.21.1_v2.6.2_Neoforge.jar",
-        "url": "https://cdn.modrinth.com/data/8oi3bsk5/versions/IY93YaEe/Terralith_1.21.1_v2.6.2_Neoforge.jar",
-        "hash": "sha512-NSmPFoJWf2PcFmWLBM7lSYswgZ8cBflxK0SA1/XrFwWds7E6sU+BoF/iVxSdEc7SzOIDDTcnwXR+3YZXxT4qhQ=="
-      },
-      "terralith-restoned": {
-        "project": "terralith-restoned",
-        "rev": "9wwdRqkT",
-        "version": "1.3.1",
-        "filename": "Terralith_ReStoned_v1.3.1.jar",
-        "url": "https://cdn.modrinth.com/data/oTQsXi8U/versions/9wwdRqkT/Terralith_ReStoned_v1.3.1.jar",
-        "hash": "sha512-ZLZJmqCKF0vkXAgO1dfmiBlWAXCOeqntRDxPe9bnd3lRAC+hNQI7a4Wp4s3nBOH9qaaoHcMG3/u8qCm4VlP1Qg=="
       },
       "tinted_dyes-2.1.2-neoforge-1.21.1": {
         "source": "url",
