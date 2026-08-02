@@ -156,12 +156,6 @@
         "url": "https://cdn.modrinth.com/data/2x0ULgTj/versions/AmVIVNAC/better_lib-neoforge-1.21.1-1.0.111.jar",
         "hash": "sha512-tEwTHEVyvIwaPyFxfKUQq2U98LRQRhSJamn/69KczgZFds2m9H6fgR9cXjzOsI4swgRLxsH/heNHN8yeRYANFA=="
       },
-      "betterchunkloading-1.21-5.4": {
-        "source": "url",
-        "filename": "betterchunkloading-1.21-5.4.jar",
-        "url": "https://f004.backblazeb2.com/file/minecraft-mod-jars/minecraft-mods/4d13bdaaee282b7c0dcfba5f54e0eff7f0850d95d866ed1935fc2b95e5f626b0/betterchunkloading-1.21-5.4.jar",
-        "hash": "sha256-TRO9qu4oK3wNz7pfVODv9/CFDZXYZu0ZNfwrleX2JrA="
-      },
       "betterend-neoforge": {
         "project": "betterend-neoforge",
         "rev": "FsM82vug",
@@ -216,6 +210,15 @@
         "url": "https://cdn.modrinth.com/data/b7vOFSIp/versions/Y12rtT96/buzzier_bees-1.21.1-7.0.1.jar",
         "hash": "sha512-6sbjq3sl0j9t1GdqNaaJEuia0D/iysFogGV0egW/BNCEZvyQExMUeOwIJGAMZzi2UtwmkSXBag0i4FfRXD/Szw=="
       },
+      "c2me-neoforge": {
+        "project": "c2me-neoforge",
+        "versionType": "alpha",
+        "rev": "5Q757s3v",
+        "version": "0.4.0-alpha.0.116+1.21.1",
+        "filename": "c2me-neoforge-mc1.21.1-0.4.0-alpha.0.116.jar",
+        "url": "https://cdn.modrinth.com/data/COlSi5iR/versions/5Q757s3v/c2me-neoforge-mc1.21.1-0.4.0-alpha.0.116.jar",
+        "hash": "sha512-VLW4AmSEv0TcefRrYZZcLUX0czu2tYClnSJoxdTcEeiuP+kjjU7gRSksw63IDsm8/S4hpLdDPjHb8TRKUrky8g=="
+      },
       "carry-on": {
         "project": "carry-on",
         "rev": "PV8oLZ1q",
@@ -251,12 +254,6 @@
         "filename": "chefsdelight-1.0.5-neoforge-1.21.1.jar",
         "url": "https://cdn.modrinth.com/data/pvcsfne4/versions/csBO1q5h/chefsdelight-1.0.5-neoforge-1.21.1.jar",
         "hash": "sha512-6ou4P9EKmTbVLHK3lSq0ZnTKNCbXQafkLzAd8Z4UdLR1lKua0bi0JAETBfWBRlIq/k6ZHXmSCln3/wZt2a5iCg=="
-      },
-      "chunksending-1.21-2.9": {
-        "source": "url",
-        "filename": "chunksending-1.21-2.9.jar",
-        "url": "https://f004.backblazeb2.com/file/minecraft-mod-jars/minecraft-mods/0e75df38c24984609800cb1ff52f4f132627846783503d5fed6f413f0fd35d31/chunksending-1.21-2.9.jar",
-        "hash": "sha256-DnXfOMJJhGCYAMsf9S9PEyYnhGeDUD1f7W9BPw/TXTE="
       },
       "chunky": {
         "project": "chunky",
@@ -685,12 +682,6 @@
         "filename": "FarmersDelight-1.21.1-1.3.2.jar",
         "url": "https://cdn.modrinth.com/data/R2OftAxM/versions/GbNuOZ4S/FarmersDelight-1.21.1-1.3.2.jar",
         "hash": "sha512-2lpCNkJ9+AENdZkiAchyOshKj6ce+lVnBVHTM8rJSpCujoxTbaY64Hpn9NANwndK5BUQMPQdJohuUI9KA3yGlA=="
-      },
-      "fastasyncworldsave-1.21-2.6": {
-        "source": "url",
-        "filename": "fastasyncworldsave-1.21-2.6.jar",
-        "url": "https://f004.backblazeb2.com/file/minecraft-mod-jars/minecraft-mods/099316ee212ff44bcd7aea853f0153cd28432e0297676d21f61e8b000089714f/fastasyncworldsave-1.21-2.6.jar",
-        "hash": "sha256-CZMW7iEv9EvNeuqFPwFTzShDLgKXZ20h9h6LAACJcU8="
       },
       "ferrite-core": {
         "project": "ferrite-core",
@@ -1139,6 +1130,15 @@
         "url": "https://cdn.modrinth.com/data/T9PomCSv/versions/1L6XJqnY/sable-neoforge-1.21.1-2.0.3.jar",
         "hash": "sha512-wTxNoIYAHCBTYZBc06bFmnbjx9TAgiZarzuvL9MMeYCPZjS8qJq6KdtcCWqn2kBm92RUCTwwbDrpHGwNTWOuDQ=="
       },
+      "scalablelux": {
+        "project": "scalablelux",
+        "versionType": "alpha",
+        "rev": "w2yQbU01",
+        "version": "0.3.0-alpha.0.6+1.21.1",
+        "filename": "ScalableLux-neoforge-0.3.0-alpha.0.6-all.jar",
+        "url": "https://cdn.modrinth.com/data/Ps1zyz6x/versions/w2yQbU01/ScalableLux-neoforge-0.3.0-alpha.0.6-all.jar",
+        "hash": "sha512-auOoG96+mCFoLxk8ql6C/dL7qblPcqr6vJzkc5i8ngsJAIx+EzOP9DhAWl23noDz5Nh88LWpdWafZOAxfZQU4w=="
+      },
       "servercore": {
         "project": "servercore",
         "rev": "6N9hXiRa",
@@ -1170,12 +1170,6 @@
         "filename": "sliceanddice-4.3.3-neoforge.jar",
         "url": "https://cdn.modrinth.com/data/GmjmRQ0A/versions/N67LJgrN/sliceanddice-4.3.3-neoforge.jar",
         "hash": "sha512-O9vSgq5aoR72wYa3Ukl1QXMLUPtADEliIwvNdzTP5Ojaou5WU4dFDf4Ott6qD6RL+B+Zx4i6wJsaYNjxmR2zfw=="
-      },
-      "smoothchunk-1.21-4.1": {
-        "source": "url",
-        "filename": "smoothchunk-1.21-4.1.jar",
-        "url": "https://f004.backblazeb2.com/file/minecraft-mod-jars/minecraft-mods/a79f06eaffe7e5b834620da3c2cdad782aeaf4f1f207d03f8b0228a20bab65e3/smoothchunk-1.21-4.1.jar",
-        "hash": "sha256-p58G6v/n5bg0Yg2jws2teCrq9PHyB9A/iwIoogurZeM="
       },
       "smoothmovement-1.21.1-2.7": {
         "source": "url",
@@ -1476,6 +1470,14 @@
         "filename": "xaeroworldmap-neoforge-1.21.1-1.44.2.jar",
         "url": "https://cdn.modrinth.com/data/NcUtCpym/versions/55gtOc9Y/xaeroworldmap-neoforge-1.21.1-1.44.2.jar",
         "hash": "sha512-SmsSjKCgcpCtYrqwPpjC7Vx7NwFLs6Po5050IkKcosrSJcBF+fj5aBZi39opgJ3ZzbJwG6R3SjpX4vyE60l/qA=="
+      },
+      "zfastnoise": {
+        "project": "zfastnoise",
+        "rev": "9vSFkDAr",
+        "version": "1.0.13+1.21.1+neoforge",
+        "filename": "zfastnoise-1.0.13+1.21.1+neoforge.jar",
+        "url": "https://cdn.modrinth.com/data/OnlVIpq5/versions/9vSFkDAr/zfastnoise-1.0.13%2B1.21.1%2Bneoforge.jar",
+        "hash": "sha512-I8UNw9ddqW2HsGU4HjKpeVKAF/hy0Fa/HLAS4IUSJzSrIY6or3tVcEA9g8iOv7Uylpaa9HGY/bY3BYdT05dCeA=="
       },
       "zeta": {
         "project": "zeta",
