@@ -633,15 +633,6 @@
         "url": "https://cdn.modrinth.com/data/rmDY6fYt/versions/wCR4QGbG/delightlib-26.05.18-1.21-neoforge.jar",
         "hash": "sha512-mjg+z4CgsiHTPOTrE87C+FJ8nS6GgMshR6jZJVpjhMTLCosph6zNIhPNbxUouSkpCdCwIkucDTqqBn+zMgwahA=="
       },
-      "distanthorizons": {
-        "project": "distanthorizons",
-        "versionType": "beta",
-        "rev": "ZpKb4kZp",
-        "version": "3.2.0-b-1.21.1",
-        "filename": "DistantHorizons-3.2.0-b-1.21.1-fabric-neoforge.jar",
-        "url": "https://cdn.modrinth.com/data/uCdwusMi/versions/ZpKb4kZp/DistantHorizons-3.2.0-b-1.21.1-fabric-neoforge.jar",
-        "hash": "sha512-1BmfkvmS+9LHWjsOToHIqYvuiJAT9zR/IUn/piyGdIveIhNemyyCoQh125T6V2VxxmHF7hbS9We9ipPW8lX9Ig=="
-      },
       "domum-ornamentum-1.0.234-snapshot-main": {
         "source": "url",
         "filename": "domum-ornamentum-1.0.234-snapshot-main.jar",
@@ -946,11 +937,11 @@
       },
       "luckperms": {
         "project": "luckperms",
-        "rev": "rnvg05YO",
-        "version": "v5.4.140-neoforge",
-        "filename": "LuckPerms-NeoForge-5.4.140.jar",
-        "url": "https://cdn.modrinth.com/data/Vebnzrzj/versions/rnvg05YO/LuckPerms-NeoForge-5.4.140.jar",
-        "hash": "sha512-UNlMWp0mNaRFor1PLxbCIXJni5MxXj2R+ggpNJzNKwKUQ1Sve6o+auDHv+GfSXsJr0YfhKrMk5ALWbdaB80CkA=="
+        "rev": "dKAPoPGd",
+        "version": "v5.4.150-neoforge",
+        "filename": "LuckPerms-NeoForge-5.4.150.jar",
+        "url": "https://cdn.modrinth.com/data/Vebnzrzj/versions/dKAPoPGd/LuckPerms-NeoForge-5.4.150.jar",
+        "hash": "sha512-Jt4OdNh7kazztxBQ7RiApQ/9GAmzoTCaLiS+5UExk/J6UFbhO2nY85CF4ocRJEwCvF/DKb4TF0q7UgAIoMqWgg=="
       },
       "minecolonies-1.1.1367-1.21.1-snapshot": {
         "source": "url",
