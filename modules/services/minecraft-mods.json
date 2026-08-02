@@ -1193,6 +1193,12 @@
         "url": "https://cdn.modrinth.com/data/nmoqTijg/versions/Yx6FiECq/sophisticatedcore-1.21.1-1.4.80.2194.jar",
         "hash": "sha512-7/jp+1wgipL64mjqTZ058HmNaKMdnI+czn8wbJ3drWxnr+HFjVE0fQfUFkRFU3U/hxf8RSAv88+ktSqIqItGQg=="
       },
+      "prometheus-exporter": {
+        "source": "url",
+        "filename": "Prometheus-Exporter-1.21.1-neoforge-1.2.1.jar",
+        "url": "https://github.com/cpburnz/minecraft-prometheus-exporter/releases/download/1.21.1-neoforge-1.2.1/Prometheus-Exporter-1.21.1-neoforge-1.2.1.jar",
+        "hash": "sha512-T64l4a0yZ24kM3SoQqujrnE5KbTdIGgIWdMDLnX9fPdzcm0vWuil0Bw3NBeOmeF/6mAoOqDqMM8wl7gCl6ypUw=="
+      },
       "spark": {
         "project": "spark",
         "rev": "v5qtqRQi",

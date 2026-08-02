@@ -16,6 +16,40 @@
         forward_to = [prometheus.remote_write.default.receiver]
       }
     '') config.server-observability.extraPrometheusScrapeTargets);
+    dockerLogContainers = config.server-observability.dockerLogContainers;
+    dockerContainerPattern =
+      lib.concatStringsSep "|" (map lib.escapeRegex dockerLogContainers);
+    dockerLogs = lib.optionalString (dockerLogContainers != []) ''
+      discovery.docker "selected_logs" {
+        host = "unix:///var/run/docker.sock"
+      }
+
+      discovery.relabel "selected_docker_logs" {
+        targets = discovery.docker.selected_logs.targets
+
+        rule {
+          source_labels = ["__meta_docker_container_name"]
+          regex         = "^/(${dockerContainerPattern})$"
+          action        = "keep"
+        }
+        rule {
+          source_labels = ["__meta_docker_container_name"]
+          regex         = "^/(.*)$"
+          replacement   = "$1"
+          target_label  = "container"
+        }
+      }
+
+      loki.source.docker "selected" {
+        host       = "unix:///var/run/docker.sock"
+        targets    = discovery.relabel.selected_docker_logs.output
+        forward_to = [loki.write.default.receiver]
+        labels = {
+          host = "${config.networking.hostName}",
+          job  = "integrations/docker",
+        }
+      }
+    '';
   in {
     options.server-observability = {
       enable = lib.mkEnableOption "Alloy node metrics + journald log shipping to the central observability stack";
@@ -34,6 +68,11 @@
         default = {};
         description = "Additional Prometheus scrape jobs, keyed by job name with host:port targets.";
       };
+      dockerLogContainers = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [];
+        description = "Docker container names whose stdout/stderr logs Alloy ships.";
+      };
     };
 
     config = lib.mkIf config.server-observability.enable {
@@ -46,6 +85,8 @@
         extraGroups = ["adm" "systemd-journal"];
       };
       users.groups.alloy = {};
+      systemd.services.alloy.serviceConfig.SupplementaryGroups =
+        lib.mkIf (dockerLogContainers != []) (lib.mkAfter ["docker"]);
 
       environment.etc."alloy/config.alloy".text = ''
         prometheus.exporter.self "default" { }
@@ -96,6 +137,8 @@
           }
           forward_to = [loki.write.default.receiver]
         }
+
+        ${dockerLogs}
 
         loki.write "default" {
           endpoint {

@@ -51,7 +51,11 @@
 
     server-observability = {
       enable = true;
-      extraPrometheusScrapeTargets.minecraft = ["127.0.0.1:8080"];
+      extraPrometheusScrapeTargets = {
+        minecraft = ["127.0.0.1:8080"];
+        minecraft_details = ["127.0.0.1:19565"];
+      };
+      dockerLogContainers = ["wokecraft"];
     };
 
     environment.systemPackages = with pkgs;
