@@ -89,6 +89,8 @@ in {
     image ? config.flake.lib.image "itzg/minecraft-server",
     restart ? "unless-stopped",
     networks ? [],
+    domains ? [],
+    caddyPort ? null,
     dataDir,
     pack,
     port ? 25565,
@@ -110,7 +112,8 @@ in {
       quilt = "QUILT_LOADER_VERSION";
     };
   in {
-    inherit container_name image restart networks depends_on;
+    inherit container_name image restart networks depends_on domains;
+    caddy_port = caddyPort;
     ports = ["${toString port}:25565"] ++ ports;
     environment =
       {

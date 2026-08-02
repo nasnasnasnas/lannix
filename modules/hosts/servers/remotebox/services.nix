@@ -72,6 +72,8 @@
         services = with inputs.self.services; [
           (minecraft {
             container_name = "wokecraft";
+            domains = ["https://wokecraft.szpunar.cloud"];
+            caddyPort = 8100;
             dataDir = "/home/magicbox/data/wokecraft";
             pack = "wokecraft";
             loaderVersion = "21.1.247";

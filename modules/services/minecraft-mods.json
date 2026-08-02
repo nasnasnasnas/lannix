@@ -186,6 +186,14 @@
         "url": "https://f004.backblazeb2.com/file/minecraft-mod-jars/minecraft-mods/5dfffc80c057b4d36123bd5f5cad9f32f86896a9dd993ea4a3ecad315cabd77e/blockui-1.0.211-1.21.1-snapshot.jar",
         "hash": "sha256-Xf/8gMBXtNNhI71fXK2fMvholqndmT6ko+ytMVyr134="
       },
+      "bluemap": {
+        "project": "swbUV1cr",
+        "rev": "8iJcPOHJ",
+        "version": "5.7-neoforge",
+        "filename": "bluemap-5.7-neoforge.jar",
+        "url": "https://cdn.modrinth.com/data/swbUV1cr/versions/8iJcPOHJ/bluemap-5.7-neoforge.jar",
+        "hash": "sha512-czKvvNI4n4RuIUKgk3qFrsGnyQsCh205bHAb2syuUp75GK2tynxeRysvD84uemFPGDLxV58xDeikupsKlxFDNQ=="
+      },
       "blueprint": {
         "project": "blueprint",
         "rev": "LMGtMapI",
