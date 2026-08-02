@@ -79,6 +79,10 @@
     "tag": "latest",
     "digest": "sha256:4648b0987d37ea9f398e93940bafb32b4f0fa0ff1a7611af993a35ea4debc03f"
   },
+  "itzg/minecraft-server": {
+    "tag": "java21",
+    "digest": "sha256:4b6a75fd5cbca70ca3580ae8c0ea67286dd99c303554bb57e95bb2bade32f428"
+  },
   "linuxserver/bazarr": {
     "tag": "latest",
     "digest": "sha256:ab401a0f361cfad328e444838b13d5b334b189d0f556fc91a3623eb581df36df"

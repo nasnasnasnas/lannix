@@ -1,0 +1,179 @@
+name: bump-mods
+
+on:
+  # schedule:
+  #   - cron: "0 9 * * *"
+  workflow_dispatch:
+    inputs:
+      pack:
+        description: "Only bump this minecraft-mods.json pack (empty = scan all)."
+        required: false
+        default: ""
+        type: string
+
+concurrency:
+  group: bump-mods
+  cancel-in-progress: false
+
+jobs:
+  bump-mods:
+    runs-on: native
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Configure Nix GitHub auth
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          set -euo pipefail
+          : "${RUNNER_TEMP:=$HOME/.cache/runner-tmp}"
+          mkdir -p "$RUNNER_TEMP"
+          NIX_CONF="$RUNNER_TEMP/nix.conf"
+          (umask 077; : > "$NIX_CONF")
+          if [ -n "${GH_TOKEN:-}" ]; then
+            printf 'access-tokens = github.com=%s\n' "$GH_TOKEN" > "$NIX_CONF"
+          fi
+          chmod 600 "$NIX_CONF"
+          echo "NIX_USER_CONF_FILES=$NIX_CONF" >> "$GITHUB_ENV"
+
+      - name: Checkout repository
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SERVER: ${{ github.server_url }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          GIT_CONF="$(mktemp)"
+          git config -f "$GIT_CONF" --add safe.directory '*'
+          export GIT_CONFIG_GLOBAL="$GIT_CONF"
+          echo "GIT_CONFIG_GLOBAL=$GIT_CONF" >> "$GITHUB_ENV"
+          git clone "https://oauth2:${TOKEN}@${SERVER#https://}/${REPO}.git" .
+          git checkout main
+          git config user.name "forgejo-actions"
+          git config user.email "actions@git.szpunar.cloud"
+
+      - name: Bump mod pins
+        id: bump
+        env:
+          BUMP_ONLY: ${{ inputs.pack }}
+        run: |
+          set -euo pipefail
+          : "${GITHUB_OUTPUT:?GITHUB_OUTPUT not set by runner}"
+          OUTPUT=$(mktemp)
+          # Capture CHANGED lines; bumper exits non-zero on source failures,
+          # but we still want to open PRs for any packs that did resolve.
+          nix run .#bump-mods 2>&1 | tee "$OUTPUT" || true
+          CHANGED_COUNT=$(grep -c '^CHANGED' "$OUTPUT" || true)
+          echo "changed_count=$CHANGED_COUNT" >> "$GITHUB_OUTPUT"
+          # Preserve all bumped pins before each per-pack branch resets to main.
+          cp modules/services/minecraft-mods.json "$RUNNER_TEMP/bumped-minecraft-mods.json"
+          cp "$OUTPUT" "$RUNNER_TEMP/bump-output.txt"
+          rm -f "$OUTPUT"
+
+      - name: Open one PR per changed pack
+        if: steps.bump.outputs.changed_count != '0'
+        env:
+          PR_TOKEN: ${{ secrets.PR_TOKEN }}
+          SERVER: ${{ github.server_url }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          API_BASE="${SERVER#https://}"
+          API_URL="https://${API_BASE}/api/v1/repos/${REPO}"
+          # Repo owner for the PR head field — Forgejo needs "owner:branch"
+          # (not just "branch") to properly link same-repo PRs.
+          REPO_OWNER="${REPO%%/*}"
+
+          while IFS=$'\t' read -r _ pack changesJson; do
+            slug=$(printf '%s' "$pack" | sed 's#[/:]#-#g')
+            branch="mods/bump-${slug}"
+            # Check if branch already exists (dedupe: reuse branch, existing PR auto-updates).
+            BRANCH_EXISTS=$(curl -fsSL -o /dev/null -w '%{http_code}' \
+              -H "Authorization: token $PR_TOKEN" \
+              "$API_URL/branches/$branch" 2>/dev/null || true)
+
+            # While a bump PR is open, main still has the old pins. Skip a new
+            # commit when the existing branch already has the fully bumped pack.
+            if [ "$BRANCH_EXISTS" = "200" ]; then
+              git fetch origin "$branch" --quiet
+              BRANCH_PACK=$(git show "origin/$branch:modules/services/minecraft-mods.json" \
+                | jq -cS --arg pack "$pack" '.[$pack]' 2>/dev/null || true)
+              TARGET_PACK=$(jq -cS --arg pack "$pack" '.[$pack]' \
+                "$RUNNER_TEMP/bumped-minecraft-mods.json")
+              if [ "$BRANCH_PACK" = "$TARGET_PACK" ]; then
+                echo "Skipping $pack — branch $branch already matches"
+                continue
+              fi
+            fi
+
+            # Start from clean main; apply the entire pack from the fully bumped manifest.
+            git checkout main
+            git checkout -B "$branch"
+            git checkout main -- modules/services/minecraft-mods.json
+            jq --slurpfile bumped "$RUNNER_TEMP/bumped-minecraft-mods.json" \
+              --arg pack "$pack" \
+              '.[$pack] = $bumped[0][$pack]' \
+              modules/services/minecraft-mods.json > modules/services/minecraft-mods.json.tmp
+            mv modules/services/minecraft-mods.json.tmp modules/services/minecraft-mods.json
+
+            TABLE_ROWS=$(printf '%s\n' "$changesJson" | jq -r '
+              def cell:
+                tostring
+                | gsub("[\r\n]+"; " ")
+                | gsub("\\|"; "\\|");
+              .[] | "| \(.mod | cell) | \(.old | cell) | \(.new | cell) |"
+            ')
+            PR_BODY=$(printf 'Updates the `%s` mod pack:\n\n| Mod | Previous version | New version |\n| --- | --- | --- |\n%s' \
+              "$pack" "$TABLE_ROWS")
+
+            git add modules/services/minecraft-mods.json
+            git commit -m "chore(mods): bump ${pack}" -m "$PR_BODY"
+            # Force-push under PR_TOKEN so the push actor triggers PR workflows.
+            git push -f "https://oauth2:${PR_TOKEN}@${API_BASE}/${REPO}.git" "HEAD:${branch}"
+
+            if [ "$BRANCH_EXISTS" != "200" ]; then
+              # Wait for Forgejo's asynchronous branch-push hook.
+              for i in 1 2 3 4 5; do
+                CODE=$(curl -fsSL -o /dev/null -w '%{http_code}' \
+                  -H "Authorization: token $PR_TOKEN" \
+                  "$API_URL/branches/$branch" 2>/dev/null || true)
+                [ "$CODE" = "200" ] && break
+                echo "Branch not yet registered (HTTP $CODE), retrying in 3s…"
+                sleep 3
+              done
+              curl -fsSL -X POST \
+                -H "Authorization: token $PR_TOKEN" \
+                -H "Content-Type: application/json" \
+                -d "$(jq -n --arg head "${REPO_OWNER}:${branch}" --arg title "chore(mods): bump ${pack}" --arg body "$PR_BODY" \
+                  '{head: $head, base: "main", title: $title, body: $body}')" \
+                "$API_URL/pulls" > /dev/null
+              echo "Opened PR for $pack (branch $branch)"
+            else
+              PR_NUM=$(curl -fsSL \
+                -H "Authorization: token $PR_TOKEN" \
+                "$API_URL/pulls?state=open&limit=1000" 2>/dev/null \
+                | jq -r --arg b "$branch" 'map(select(.head.ref==$b))[0].number // empty')
+              if [ -n "$PR_NUM" ]; then
+                curl -fsSL -X PATCH \
+                  -H "Authorization: token $PR_TOKEN" \
+                  -H "Content-Type: application/json" \
+                  -d "$(jq -n --arg body "$PR_BODY" '{body: $body}')" \
+                  "$API_URL/pulls/$PR_NUM" > /dev/null
+                echo "Updated existing PR #$PR_NUM for $pack (branch $branch)"
+              else
+                echo "WARN: no open PR found for branch $branch — body not updated"
+              fi
+            fi
+
+            git checkout main
+          done < <(grep '^CHANGED' "$RUNNER_TEMP/bump-output.txt")
+
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -f "${RUNNER_TEMP:-$HOME/.cache/runner-tmp}/nix.conf" \
+                "${RUNNER_TEMP:-$HOME/.cache/runner-tmp}/bump-output.txt" \
+                "${RUNNER_TEMP:-$HOME/.cache/runner-tmp}/bumped-minecraft-mods.json" \
+                "${GIT_CONFIG_GLOBAL:-}"

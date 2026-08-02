@@ -73,6 +73,20 @@
         };
       })
       (umami {domains = ["https://umami.szpunar.cloud"];})
+      (minecraft {
+        dataDir = "/home/magicbox/data/wokecraft";
+        pack = "wokecraft";
+        loaderVersion = "21.1.248";
+        memory = "6G";
+        environment = {
+          DIFFICULTY = "normal";
+          ENABLE_WHITELIST = "true";
+          WHITELIST = "neasgay,vaivoe,limboLegion,silicasandwhich";
+          OPS = "neasgay,vaivoe";
+          ENABLE_QUERY = true;
+          MOTD = "\u00A7l\u00A7bWo\u00A7dke\u00A7fcr\u00A7daf\u00A7bt!";
+        };
+      })
     ];
   };
 }

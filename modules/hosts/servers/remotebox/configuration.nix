@@ -33,6 +33,12 @@
       overlays = [opencodeOverlay];
     };
   in {
+    system.activationScripts.directoryConfig.text = ''
+      mkdir -p /home/magicbox/data/wokecraft
+      chown 1000:100 /home/magicbox/data/wokecraft || true
+      chmod 755 /home/magicbox/data/wokecraft || true
+    '';
+
     # imports = with inputs.self.modules.nixos; [
     #   system-cli
     #   systemd-boot
@@ -114,7 +120,12 @@
       useRoutingFeatures = "server";
     };
 
-    networking.firewall.allowedTCPPorts = [22 80 443];
+    networking.firewall.allowedTCPPorts = [
+      22
+      80
+      443
+      25565 # wokecraft
+  ];
 
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
