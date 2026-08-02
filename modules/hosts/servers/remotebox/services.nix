@@ -46,39 +46,6 @@
           })
         ];
       };
-      pulse = {
-        services = with inputs.self.services; [
-          (pulse {
-            domains = ["https://pulse.szp.lol"];
-            fileSecrets = {
-              "/run/secrets/pulse_db_password" = "op://Secrets/Pulse Production Secrets/Postgres Password";
-            };
-            envSecrets = {
-              ANTHROPIC_API_KEY = "op://Secrets/Pulse Production Secrets/Anthropic API Key";
-              BETTER_AUTH_SECRET = "op://Secrets/Pulse Production Secrets/Better Auth Secret";
-              TELEGRAF_SALT = "op://Secrets/Pulse Production Secrets/Telegraf Salt";
-              POSTGRES_PASSWORD = "op://Secrets/Pulse Production Secrets/Postgres Password";
-            };
-            environment = let
-              url = "https://pulse.szp.lol";
-            in {
-              BETTER_AUTH_URL = url;
-              PUBLIC_APP_URL = url;
-              POSTGRES_USER = "postgres";
-              POSTGRES_BIND_ADDRESS = "172.17.0.1";
-              POSTGRES_PORT = "5432";
-              AUTH_SCHEMA = "auth";
-              TIMESCALE_DATABASE = "timescale";
-              DEMO_MODE_TABLE = "metrics_929be68962f58b60e0853809cfe78c131f30ea33";
-              DEMO_MODE_USER = "68223fa4-172e-4349-8128-8a22a01d77d3";
-            };
-            pgUrlSpecs = [
-              { var = "POSTGRES_BASE_URL"; scheme = "postgres"; user = "postgres"; host = "172.17.0.1"; port = "5432"; database = null; suffix = null; passwordHostPath = "/var/lib/opnix/secrets/pulse/files/run-secrets-pulse_db_password"; }
-              { var = "AUTH_DATABASE_URL"; scheme = "postgres"; user = "postgres"; host = "172.17.0.1"; port = "5432"; database = "auth"; suffix = "?options=-c%20search_path%3Dauth"; passwordHostPath = "/var/lib/opnix/secrets/pulse/files/run-secrets-pulse_db_password"; }
-            ];
-          })
-        ];
-      };
       realtime = {
         services = with inputs.self.services; [
           (realtime-md {
