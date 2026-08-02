@@ -85,7 +85,7 @@
           WHITELIST = "neasgay,vaivoe,limboLegion,silicasandwhich";
           OPS = "neasgay,vaivoe";
           ENABLE_QUERY = "true";
-          MOTD = "\\u00A7l\\u00A7bWo\\u00A7dke\\u00A7fcr\\u00A7daf\\u00A7bt!";
+          MOTD = "\\u00A7b\\u00A7lWo\\u00A7d\\u00A7lke\\u00A7f\\u00A7lcr\\u00A7d\\u00A7laf\\u00A7b\\u00A7lt!";
         };
       })
     ];
