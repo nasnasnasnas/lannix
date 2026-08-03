@@ -77,7 +77,7 @@
             dataDir = "/home/magicbox/data/wokecraft";
             pack = "wokecraft";
             loaderVersion = "21.1.247";
-            memory = "9G";
+            memory = "8G";
             ports = ["127.0.0.1:19565:19565"];
             environment = {
               DIFFICULTY = "normal";
