@@ -118,7 +118,7 @@
       "targets": [
         {
           "datasource": { "type": "victoriametrics-metrics-datasource", "uid": "victoriametrics" },
-          "expr": "clamp_max(rate(mc_server_tick_seconds_count{instance=\"wokecraft\"}[5m]) / rate(mc_server_tick_seconds_sum{instance=\"wokecraft\"}[5m]), 20)",
+          "expr": "irate(mc_server_tick_seconds_count{instance=\"wokecraft\"}[2m])",
           "legendFormat": "TPS",
           "refId": "A"
         }
