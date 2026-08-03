@@ -1007,14 +1007,6 @@
         "url": "https://cdn.modrinth.com/data/ZsrrjDbP/versions/erk04BGa/DungeonsAriseSevenSeas-1.21.x-1.0.4-neoforge.jar",
         "hash": "sha512-FMmoM/heNDVhVHpe+0Sn8nW04/qXKUyjZijFS5kKNjT7DfEiOhJ6ArW9xbET37/KRtdpBrDvo+eX8GIswU07UA=="
       },
-      "wwoo": {
-        "project": "wwoo",
-        "rev": "sU7oaRZv",
-        "version": "2.6.7",
-        "filename": "wwoo-neoforge-2.6.7.jar",
-        "url": "https://cdn.modrinth.com/data/II7t6llZ/versions/sU7oaRZv/wwoo-neoforge-2.6.7.jar",
-        "hash": "sha512-Jfu0ukO0Axv2sXeIuVrRN0tb1RKkUMI5G0rcq6cmgExD5vkbGiE5/yr5rkc9OumQxLOGxSKA4KIzADT18bCFcg=="
-      },
       "xaeros-minimap": {
         "project": "xaeros-minimap",
         "rev": "JXvcT1hp",
