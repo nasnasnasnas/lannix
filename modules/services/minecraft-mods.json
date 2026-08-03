@@ -646,6 +646,14 @@
         "url": "https://cdn.modrinth.com/data/sbIsGaOV/versions/x376YU9w/dragonlib-neoforge-1.21.1-beta-3.0.28.jar",
         "hash": "sha512-hZ/1vPl9qyr/99dWIKJLsvRyp16MvwT1NrsNllXR9/Xb3KuM8TynBt/FfgWBu7HV4zMcPf7OcyR2G55VvNYpMQ=="
       },
+      "easy-mob-spawn-control": {
+        "project": "pTXV6gwq",
+        "rev": "iHt1k1B8",
+        "version": "1.5.0",
+        "filename": "easy_mob_spawn_control-1.5.0.jar",
+        "url": "https://cdn.modrinth.com/data/pTXV6gwq/versions/iHt1k1B8/easy_mob_spawn_control-1.5.0.jar",
+        "hash": "sha512-aGWZXhluX6QqdieQxdHzQUX/CRIoPztv2J2vuJItmU0Y0QeJEUNtgSiNmh2bfRSGgrOWcHf8HDaGIbUVXpxqvA=="
+      },
       "environmental": {
         "project": "environmental",
         "rev": "NdDV1AM8",
