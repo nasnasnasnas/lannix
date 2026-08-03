@@ -159,6 +159,14 @@
         "url": "https://cdn.modrinth.com/data/hIu9KJTT/versions/MbcR48Ou/BrewinAndChewin-neoforge-4.5.0%2B1.21.1.jar",
         "hash": "sha512-LU0mRWTRJ4T1QlF3+xuItewNFnLAlX1qeOseEv+l4OMaf4X4vrnALfBIkEP10q5Yifw/WJ6OX47nlxpFi6DzTQ=="
       },
+      "build-sandbox": {
+        "project": "build-sandbox",
+        "rev": "OVPQzxWq",
+        "version": "1.8.0",
+        "filename": "buildsandbox-1.8.0.jar",
+        "url": "https://cdn.modrinth.com/data/nh4EeZr7/versions/OVPQzxWq/buildsandbox-1.8.0.jar",
+        "hash": "sha512-RhuA36OjISsPl7R5pQrIijEArEnG4y4V5r3dEFzJxeiCI+t3QuQDAbNmg/ncrEEAV6XmrOC3GwislQCcSLgphg=="
+      },
       "c2me-neoforge": {
         "project": "c2me-neoforge",
         "versionType": "alpha",
@@ -742,6 +750,14 @@
         "filename": "NaturesCompass-1.21.1-3.4.0-neoforge.jar",
         "url": "https://cdn.modrinth.com/data/fPetb5Kh/versions/nFniEtJV/NaturesCompass-1.21.1-3.4.0-neoforge.jar",
         "hash": "sha512-UxS1Nry5pZSpzyu9RsgkaNF+FVm9bADanZHpbAgU9QQWeZoBFwXw0YS9cx2sPwPewAnHb+o9ArNVamAT+WSQFA=="
+      },
+      "nether-descent": {
+        "project": "nether-descent",
+        "rev": "i4JAq7YO",
+        "version": "1.0.5-NeoForge-mc1.21.1",
+        "filename": "Nether-Descent-NeoForge-1.0.5-mc1.21.1.jar",
+        "url": "https://cdn.modrinth.com/data/OMC5QQv5/versions/i4JAq7YO/Nether-Descent-NeoForge-1.0.5-mc1.21.1.jar",
+        "hash": "sha512-MNdx4tee2ySsXx0BKei6jDz1uIL2j5rAvWWHRQ108D1zCmQHqdDKWPCUzmzva3psIs4eTzUQxrPgeqguuMNnXQ=="
       },
       "no-chat-reports": {
         "project": "no-chat-reports",
