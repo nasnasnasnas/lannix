@@ -26,6 +26,9 @@ in {
       llm-agents.opencode
       llm-agents.junie
       llm-agents.herdr
+
+      prismlauncher
+      vesktop
     ];
   };
 }
