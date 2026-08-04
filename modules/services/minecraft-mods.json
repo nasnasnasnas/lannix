@@ -699,14 +699,6 @@
         "url": "https://cdn.modrinth.com/data/EltpO5cN/versions/mDyzapFj/lootr-neoforge-1.21.1-1.11.37.122.jar",
         "hash": "sha512-tzA28nzgWGSYe9XTtiZO2vRphIsAMKtITq69vBlkTeUV/YeIbDw7gLj4f4eofHHegQ7E8qtIH5SCSl4Dn/jnUg=="
       },
-      "luckperms": {
-        "project": "luckperms",
-        "rev": "rnvg05YO",
-        "version": "v5.4.140-neoforge",
-        "filename": "LuckPerms-NeoForge-5.4.140.jar",
-        "url": "https://cdn.modrinth.com/data/Vebnzrzj/versions/rnvg05YO/LuckPerms-NeoForge-5.4.140.jar",
-        "hash": "sha512-UNlMWp0mNaRFor1PLxbCIXJni5MxXj2R+ggpNJzNKwKUQ1Sve6o+auDHv+GfSXsJr0YfhKrMk5ALWbdaB80CkA=="
-      },
       "minecolonies-1.1.1367-1.21.1-snapshot": {
         "source": "url",
         "filename": "minecolonies-1.1.1367-1.21.1-snapshot.jar",
@@ -932,6 +924,16 @@
         "filename": "Stellarity-3.0.6.1.jar",
         "url": "https://cdn.modrinth.com/data/bZgeDzN8/versions/csfOSC32/Stellarity-3.0.6.1.jar",
         "hash": "sha512-aGOrPMaPzFWATcEPDbTwTicmxZvd1EoFQ+d3D9osgIiDjOWttgFHFAss+dBWIfWlvZrLPCFadGPt3SZ8AuRskg=="
+      },
+      "styled-chat-unofficial-neoforge": {
+        "source": "curseforge",
+        "modId": 1117967,
+        "fileId": 5795252,
+        "rev": "5795252",
+        "version": "styled-chat-2.6.0-1.21-neo.jar",
+        "filename": "styled-chat-2.6.0-1.21-neo.jar",
+        "url": "https://cursemaven.com/curse/maven/styled-chat-unofficial-neoforge-1117967/5795252/styled-chat-unofficial-neoforge-1117967-5795252.jar",
+        "hash": "sha256-bTdK7ZHqndJlXIWqlFMyKBuSnd7xCxLG75hvxoK62u8="
       },
       "structureessentials-1.21.1-5.0": {
         "source": "url",
