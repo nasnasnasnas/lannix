@@ -16,7 +16,7 @@ in {
       unstable.bun
       git
       ghostty-bin
-      unstable.obsidian
+      master.obsidian
       fresh-editor
       vscode
       nil
