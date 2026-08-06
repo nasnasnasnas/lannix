@@ -62,9 +62,9 @@
         color = "primary";
         name = "Fastmail";
         provider = "custom";
-        server_url = "https://caldav.fastmail.com/dav/calendars/user/catgirl@catgirlin.space/4CBFA88C-345D-11EF-8764-EE226724C8BD";
+        server_url = "https://caldav.fastmail.com/";
         type = "caldav";
-        username = "catgirl@catgirlin.space";
+        username = "leah@leah.pet";
       };
     };
     enabled = true;
@@ -396,7 +396,7 @@
   };
   theme = {
     builtin = "Tokyo-Night";
-    mode = "dark";
+    mode = "auto";
     source = "builtin";
     templates = {
       builtin_ids = [
@@ -408,10 +408,15 @@
         "qt"
       ];
       community_ids = [
+        "antigravity"
+        "opencode"
         "pi-agent"
+        "zen-browser"
         "discord"
         "neovim"
         "obsidian"
+        "vscode"
+        "prismlauncher"
         "steam"
       ];
     };
