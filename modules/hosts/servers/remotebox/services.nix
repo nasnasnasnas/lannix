@@ -1,6 +1,7 @@
 {inputs, ...}: {
   flake.modules.nixos.remotebox = inputs.self.lib.mkHostServices {
     publicIPs = ["45.8.201.111"];
+    caddyExtraBackends = ["wokecraft-monitor"];
     caddy = {
       envSecrets = {
         CF_API_TOKEN = "op://Secrets/Caddy Cloudflare Token for HTTPS/password";
