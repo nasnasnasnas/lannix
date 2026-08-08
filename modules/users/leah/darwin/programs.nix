@@ -29,6 +29,13 @@ in {
 
       prismlauncher
       vesktop
+
+      unstable.jetbrains.webstorm
+      unstable.jetbrains.idea
+      unstable.jetbrains.rust-rover
+
+      hyfetch
+      fastfetch
     ];
   };
 }
