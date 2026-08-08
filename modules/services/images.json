@@ -9,7 +9,7 @@
   },
   "dock.mau.dev/mautrix/discord": {
     "tag": "latest",
-    "digest": "sha256:7716389dfb11dc7a44c8363348a48e91c1c463ded012f0fb08cdf266fcb20246"
+    "digest": "sha256:2f4fccba61d3503ec951c44ba3f8c704acb79ca3c159ce0d1b35340e0c38f2c7"
   },
   "dock.mau.dev/mautrix/signal": {
     "tag": "latest",
