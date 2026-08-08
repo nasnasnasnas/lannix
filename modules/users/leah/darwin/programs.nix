@@ -16,10 +16,11 @@ in {
       unstable.bun
       git
       ghostty-bin
-      master.obsidian
+      unstable.obsidian
       fresh-editor
       vscode
       nil
+      nodejs
 
       llm-agents.claude-code
       llm-agents.omp
