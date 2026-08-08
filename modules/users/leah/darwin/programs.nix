@@ -10,6 +10,8 @@ in {
       inputs.llm-agents.overlays.shared-nixpkgs
     ];
 
+    programs.direnv.enable = true;
+
     environment.systemPackages = with pkgs; [
       _1password-gui
       _1password-cli
