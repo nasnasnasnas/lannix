@@ -139,7 +139,7 @@
   "postgres:latest": {
     "name": "postgres",
     "tag": "latest",
-    "digest": "sha256:c2d42a104eb6b37b286a2d9c5cf83f349de4d6516d513d00a2bd9610e2c2e5e4"
+    "digest": "sha256:06cad38a5d9f5d24b4d83d86def30795d5e4b757fedbf5281172b576dedcd941"
   },
   "rclone/rclone": {
     "tag": "latest",
