@@ -28,6 +28,7 @@ in {
     };
 
     programs.fish.enable = true;
+    services.tailscale.enable = true;
 
     fonts.packages = with pkgs; [
       noto-fonts
