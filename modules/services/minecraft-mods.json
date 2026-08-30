@@ -107,11 +107,11 @@
       },
       "blocks-bogies": {
         "project": "blocks-bogies",
-        "rev": "rUu97B0K",
-        "version": "1.0.7-1.21.1",
-        "filename": "create_bb-1.0.7-1.21.1-Neoforge.jar",
-        "url": "https://cdn.modrinth.com/data/j4ARnQwY/versions/rUu97B0K/create_bb-1.0.7-1.21.1-Neoforge.jar",
-        "hash": "sha512-d3QfK3dCa7JGByIeqY5UQoCoG6dMrbdzNMPQkR+P+/Y9PT8mjUNcHB4OV5TPwz9/u1/A5DunqJCYtKl6pDlphw=="
+        "rev": "nC19ZMKK",
+        "version": "1.0.8-1.21.1",
+        "filename": "create_bb-1.0.8-1.21.1.jar",
+        "url": "https://cdn.modrinth.com/data/j4ARnQwY/versions/nC19ZMKK/create_bb-1.0.8-1.21.1.jar",
+        "hash": "sha256-NqHPjq7wglQIX5GQtqMTDdeHdH7jD7jutgbWpuD5v08="
       },
       "blockui-1.0.211-1.21.1-snapshot": {
         "source": "url",
@@ -170,20 +170,20 @@
       "c2me-neoforge": {
         "project": "c2me-neoforge",
         "versionType": "alpha",
-        "rev": "5Q757s3v",
-        "version": "0.4.0-alpha.0.116+1.21.1",
-        "filename": "c2me-neoforge-mc1.21.1-0.4.0-alpha.0.116.jar",
-        "url": "https://cdn.modrinth.com/data/COlSi5iR/versions/5Q757s3v/c2me-neoforge-mc1.21.1-0.4.0-alpha.0.116.jar",
-        "hash": "sha512-VLW4AmSEv0TcefRrYZZcLUX0czu2tYClnSJoxdTcEeiuP+kjjU7gRSksw63IDsm8/S4hpLdDPjHb8TRKUrky8g=="
+        "rev": "kvrPcTsz",
+        "version": "0.4.0-alpha.0.120+1.21.1",
+        "filename": "c2me-neoforge-mc1.21.1-0.4.0-alpha.0.120.jar",
+        "url": "https://cdn.modrinth.com/data/COlSi5iR/versions/kvrPcTsz/c2me-neoforge-mc1.21.1-0.4.0-alpha.0.120.jar",
+        "hash": "sha256-Z/44SuhPlH6ZmgLr3l9efeOmMoAzBKYlvu6cQmhQmnY="
       },
       "cc-tweaked": {
         "project": "cc-tweaked",
         "versionType": "alpha",
-        "rev": "8XEJbAee",
-        "version": "1.120.0",
-        "filename": "cc-tweaked-1.21.1-forge-1.120.0.jar",
-        "url": "https://cdn.modrinth.com/data/gu7yAYhd/versions/8XEJbAee/cc-tweaked-1.21.1-forge-1.120.0.jar",
-        "hash": "sha512-Ue+hlCj1gV92ZS+ldBkTNgd3Hg/6Aj/ne20P7fuJQpewtFig3kqOoc/hq93BHOCQ525kNqHgGYvC8WQFBvnenA=="
+        "rev": "1ewzHZYg",
+        "version": "1.120.2",
+        "filename": "cc-tweaked-1.21.1-forge-1.120.2.jar",
+        "url": "https://cdn.modrinth.com/data/gu7yAYhd/versions/1ewzHZYg/cc-tweaked-1.21.1-forge-1.120.2.jar",
+        "hash": "sha256-6GUf4ks4TpJeVjya0HdkR0RHTi58CtuObVtHV1mNzp8="
       },
       "chunky": {
         "project": "chunky",
@@ -225,11 +225,11 @@
       },
       "copycats": {
         "project": "copycats",
-        "rev": "kecZ0sl7",
-        "version": "3.0.4+mc.1.21.1-neoforge",
-        "filename": "copycats-3.0.4+mc.1.21.1-neoforge.jar",
-        "url": "https://cdn.modrinth.com/data/UT2M39wf/versions/kecZ0sl7/copycats-3.0.4%2Bmc.1.21.1-neoforge.jar",
-        "hash": "sha512-7MmOZZvmanGvCu5mqfTHyIOPTwEBQCZEkpB5znKApXKgAOfkF5BeGGmlHW5J671gEAj1RYXgfuTtAfLEvHUr/g=="
+        "rev": "ZwGlMBIk",
+        "version": "3.0.8+mc.1.21.1-neoforge",
+        "filename": "copycats-3.0.8+mc.1.21.1-neoforge.jar",
+        "url": "https://cdn.modrinth.com/data/UT2M39wf/versions/ZwGlMBIk/copycats-3.0.8%2Bmc.1.21.1-neoforge.jar",
+        "hash": "sha256-8GVfOvrDgp082neC8sZOk1/ddmfdoTfBCNyQVfweXHE="
       },
       "create": {
         "project": "create",
@@ -241,19 +241,19 @@
       },
       "create-aeronautics": {
         "project": "create-aeronautics",
-        "rev": "w7zlLnea",
-        "version": "1.3.0+mc1.21.1",
-        "filename": "create-aeronautics-bundled-1.21.1-1.3.0.jar",
-        "url": "https://cdn.modrinth.com/data/oWaK0Q19/versions/w7zlLnea/create-aeronautics-bundled-1.21.1-1.3.0.jar",
-        "hash": "sha512-Krui4Wag7I1CqwYQi2MHDWH5hUIOzKhznFsjAFYbMUhrabOtEzELDEWe257evv+1WkzfTOSTgFgz0y9b3pzneA=="
+        "rev": "44pLdPGg",
+        "version": "1.3.2+mc1.21.1",
+        "filename": "create-aeronautics-bundled-1.21.1-1.3.2.jar",
+        "url": "https://cdn.modrinth.com/data/oWaK0Q19/versions/44pLdPGg/create-aeronautics-bundled-1.21.1-1.3.2.jar",
+        "hash": "sha256-o/Mw1HV2QPhxXZkaQ+7bgm5NDlFVjYWchDrmaTvTXx4="
       },
       "create-aeronautics-climbable-rope": {
         "project": "create-aeronautics-climbable-rope",
-        "rev": "aRyfYH0t",
-        "version": "2.1.1",
-        "filename": "climbable_ropes-2.1.1.jar",
-        "url": "https://cdn.modrinth.com/data/jImqv1M5/versions/aRyfYH0t/climbable_ropes-2.1.1.jar",
-        "hash": "sha512-j/rC6UNdG0e+WosnjsN2u3KlbFHx8W2V/R8NrnLfpkiIbDyIfJdzNr52QcKt/NKJAtiFwEbned8JSux6BJCK6w=="
+        "rev": "bdgQsUVU",
+        "version": "2.1.3",
+        "filename": "climbable_ropes-2.1.3.jar",
+        "url": "https://cdn.modrinth.com/data/jImqv1M5/versions/bdgQsUVU/climbable_ropes-2.1.3.jar",
+        "hash": "sha256-OL029JEwErK3pGXwzBl95B3Znd4IAGXQagpOLnJ9+qM="
       },
       "create-aeronautics-compatability": {
         "project": "create-aeronautics-compatability",
@@ -281,19 +281,19 @@
       },
       "create-aeronautics-toolgun": {
         "project": "create-aeronautics-toolgun",
-        "rev": "KWjUsF59",
-        "version": "0.3.2",
-        "filename": "create_aeronautics_toolgun-0.3.2.jar",
-        "url": "https://cdn.modrinth.com/data/5fUBLqeW/versions/KWjUsF59/create_aeronautics_toolgun-0.3.2.jar",
-        "hash": "sha512-qTZ93mB9GBo1UPfew3OyXQk4kbtxkrlHncU6Yd2lj6UC5penn+z8PTjMdH6InzdvsjCAqXIbQ2jbk7L6qwezsQ=="
+        "rev": "pcD0Yutw",
+        "version": "0.3.6",
+        "filename": "create_aeronautics_toolgun-0.3.6.jar",
+        "url": "https://cdn.modrinth.com/data/5fUBLqeW/versions/pcD0Yutw/create_aeronautics_toolgun-0.3.6.jar",
+        "hash": "sha256-V9tOW45SwginN2Sl0Mi8cPxhpiuWNJ4SsJLc0LNEh0o="
       },
       "create-aeroworks": {
         "project": "create-aeroworks",
-        "rev": "H2PGtFQ5",
-        "version": "1.4.1+mc1.21.1",
-        "filename": "aeroworks-1.4.1.jar",
-        "url": "https://cdn.modrinth.com/data/P26k79kP/versions/H2PGtFQ5/aeroworks-1.4.1.jar",
-        "hash": "sha512-AkUzKMf6Hj0KrFvqUDaTd+8uoCsU6HrpXHjJWkfDEonjZZB0f0PAKBE3xWhYBp8WBZ3Fcs46LBZDBkW9o+Aunw=="
+        "rev": "6kk7ruR3",
+        "version": "1.5.0+mc1.21.1",
+        "filename": "aeroworks-1.5.0.jar",
+        "url": "https://cdn.modrinth.com/data/P26k79kP/versions/6kk7ruR3/aeroworks-1.5.0.jar",
+        "hash": "sha256-fpdFVpp162E6n3XJMIqiyAbT8PqzonLZhkehPT+kFkE="
       },
       "create-aquatic-ambitions": {
         "project": "create-aquatic-ambitions",
@@ -330,19 +330,19 @@
       },
       "create-central-kitchen": {
         "project": "create-central-kitchen",
-        "rev": "kmHFmmpV",
-        "version": "2.5.0",
-        "filename": "create-central-kitchen-2.5.0.jar",
-        "url": "https://cdn.modrinth.com/data/btq68HMO/versions/kmHFmmpV/create-central-kitchen-2.5.0.jar",
-        "hash": "sha512-oYQoW9LcMYHHoMwaOvhQHlzmyqVm/sFNfz0GVVcH/LrIVcO49W1xxubiI983fH8FAkCTBGiZ9DddXGVYDMYpcg=="
+        "rev": "1mQSm4Yb",
+        "version": "2.6.0",
+        "filename": "create-central-kitchen-2.6.0.jar",
+        "url": "https://cdn.modrinth.com/data/btq68HMO/versions/1mQSm4Yb/create-central-kitchen-2.6.0.jar",
+        "hash": "sha256-Nt+XScqKmUw7UihFVDB7R7mQoY5D3jR1J3JhZ2FJlMs="
       },
       "create-coasters-simulated": {
         "project": "create-coasters-simulated",
-        "rev": "iOm9m3BL",
-        "version": "0.1.1",
-        "filename": "simulatedcoasters-0.1.1.jar",
-        "url": "https://cdn.modrinth.com/data/W1ZUfWdr/versions/iOm9m3BL/simulatedcoasters-0.1.1.jar",
-        "hash": "sha512-iIdXZaB45EbvkRlDt9PqRwIZd9sUVmejSc3dqWApW8kqikkRGSrdonZS9FGod4Qk894Sqioy2EqDtNzHBq/f5w=="
+        "rev": "PGhQoSBq",
+        "version": "0.1.5",
+        "filename": "simulatedcoasters-0.1.5.jar",
+        "url": "https://cdn.modrinth.com/data/W1ZUfWdr/versions/PGhQoSBq/simulatedcoasters-0.1.5.jar",
+        "hash": "sha256-+AtMPN+fphiIBJZxR3YbA3PhUKbq29xTYm5ayXALIEk="
       },
       "create-connected": {
         "project": "create-connected",
@@ -370,11 +370,11 @@
       },
       "create-dragons-plus": {
         "project": "create-dragons-plus",
-        "rev": "LxesD770",
-        "version": "1.11.3",
-        "filename": "CreateDragonsPlus-1.11.3.jar",
-        "url": "https://cdn.modrinth.com/data/dzb1a5WV/versions/LxesD770/CreateDragonsPlus-1.11.3.jar",
-        "hash": "sha512-cbt4BnibupoVqNzp5bERsfzbBYQZA51mjtTLX9HTZgT+rfBIlKUhTpXeujnHTOxYSHraoMyjIbiJzh0pRiPWpg=="
+        "rev": "zQDQbNih",
+        "version": "1.11.7b",
+        "filename": "CreateDragonsPlus-1.11.7b.jar",
+        "url": "https://cdn.modrinth.com/data/dzb1a5WV/versions/zQDQbNih/CreateDragonsPlus-1.11.7b.jar",
+        "hash": "sha256-va2PrkGIjRYbfvWd7TLV788/gN2fGf3arTjCSxOebuc="
       },
       "create-dreams-and-desires": {
         "project": "create-dreams-and-desires",
@@ -387,11 +387,11 @@
       "create-enchantment-industry": {
         "project": "create-enchantment-industry",
         "versionType": "beta",
-        "rev": "FE6xtrC7",
-        "version": "2.5.0",
-        "filename": "create-enchantment-industry-2.5.0.jar",
-        "url": "https://cdn.modrinth.com/data/JWGBpFUP/versions/FE6xtrC7/create-enchantment-industry-2.5.0.jar",
-        "hash": "sha512-lP4+MAaZBq7HweYsUOMi/t7K5SCd+OaX8QrJhAm5Bq6nm0x3ge+wwXMyMHg65PlNRoWg+M/uqq6b5Ext36vadQ=="
+        "rev": "ASyjJTVL",
+        "version": "2.5.3b",
+        "filename": "create-enchantment-industry-2.5.3b.jar",
+        "url": "https://cdn.modrinth.com/data/JWGBpFUP/versions/ASyjJTVL/create-enchantment-industry-2.5.3b.jar",
+        "hash": "sha256-Ara66Gyi8z3BHIrzQyTGxITx/rxmSexrBJNkUVkHhcE="
       },
       "create-goggles": {
         "project": "create-goggles",
@@ -429,11 +429,11 @@
       },
       "create-stuff-additions": {
         "project": "create-stuff-additions",
-        "rev": "5xWzE6Yk",
-        "version": "2.1.4.a",
-        "filename": "create-stuff-additions1.21.1_v2.1.4a.jar",
-        "url": "https://cdn.modrinth.com/data/aq9qUUQG/versions/5xWzE6Yk/create-stuff-additions1.21.1_v2.1.4a.jar",
-        "hash": "sha512-Q+n11v6fqvGne3+XnC8bdkOpCwjAVy0G7wnvyyAdMJu2bDLDlq6Dg9aMIhciSpjcdwKQuCkbmO36N8m8P8GaMg=="
+        "rev": "gMWQ1LX9",
+        "version": "2.1.4.b",
+        "filename": "create-stuff-additions1.21.1_v2.1.4b.jar",
+        "url": "https://cdn.modrinth.com/data/aq9qUUQG/versions/gMWQ1LX9/create-stuff-additions1.21.1_v2.1.4b.jar",
+        "hash": "sha256-Su6aGvJ1RgmrMb/r8T3A19ZI5h5EAjLb+bs0WZQeI9U="
       },
       "createaddoncompatibility": {
         "project": "createaddoncompatibility",
@@ -483,11 +483,11 @@
       },
       "easy-mob-spawn-control": {
         "project": "easy-mob-spawn-control",
-        "rev": "iHt1k1B8",
-        "version": "1.5.0",
-        "filename": "easy_mob_spawn_control-1.5.0.jar",
-        "url": "https://cdn.modrinth.com/data/pTXV6gwq/versions/iHt1k1B8/easy_mob_spawn_control-1.5.0.jar",
-        "hash": "sha512-aGWZXhluX6QqdieQxdHzQUX/CRIoPztv2J2vuJItmU0Y0QeJEUNtgSiNmh2bfRSGgrOWcHf8HDaGIbUVXpxqvA=="
+        "rev": "dziIHfxY",
+        "version": "1.5.8",
+        "filename": "easy_mob_spawn_control-1.5.8.jar",
+        "url": "https://cdn.modrinth.com/data/pTXV6gwq/versions/dziIHfxY/easy_mob_spawn_control-1.5.8.jar",
+        "hash": "sha256-5f1F9r0VFUBM8Jqs15vCiQ+dfAehCFYr5rOaJVf5Mt8="
       },
       "explorers-compass": {
         "project": "explorers-compass",
@@ -507,11 +507,11 @@
       },
       "farmers-delight": {
         "project": "farmers-delight",
-        "rev": "GbNuOZ4S",
-        "version": "1.21.1-1.3.2",
-        "filename": "FarmersDelight-1.21.1-1.3.2.jar",
-        "url": "https://cdn.modrinth.com/data/R2OftAxM/versions/GbNuOZ4S/FarmersDelight-1.21.1-1.3.2.jar",
-        "hash": "sha512-2lpCNkJ9+AENdZkiAchyOshKj6ce+lVnBVHTM8rJSpCujoxTbaY64Hpn9NANwndK5BUQMPQdJohuUI9KA3yGlA=="
+        "rev": "XTVZDOol",
+        "version": "1.21.1-1.3.4",
+        "filename": "FarmersDelight-1.21.1-1.3.4.jar",
+        "url": "https://cdn.modrinth.com/data/R2OftAxM/versions/XTVZDOol/FarmersDelight-1.21.1-1.3.4.jar",
+        "hash": "sha256-E5rXaWRiyJwD7qRj+AWr/6VSUmxdrara4iHdliTLGXw="
       },
       "fast-item-frames": {
         "project": "fast-item-frames",
@@ -539,11 +539,11 @@
       },
       "friends-and-foes-forge": {
         "project": "friends-and-foes-forge",
-        "rev": "cg4XV9Ay",
-        "version": "neoforge-4.0.26+mc1.21.1",
-        "filename": "friendsandfoes-neoforge-4.0.26+mc1.21.1.jar",
-        "url": "https://cdn.modrinth.com/data/BOCJKD49/versions/cg4XV9Ay/friendsandfoes-neoforge-4.0.26%2Bmc1.21.1.jar",
-        "hash": "sha512-h3rJdk3bbAnaoSMUvz7uThzIfbTNHMYd9HDmVKPk/8zpihlDAL/2DRDFEFngterylrOMN/vwnVo7wUlTRmt7fg=="
+        "rev": "zeGwtTNo",
+        "version": "neoforge-4.0.27+mc1.21.1",
+        "filename": "friendsandfoes-neoforge-4.0.27+mc1.21.1.jar",
+        "url": "https://cdn.modrinth.com/data/BOCJKD49/versions/zeGwtTNo/friendsandfoes-neoforge-4.0.27%2Bmc1.21.1.jar",
+        "hash": "sha256-QPYSnZEkvNAFKjSIE0JfwiO3tu8WuBko9e3Liepiz9E="
       },
       "friends-for-life": {
         "project": "friends-for-life",
@@ -581,11 +581,11 @@
       },
       "gravestone-mod": {
         "project": "gravestone-mod",
-        "rev": "3a6KIbgL",
-        "version": "neoforge-1.21.1-1.0.38",
-        "filename": "gravestone-neoforge-1.21.1-1.0.38.jar",
-        "url": "https://cdn.modrinth.com/data/RYtXKJPr/versions/3a6KIbgL/gravestone-neoforge-1.21.1-1.0.38.jar",
-        "hash": "sha512-7pe1SrnDPK++I2x6mAUpjfqyAEuflBRM5lbpkpg57ppQ8pzftN/96Ftk+qXjwPmJqs7kIEwtDwypuAv9/+XRLg=="
+        "rev": "rMGJpjaM",
+        "version": "neoforge-1.21.1-1.0.40",
+        "filename": "gravestone-neoforge-1.21.1-1.0.40.jar",
+        "url": "https://cdn.modrinth.com/data/RYtXKJPr/versions/rMGJpjaM/gravestone-neoforge-1.21.1-1.0.40.jar",
+        "hash": "sha256-IEvpzLhjKlaoeu6aq0x4dND2dJ9WbAf13UINJOJNyLA="
       },
       "interiors": {
         "project": "interiors",
@@ -597,11 +597,11 @@
       },
       "jade": {
         "project": "jade",
-        "rev": "yd8FKCmx",
-        "version": "15.10.5+neoforge",
-        "filename": "Jade-1.21.1-NeoForge-15.10.5.jar",
-        "url": "https://cdn.modrinth.com/data/nvQzSEkH/versions/yd8FKCmx/Jade-1.21.1-NeoForge-15.10.5.jar",
-        "hash": "sha512-Z4uZhnej1z+Y+C2sQJOJO/yKPCM17GJ7QUeBHDgaBAR13s242zHMPL5gCrtaem3tzTVu7Qukca8L7Nz0m/WxNw=="
+        "rev": "eYz2YBGT",
+        "version": "15.10.6+neoforge",
+        "filename": "Jade-1.21.1-NeoForge-15.10.6.jar",
+        "url": "https://cdn.modrinth.com/data/nvQzSEkH/versions/eYz2YBGT/Jade-1.21.1-NeoForge-15.10.6.jar",
+        "hash": "sha256-J28fZaINBPU2mJxPMRlJ13C1LEQMI8K5BKCIYPPJOBA="
       },
       "jade-addons-forge": {
         "project": "jade-addons-forge",
@@ -629,19 +629,19 @@
       "jei": {
         "project": "jei",
         "versionType": "beta",
-        "rev": "pSsBRqU0",
-        "version": "19.43.0.392",
-        "filename": "jei-1.21.1-neoforge-19.43.0.392.jar",
-        "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/pSsBRqU0/jei-1.21.1-neoforge-19.43.0.392.jar",
-        "hash": "sha512-wzRHIf7fDN9boIYyWkgSi4hhWo9ZWLRshWEGsG6ndBN58x+AonWWlJIsWDAGTYeThQgT33+bqUD4504uWkeqGA=="
+        "rev": "w1zqfWJi",
+        "version": "19.51.0.417",
+        "filename": "jei-1.21.1-neoforge-19.51.0.417.jar",
+        "url": "https://cdn.modrinth.com/data/u6dRKJwZ/versions/w1zqfWJi/jei-1.21.1-neoforge-19.51.0.417.jar",
+        "hash": "sha256-7/2RoLi0af49ftC7KLVf7YPWn0v2780wGXQP48+MWRY="
       },
       "kotlin-lang-forge": {
         "project": "kotlin-lang-forge",
-        "rev": "318K66ba",
-        "version": "2.12.2-k2.4.10-3.0+neoforge",
-        "filename": "KotlinLangForge-2.12.2-k2.4.10-3.0+neoforge.jar",
-        "url": "https://cdn.modrinth.com/data/1vrSzlao/versions/318K66ba/KotlinLangForge-2.12.2-k2.4.10-3.0%2Bneoforge.jar",
-        "hash": "sha512-ID+G07SD1Wo5KZFu3ViwW6sMWKZ+BimeVRHsWiQCoqNU1EVoekgQdsDVKyIdc3ZnOpVnLkufk80g9AHiRMbgJQ=="
+        "rev": "XsDHyDlZ",
+        "version": "2.13.0-k2.4.10-3.0+neoforge",
+        "filename": "KotlinLangForge-2.13.0-k2.4.10-3.0+neoforge.jar",
+        "url": "https://cdn.modrinth.com/data/1vrSzlao/versions/XsDHyDlZ/KotlinLangForge-2.13.0-k2.4.10-3.0%2Bneoforge.jar",
+        "hash": "sha256-pBm+Bd5Xm/kyhF4xCE4ZB/ogB/VVvYiGl4VMoSMziG0="
       },
       "krypton-fnp": {
         "project": "krypton-fnp",
@@ -685,19 +685,19 @@
       },
       "lithostitched": {
         "project": "lithostitched",
-        "rev": "qPASucBM",
-        "version": "1.7.13-neoforge-21.1",
-        "filename": "lithostitched-1.7.13-neoforge-21.1.jar",
-        "url": "https://cdn.modrinth.com/data/XaDC71GB/versions/qPASucBM/lithostitched-1.7.13-neoforge-21.1.jar",
-        "hash": "sha512-BECQE+3OZWeNAkiae4MLp9XhjnxwUkPIII9SZh2mLn4zegn+J5fIXXoAvGbLUJSbFXsmev0hbnuQDd3phJ3/Mg=="
+        "rev": "81DDKTGJ",
+        "version": "1.8.0+beta4-neoforge-21.1",
+        "filename": "lithostitched-1.8.0+beta4-neoforge-21.1.jar",
+        "url": "https://cdn.modrinth.com/data/XaDC71GB/versions/81DDKTGJ/lithostitched-1.8.0%2Bbeta4-neoforge-21.1.jar",
+        "hash": "sha256-+b7WIoVl1pFmrIXtvmFZ4oZ0podWKWTlQkqMikd9IMA="
       },
       "lootr": {
         "project": "lootr",
-        "rev": "mDyzapFj",
-        "version": "1.21.1-1.11.37.122",
-        "filename": "lootr-neoforge-1.21.1-1.11.37.122.jar",
-        "url": "https://cdn.modrinth.com/data/EltpO5cN/versions/mDyzapFj/lootr-neoforge-1.21.1-1.11.37.122.jar",
-        "hash": "sha512-tzA28nzgWGSYe9XTtiZO2vRphIsAMKtITq69vBlkTeUV/YeIbDw7gLj4f4eofHHegQ7E8qtIH5SCSl4Dn/jnUg=="
+        "rev": "Trh49IZt",
+        "version": "1.21.1-1.11.38.124",
+        "filename": "lootr-neoforge-1.21.1-1.11.38.124.jar",
+        "url": "https://cdn.modrinth.com/data/EltpO5cN/versions/Trh49IZt/lootr-neoforge-1.21.1-1.11.38.124.jar",
+        "hash": "sha256-LVGFQXHfvuTxm0MDDQIdJVV1Nf9gHlIepYmdyNnGFxc="
       },
       "minecolonies-1.1.1367-1.21.1-snapshot": {
         "source": "url",
@@ -707,11 +707,11 @@
       },
       "modernfix": {
         "project": "modernfix",
-        "rev": "VsJnrw8k",
-        "version": "5.27.20+mc1.21.1",
-        "filename": "modernfix-neoforge-5.27.20+mc1.21.1.jar",
-        "url": "https://cdn.modrinth.com/data/nmDcB62a/versions/VsJnrw8k/modernfix-neoforge-5.27.20%2Bmc1.21.1.jar",
-        "hash": "sha512-sfDTrFragRuCBLyCrcHKuP9xdS2o6XrjgfIb5fd4wZmuWRCIUP68h9HEZ1eyfMuyZp8/xjQMg320UKIFyi2MnA=="
+        "rev": "N9cVTjFl",
+        "version": "5.27.23+mc1.21.1",
+        "filename": "modernfix-neoforge-5.27.23+mc1.21.1.jar",
+        "url": "https://cdn.modrinth.com/data/nmDcB62a/versions/N9cVTjFl/modernfix-neoforge-5.27.23%2Bmc1.21.1.jar",
+        "hash": "sha256-TiuW72OCBkwuWVQ6OGZXO/YOJzSTc1NlC3Dekbg1E/A="
       },
       "movable-tracks": {
         "project": "movable-tracks",
@@ -745,11 +745,11 @@
       },
       "nether-descent": {
         "project": "nether-descent",
-        "rev": "i4JAq7YO",
-        "version": "1.0.5-NeoForge-mc1.21.1",
-        "filename": "Nether-Descent-NeoForge-1.0.5-mc1.21.1.jar",
-        "url": "https://cdn.modrinth.com/data/OMC5QQv5/versions/i4JAq7YO/Nether-Descent-NeoForge-1.0.5-mc1.21.1.jar",
-        "hash": "sha512-MNdx4tee2ySsXx0BKei6jDz1uIL2j5rAvWWHRQ108D1zCmQHqdDKWPCUzmzva3psIs4eTzUQxrPgeqguuMNnXQ=="
+        "rev": "BlogyEbv",
+        "version": "1.0.8-NeoForge-mc1.21.1",
+        "filename": "Nether-Descent-NeoForge-1.0.8-mc1.21.1.jar",
+        "url": "https://cdn.modrinth.com/data/OMC5QQv5/versions/BlogyEbv/Nether-Descent-NeoForge-1.0.8-mc1.21.1.jar",
+        "hash": "sha256-ynS5EQ+tBZdBboIYjBkG+3K4gEC09IePCQ2UO7VWgRc="
       },
       "no-chat-reports": {
         "project": "no-chat-reports",
@@ -857,11 +857,11 @@
       },
       "sable": {
         "project": "sable",
-        "rev": "1L6XJqnY",
-        "version": "2.0.3+mc1.21.1",
-        "filename": "sable-neoforge-1.21.1-2.0.3.jar",
-        "url": "https://cdn.modrinth.com/data/T9PomCSv/versions/1L6XJqnY/sable-neoforge-1.21.1-2.0.3.jar",
-        "hash": "sha512-wTxNoIYAHCBTYZBc06bFmnbjx9TAgiZarzuvL9MMeYCPZjS8qJq6KdtcCWqn2kBm92RUCTwwbDrpHGwNTWOuDQ=="
+        "rev": "U678xqle",
+        "version": "2.0.5+mc1.21.1",
+        "filename": "sable-neoforge-1.21.1-2.0.5.jar",
+        "url": "https://cdn.modrinth.com/data/T9PomCSv/versions/U678xqle/sable-neoforge-1.21.1-2.0.5.jar",
+        "hash": "sha256-yHEPhbx4C79SPmcmzqr3bdC4xhR520l7OCxrs0MX56s="
       },
       "servercore": {
         "project": "servercore",
@@ -887,11 +887,11 @@
       },
       "sophisticated-backpacks": {
         "project": "sophisticated-backpacks",
-        "rev": "FHd2LYlQ",
-        "version": "1.21.1-3.25.73.2020",
-        "filename": "sophisticatedbackpacks-1.21.1-3.25.73.2020.jar",
-        "url": "https://cdn.modrinth.com/data/TyCTlI4b/versions/FHd2LYlQ/sophisticatedbackpacks-1.21.1-3.25.73.2020.jar",
-        "hash": "sha512-DAcyvymJDxUeBsaNYxV5UKaJzxsypB1HgzVsmXe/UC0+15GBNRFCa11aoeSBvqbJOJ1B/qUU47QSzvctofKBzw=="
+        "rev": "6apvKKGZ",
+        "version": "1.21.1-3.25.78.2107",
+        "filename": "sophisticatedbackpacks-1.21.1-3.25.78.2107.jar",
+        "url": "https://cdn.modrinth.com/data/TyCTlI4b/versions/6apvKKGZ/sophisticatedbackpacks-1.21.1-3.25.78.2107.jar",
+        "hash": "sha256-KEj/TQF5MmiFnTYmN5O/BCImo07686RehJgzSQuMxKE="
       },
       "sophisticated-backpacks-create-integration": {
         "project": "sophisticated-backpacks-create-integration",
@@ -903,11 +903,11 @@
       },
       "sophisticated-core": {
         "project": "sophisticated-core",
-        "rev": "Yx6FiECq",
-        "version": "1.21.1-1.4.80.2194",
-        "filename": "sophisticatedcore-1.21.1-1.4.80.2194.jar",
-        "url": "https://cdn.modrinth.com/data/nmoqTijg/versions/Yx6FiECq/sophisticatedcore-1.21.1-1.4.80.2194.jar",
-        "hash": "sha512-7/jp+1wgipL64mjqTZ058HmNaKMdnI+czn8wbJ3drWxnr+HFjVE0fQfUFkRFU3U/hxf8RSAv88+ktSqIqItGQg=="
+        "rev": "zvRSOlro",
+        "version": "1.21.1-1.4.90.2299",
+        "filename": "sophisticatedcore-1.21.1-1.4.90.2299.jar",
+        "url": "https://cdn.modrinth.com/data/nmoqTijg/versions/zvRSOlro/sophisticatedcore-1.21.1-1.4.90.2299.jar",
+        "hash": "sha256-UX+6IASyzpcJUHuHR7qy76XZXdZELML78/d5tuLjh1o="
       },
       "spark": {
         "project": "spark",
@@ -957,11 +957,11 @@
       },
       "supermartijn642s-core-lib": {
         "project": "supermartijn642s-core-lib",
-        "rev": "Bw2Pdrfn",
-        "version": "1.1.22-neoforge-mc1.21",
-        "filename": "supermartijn642corelib-1.1.22-neoforge-mc1.21.jar",
-        "url": "https://cdn.modrinth.com/data/rOUBggPv/versions/Bw2Pdrfn/supermartijn642corelib-1.1.22-neoforge-mc1.21.jar",
-        "hash": "sha512-MLlHce84eei73srrt81J5fzRUD79M+tPLN0X7v+m3YX5y0v8ZNqv1kWtKUYZE5jYbnXjHnUDkaB9P/aDLNFPaw=="
+        "rev": "81s25oaA",
+        "version": "1.1.24-neoforge-mc1.21",
+        "filename": "supermartijn642corelib-1.1.24-neoforge-mc1.21.jar",
+        "url": "https://cdn.modrinth.com/data/rOUBggPv/versions/81s25oaA/supermartijn642corelib-1.1.24-neoforge-mc1.21.jar",
+        "hash": "sha256-IohOfGt8SEfnu5f7+mG1+Da3kJu0aOdjf2eIvlblnwA="
       },
       "tinted_dyes-2.1.2-neoforge-1.21.1": {
         "source": "url",
@@ -995,11 +995,11 @@
       },
       "vb-compat": {
         "project": "vb-compat",
-        "rev": "jX2Pmxkg",
-        "version": "2.1",
-        "filename": "vb-compat-2.1-1.21.1.jar",
-        "url": "https://cdn.modrinth.com/data/jcYHXHwz/versions/jX2Pmxkg/vb-compat-2.1-1.21.1.jar",
-        "hash": "sha512-Bfi+4q5+MhgsN5rPoPFDbyM46GC0WwAcZVJfe9O9/0AKr3JffWcL6rT4gPkSnCpPi+91Rky0faNz6vKgus202g=="
+        "rev": "QKEed8gs",
+        "version": "2.2",
+        "filename": "vb-compat-2.2-1.21.1.jar",
+        "url": "https://cdn.modrinth.com/data/jcYHXHwz/versions/QKEed8gs/vb-compat-2.2-1.21.1.jar",
+        "hash": "sha256-pGqiYQp1/1BJDar40WjSUmguI/6DXyg61eMv/eQv0iI="
       },
       "veinminer": {
         "project": "veinminer",
@@ -1043,11 +1043,11 @@
       },
       "xaeros-world-map": {
         "project": "xaeros-world-map",
-        "rev": "55gtOc9Y",
-        "version": "neoforge-1.21.1-1.44.2",
-        "filename": "xaeroworldmap-neoforge-1.21.1-1.44.2.jar",
-        "url": "https://cdn.modrinth.com/data/NcUtCpym/versions/55gtOc9Y/xaeroworldmap-neoforge-1.21.1-1.44.2.jar",
-        "hash": "sha512-SmsSjKCgcpCtYrqwPpjC7Vx7NwFLs6Po5050IkKcosrSJcBF+fj5aBZi39opgJ3ZzbJwG6R3SjpX4vyE60l/qA=="
+        "rev": "fOv9QzLO",
+        "version": "neoforge-1.21.1-1.45.0",
+        "filename": "xaeroworldmap-neoforge-1.21.1-1.45.0.jar",
+        "url": "https://cdn.modrinth.com/data/NcUtCpym/versions/fOv9QzLO/xaeroworldmap-neoforge-1.21.1-1.45.0.jar",
+        "hash": "sha256-1giZES6EYWulKpk8FyL9iRhyrMR3m/rDTZsXAAFFHG8="
       },
       "zeta": {
         "project": "zeta",
