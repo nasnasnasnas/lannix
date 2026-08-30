@@ -14,6 +14,9 @@ in {
         "Kagi for Safari" = 1622835804;
         "uBlock Origin Lite" = 6745342698;
       };
+      casks = [
+        "microsoft-office"
+      ];
     };
   };
 }
