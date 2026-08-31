@@ -16,6 +16,7 @@ in {
       };
       casks = [
         "microsoft-office"
+        "vivaldi"
       ];
     };
   };
