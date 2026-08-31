@@ -36,6 +36,7 @@ in {
       unstable.jetbrains.webstorm
       unstable.jetbrains.idea
       unstable.jetbrains.rust-rover
+      unstable.jetbrains.pycharm
 
       hyfetch
       fastfetch
