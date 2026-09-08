@@ -93,7 +93,7 @@
   },
   "linuxserver/jellyfin": {
     "tag": "latest",
-    "digest": "sha256:bb8d372e35d5c4a6cb61d830a06f5b5846528315b97cf5d38b80eea1e430efa7"
+    "digest": "sha256:0f42497a69fa0441bfd5f9d6bba8694f2a656ec984e571d0ac04c6dd91250039"
   },
   "linuxserver/lidarr": {
     "tag": "latest",
