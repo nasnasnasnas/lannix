@@ -12,12 +12,14 @@
         # Metrics, logs, and profiles are disposable and could exceed the shared quota.
         "/home/magicbox/data/grafana/plugins"
         "/home/magicbox/data/grafana/grafana.db*"
+        "/home/magicbox/data/immich-model-cache"
         "/home/magicbox/data/pyroscope"
         "/home/magicbox/data/victorialogs"
         "/home/magicbox/data/victoriametrics"
         # Consistent logical dumps below replace these live PostgreSQL files.
         "/home/magicbox/data/synapse-db"
         "/home/magicbox/data/sharkey-db"
+        "/home/magicbox/data/immich-db"
         "/home/magicbox/data/sharkey-redis"
         "/home/magicbox/data/attic/server.db*"
         "/home/magicbox/data/attic/storage"
@@ -47,6 +49,14 @@
           pg_dump_command = "${pkgs.docker}/bin/docker exec -u postgres sharkey-db pg_dump";
           pg_restore_command = "${pkgs.docker}/bin/docker exec -i -u postgres sharkey-db pg_restore";
           psql_command = "${pkgs.docker}/bin/docker exec -i -u postgres sharkey-db psql";
+        }
+        {
+          name = "immich";
+          label = "immich-db";
+          username = "immich";
+          pg_dump_command = "${pkgs.docker}/bin/docker exec -u postgres immich-db pg_dump";
+          pg_restore_command = "${pkgs.docker}/bin/docker exec -i -u postgres immich-db pg_restore";
+          psql_command = "${pkgs.docker}/bin/docker exec -i -u postgres immich-db psql";
         }
       ];
     };
