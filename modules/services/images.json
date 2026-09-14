@@ -159,7 +159,7 @@
   },
   "victoriametrics/victoria-metrics": {
     "tag": "latest",
-    "digest": "sha256:b8703ff12ed437effad4fc36492fec14824277f2890a5876b8a9e6cfe5139839"
+    "digest": "sha256:86ca5fdb6d87d56ba047b044039019ba2bd9042b36e35f6ea34e437b6c825cef"
   },
   "ghcr.io/nealol/nzbdav": {
     "tag": "0.6.5",
