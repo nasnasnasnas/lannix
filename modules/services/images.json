@@ -167,7 +167,7 @@
   },
   "unsloth/unsloth": {
     "tag": "latest",
-    "digest": "sha256:981740e0e0097b56b39663a67f78195cd24a4a2bb0d66363f98f9afb00797d41"
+    "digest": "sha256:a68d12a8a76d21374cc40efe8a8da5e4af7a84170cfc3d51f58af0c98c10f569"
   },
   "ghcr.io/umami-software/umami": {
     "tag": "latest",
