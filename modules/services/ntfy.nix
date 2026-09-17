@@ -4,6 +4,7 @@
     networks ? [],
     image ? config.flake.lib.image "docker.io/binwiederhier/ntfy",
     volumes ? [],
+    environment ? {},
     dataDir ? "/home/magicbox/data/ntfy",
   }: {
     inherit domains;

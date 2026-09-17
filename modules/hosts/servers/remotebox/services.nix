@@ -15,7 +15,22 @@
       };
       ntfy = {
         services = with inputs.self.services; [
-          (ntfy {domains = ["https://ntfy.szpunar.cloud"];})
+          (ntfy {
+            domains = ["https://ntfy.szpunar.cloud"];
+            environment = {
+              NTFY_BASE_URL = "https://ntfy.szpunar.cloud";
+              NTFY_BEHIND_PROXY = "true";
+              NTFY_AUTH_FILE = "/var/lib/ntfy/auth.db";
+              NTFY_AUTH_DEFAULT_ACCESS = "deny-all";
+              NTFY_ENABLE_LOGIN = "true";
+              NTFY_REQUIRE_LOGIN = "true";
+              NTFY_ATTACHMENT_CACHE_DIR = "/var/cache/ntfy/attachments";
+              NTFY_CACHE_FILE = "/var/cache/ntfy/cache.db";
+              NTFY_UPSTREAM_BASE_URL = "https://ntfy.sh";
+              NTFY_AUTH_USERS = "lavender:$2b$10$b9ys2q7BjiuwQo/r4AZ44OqbFhr11o3OuAhsj3VLKnypEvDV20vPm:admin";
+              NTFY_AUTH_ACCESS = "*:up*:write-only";
+            };
+          })
         ];
       };
       pocket-id = {
