@@ -12,12 +12,6 @@
     restart = "unless-stopped";
     caddy_port = 80;
     inherit networks;
-    environment = {
-      APP_URL = builtins.head domains;
-      ENCRYPTION_KEY_FILE = "/app/data/encryption-key";
-      MAXMIND_LICENSE_KEY_FILE = "/app/data/maxmind-license";
-      TRUST_PROXY = "true";
-    };
     volumes = volumes ++ ["${dataDir}:/var/cache/ntfy"];
   };
 }

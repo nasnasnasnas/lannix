@@ -13,6 +13,11 @@
           (helloworld {domains = ["https://helloworld.szpunar.cloud"];})
         ];
       };
+      ntfy = {
+        services = with inputs.self.services; [
+          (ntfy {domains = ["https://ntfy.szpunar.cloud"];})
+        ];
+      };
       pocket-id = {
         services = with inputs.self.services; [
           (pocket-id {domains = ["https://auth.szpunar.cloud"];})
