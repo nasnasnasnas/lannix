@@ -172,5 +172,9 @@
   "ghcr.io/umami-software/umami": {
     "tag": "latest",
     "digest": "sha256:85909afc45bdcda1917394594a087421fdbb05610fded0fa9f6fb861abb2f367"
+  },
+  "docker.io/binwiederhier/ntfy": {
+    "tag": "latest",
+    "digest": "sha256:f8060a494b69d53866ef505c36a205efcce3204618d6e183a87128cca6e7cac9"
   }
 }
