@@ -20,7 +20,7 @@
             environment = {
               NTFY_BASE_URL = "https://ntfy.szpunar.cloud";
               NTFY_BEHIND_PROXY = "true";
-              NTFY_AUTH_FILE = "/var/lib/ntfy/auth.db";
+              NTFY_AUTH_FILE = "/var/cache/ntfy/auth.db";
               NTFY_AUTH_DEFAULT_ACCESS = "deny-all";
               NTFY_ENABLE_LOGIN = "true";
               NTFY_REQUIRE_LOGIN = "true";
