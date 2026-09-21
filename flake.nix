@@ -55,6 +55,10 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     opnix.url = "github:brizzbuzz/opnix";
+    procon-scrape = {
+      url = "github:nealol/procon-scrape";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     solaar.url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz";
     winapps = {
       url = "github:winapps-org/winapps";
