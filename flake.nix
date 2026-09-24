@@ -1,4 +1,4 @@
-# DO-NOT-EDIT. This file was auto-generated using github:vic/flake-file.
+# DO-NOT-EDIT. This file was auto-generated using github:denful/flake-file.
 # Use `nix run .#write-flake` to regenerate it.
 {
   outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
@@ -13,7 +13,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/*";
-    flake-file.url = "github:vic/flake-file";
+    flake-file.url = "github:denful/flake-file";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
@@ -31,7 +31,7 @@
       url = "github:homebrew/homebrew-core";
       flake = false;
     };
-    import-tree.url = "github:vic/import-tree";
+    import-tree.url = "github:denful/import-tree";
     lazyvim.url = "github:pfassina/lazyvim-nix";
     llm-agents.url = "github:numtide/llm-agents.nix";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
