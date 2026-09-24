@@ -20,9 +20,11 @@
           padding = 6.0;
         }
       ];
-      center = [];
+      center = [
+        "workspaces"
+        "clock"
+      ];
       end = [
-        "media"
         "tray"
         "notifications"
         "clipboard"
@@ -31,15 +33,13 @@
         "volume"
         "brightness"
         "group:g1"
-        "clock"
         "control-center"
-        "session"
       ];
       scale = 1.05;
       start = [
         "launcher"
-        "workspaces"
         "active_window"
+        "media"
       ];
       thickness = 36;
       widget_spacing = 8;
@@ -106,6 +106,8 @@
         cx = 303.0;
         cy = 276.5;
         output = "eDP-1";
+        placement_height = 1129.0;
+        placement_width = 1694.0;
         rotation = 0.0;
         settings = {
           shadow = false;
@@ -118,6 +120,8 @@
         cx = 1455.0;
         cy = 276.5;
         output = "eDP-1";
+        placement_height = 1129.0;
+        placement_width = 1694.0;
         rotation = 0.0;
         settings = {
           shadow = false;
@@ -131,6 +135,8 @@
         cx = 911.0;
         cy = 276.5;
         output = "eDP-1";
+        placement_height = 1129.0;
+        placement_width = 1694.0;
         rotation = 0.0;
         settings = {
           layout = "horizontal";
@@ -142,8 +148,10 @@
         box_height = 128.0;
         box_width = 576.0;
         cx = 911.0;
-        cy = 500.5;
+        cy = 500.5001220703125;
         output = "eDP-1";
+        placement_height = 1129.0;
+        placement_width = 1694.0;
         rotation = 0.0;
         settings = {
           aspect_ratio = 6.0;
@@ -201,116 +209,164 @@
     schema_version = 2;
     widget = {
       "lockscreen-login-box@DP-2" = {
-        box_height = 70.0;
-        box_width = 400.0;
+        box_height = 196.0;
+        box_width = 720.0;
         cx = 1280.0;
         cy = 1271.0;
         output = "DP-2";
+        placement_height = 1440.0;
+        placement_width = 2560.0;
         rotation = 0.0;
         settings = {
           background_color = "surface_variant";
           background_opacity = 0.88;
           background_radius = 12.0;
+          center_password_text = false;
           input_opacity = 1.0;
           input_radius = 6.0;
+          layout = "regular";
           show_caps_lock = true;
           show_keyboard_layout = true;
           show_login_button = true;
+          show_media = true;
+          show_session_buttons = true;
+          show_unlock_hint = true;
+          show_weather = true;
         };
         type = "login_box";
       };
       "lockscreen-login-box@DP-3" = {
-        box_height = 70.0;
-        box_width = 400.0;
+        box_height = 196.0;
+        box_width = 720.0;
         cx = 1280.0;
         cy = 1321.0;
         output = "DP-3";
+        placement_height = 0.0;
+        placement_width = 0.0;
         rotation = 0.0;
         settings = {
           background_color = "surface_variant";
           background_opacity = 0.88;
           background_radius = 12.0;
+          center_password_text = false;
           input_opacity = 1.0;
           input_radius = 6.0;
+          layout = "regular";
           show_caps_lock = true;
           show_keyboard_layout = true;
           show_login_button = true;
+          show_media = true;
+          show_session_buttons = true;
+          show_unlock_hint = true;
+          show_weather = true;
         };
         type = "login_box";
       };
       "lockscreen-login-box@DP-7" = {
-        box_height = 70.0;
-        box_width = 400.0;
+        box_height = 196.0;
+        box_width = 720.0;
         cx = 1280.0;
         cy = 1317.0;
         output = "DP-7";
+        placement_height = 1440.0;
+        placement_width = 2560.0;
         rotation = 0.0;
         settings = {
           background_color = "surface_variant";
           background_opacity = 0.88;
           background_radius = 12.0;
+          center_password_text = false;
           input_opacity = 1.0;
           input_radius = 6.0;
+          layout = "regular";
           show_caps_lock = true;
           show_keyboard_layout = true;
           show_login_button = true;
+          show_media = true;
+          show_session_buttons = true;
+          show_unlock_hint = true;
+          show_weather = true;
         };
         type = "login_box";
       };
       "lockscreen-login-box@DP-8" = {
-        box_height = 70.0;
-        box_width = 400.0;
+        box_height = 196.0;
+        box_width = 720.0;
         cx = 1280.0;
         cy = 1317.0;
         output = "DP-8";
+        placement_height = 0.0;
+        placement_width = 0.0;
         rotation = 0.0;
         settings = {
           background_color = "surface_variant";
           background_opacity = 0.88;
           background_radius = 12.0;
+          center_password_text = false;
           input_opacity = 1.0;
           input_radius = 6.0;
+          layout = "regular";
           show_caps_lock = true;
           show_keyboard_layout = true;
           show_login_button = true;
+          show_media = true;
+          show_session_buttons = true;
+          show_unlock_hint = true;
+          show_weather = true;
         };
         type = "login_box";
       };
       "lockscreen-login-box@eDP-1" = {
-        box_height = 70.0;
-        box_width = 400.0;
+        box_height = 196.0;
+        box_width = 720.0;
         cx = 847.0;
-        cy = 1006.0;
+        cy = 1006.0001831054688;
         output = "eDP-1";
+        placement_height = 1129.0;
+        placement_width = 1694.0;
         rotation = 0.0;
         settings = {
           background_color = "surface_variant";
           background_opacity = 0.88;
           background_radius = 12.0;
+          center_password_text = false;
           input_opacity = 1.0;
           input_radius = 6.0;
+          layout = "regular";
           show_caps_lock = true;
           show_keyboard_layout = true;
           show_login_button = true;
+          show_media = true;
+          show_session_buttons = true;
+          show_unlock_hint = true;
+          show_weather = true;
         };
         type = "login_box";
       };
       "lockscreen-login-box@winit" = {
-        box_height = 70.0;
-        box_width = 400.0;
+        box_height = 196.0;
+        box_width = 720.0;
         cx = 942.0;
         cy = 1920.0;
         output = "winit";
+        placement_height = 0.0;
+        placement_width = 0.0;
         rotation = 0.0;
         settings = {
           background_color = "surface_variant";
           background_opacity = 0.88;
           background_radius = 12.0;
+          center_password_text = false;
           input_opacity = 1.0;
           input_radius = 6.0;
+          layout = "regular";
           show_caps_lock = true;
           show_keyboard_layout = true;
           show_login_button = true;
+          show_media = true;
+          show_session_buttons = true;
+          show_unlock_hint = true;
+          show_weather = true;
         };
         type = "login_box";
       };
@@ -320,6 +376,8 @@
         cx = 1088.0;
         cy = 1091.9998779296875;
         output = "DP-2";
+        placement_height = 1440.0;
+        placement_width = 2560.0;
         rotation = 0.0;
         settings = {
           shadow = false;
@@ -332,6 +390,8 @@
         cx = 1280.0;
         cy = 189.5;
         output = "DP-2";
+        placement_height = 1440.0;
+        placement_width = 2560.0;
         rotation = 0.0;
         settings = {
           clock_style = "digital";
@@ -346,6 +406,8 @@
         cx = 1472.0;
         cy = 1091.9998779296875;
         output = "DP-2";
+        placement_height = 1440.0;
+        placement_width = 2560.0;
         rotation = 0.0;
         settings = {
           shadow = false;

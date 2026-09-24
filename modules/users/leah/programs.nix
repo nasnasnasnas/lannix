@@ -138,7 +138,7 @@ in {
       zulu25
 
       llm-agents.claude-code
-      llm-agents.omp
+      #llm-agents.omp
       llm-agents.opencode2
       llm-agents.junie
       llm-agents.herdr
