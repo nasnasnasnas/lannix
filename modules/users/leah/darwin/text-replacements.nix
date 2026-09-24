@@ -8,11 +8,12 @@ in {
       "/:D" = "Σ:D";
     };
   in {
-    targets.darwin.defaults.NSGlobalDomain.NSUserDictionaryReplacementItems = lib.mapAttrsToList (short: long: {
-      on = 1;
-      replace = short;
-      "with" = long;
-    })
-    replacements;
+    targets.darwin.defaults.NSGlobalDomain.NSUserDictionaryReplacementItems =
+      lib.mapAttrsToList (short: long: {
+        on = 1;
+        replace = short;
+        "with" = long;
+      })
+      replacements;
   };
 }

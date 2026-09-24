@@ -39,7 +39,7 @@ in {
 
       hyfetch
       fastfetch
-      
+
       tailscale-gui
     ];
   };

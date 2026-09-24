@@ -13,7 +13,7 @@
     restart = "unless-stopped";
     caddy_port = 80;
     inherit networks;
-    command = [ "serve" ];
+    command = ["serve"];
     volumes = volumes ++ ["${dataDir}:/var/cache/ntfy"];
   };
 }

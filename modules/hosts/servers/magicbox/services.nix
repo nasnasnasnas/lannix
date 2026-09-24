@@ -50,8 +50,8 @@
             networks = ["magicbox-network"];
             nvidia = true;
             depends_on = {
-              zurg = { condition = "service_healthy"; };
-              rclone = { condition = "service_healthy"; };
+              zurg = {condition = "service_healthy";};
+              rclone = {condition = "service_healthy";};
             };
             volumes = [
               "/home/magicbox/config/jellyfin:/config"

@@ -10,21 +10,20 @@
     renderAlloyAttrs = attrs: let
       assignments =
         lib.mapAttrsToList (name: value: "${builtins.toJSON name} = ${builtins.toJSON value}") attrs;
-    in
-      "{ ${lib.concatStringsSep ", " assignments} }";
+    in "{ ${lib.concatStringsSep ", " assignments} }";
     extraPrometheusScrapes = lib.concatStringsSep "\n" (lib.mapAttrsToList (jobName: targets: let
-      targetLabels = config.server-observability.extraPrometheusScrapeTargetLabels.${jobName} or {};
-      renderTarget = target:
-        "${renderAlloyAttrs (targetLabels // {"__address__" = target;})},";
-    in ''
-      prometheus.scrape ${builtins.toJSON jobName} {
-        job_name = ${builtins.toJSON jobName}
-        targets = [
-          ${lib.concatMapStringsSep "\n  " renderTarget targets}
-        ]
-        forward_to = [prometheus.remote_write.default.receiver]
-      }
-    '') config.server-observability.extraPrometheusScrapeTargets);
+        targetLabels = config.server-observability.extraPrometheusScrapeTargetLabels.${jobName} or {};
+        renderTarget = target: "${renderAlloyAttrs (targetLabels // {"__address__" = target;})},";
+      in ''
+        prometheus.scrape ${builtins.toJSON jobName} {
+          job_name = ${builtins.toJSON jobName}
+          targets = [
+            ${lib.concatMapStringsSep "\n  " renderTarget targets}
+          ]
+          forward_to = [prometheus.remote_write.default.receiver]
+        }
+      '')
+      config.server-observability.extraPrometheusScrapeTargets);
     dockerLogContainers = config.server-observability.dockerLogContainers;
     dockerContainerPattern =
       lib.concatStringsSep "|" (map lib.escapeRegex dockerLogContainers);

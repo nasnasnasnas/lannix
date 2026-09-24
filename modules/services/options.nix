@@ -145,7 +145,10 @@ in {
             if (u.database or null) == null
             then ""
             else "/${stripLeadingSlashes u.database}";
-          suffixArg = if (u.suffix or null) == null then "" else u.suffix;
+          suffixArg =
+            if (u.suffix or null) == null
+            then ""
+            else u.suffix;
         in [
           "pgpass=$(tr -d '\\r\\n' < ${lib.escapeShellArg u.passwordHostPath}); pgenc=$(${pkgs.jq}/bin/jq -rn --arg p \"$pgpass\" '$p|@uri'); printf '%s=%s://%s:%s@%s:%s%s%s\\n' ${lib.escapeShellArg u.var} ${lib.escapeShellArg u.scheme} ${lib.escapeShellArg u.user} \"$pgenc\" ${lib.escapeShellArg u.host} ${lib.escapeShellArg u.port} ${lib.escapeShellArg dbArg} ${lib.escapeShellArg suffixArg}"
         ]) (s.pgUrlSpecs or []);
@@ -387,22 +390,24 @@ in {
       depNames = s: let
         d = s.depends_on or [];
       in
-        if builtins.isList d then d else builtins.attrNames d;
+        if builtins.isList d
+        then d
+        else builtins.attrNames d;
       invalidDependsOn = lib.concatMap (p: let
-          projectNames = map (s: s.container_name) p.services;
-        in
-          lib.concatMap (s:
-            map (dep: "${s.container_name} -> ${dep}")
-            (builtins.filter (dep: !(lib.elem dep projectNames)) (depNames s)))
-          p.services)
+        projectNames = map (s: s.container_name) p.services;
+      in
+        lib.concatMap (s:
+          map (dep: "${s.container_name} -> ${dep}")
+          (builtins.filter (dep: !(lib.elem dep projectNames)) (depNames s)))
+        p.services)
       allProjects;
       invalidNetworks = lib.concatMap (p: let
-          allowed = (p.networks or []) ++ externalNetworks ++ [caddyNetworkName];
-        in
-          lib.concatMap (s:
-            map (n: "${s.container_name} -> ${n}")
-            (builtins.filter (n: !(lib.elem n allowed)) (s.networks or [])))
-          p.services)
+        allowed = (p.networks or []) ++ externalNetworks ++ [caddyNetworkName];
+      in
+        lib.concatMap (s:
+          map (n: "${s.container_name} -> ${n}")
+          (builtins.filter (n: !(lib.elem n allowed)) (s.networks or [])))
+        p.services)
       allProjects;
       emptyProjects = builtins.filter (p: p.services == []) allProjects;
       missingBackends = builtins.filter (n: !(lib.elem n allContainerNames)) caddyExtraBackends;
@@ -437,7 +442,8 @@ in {
         else throw "mkHostServices: ${lib.concatStringsSep "; " problems}";
 
       # ---- per-project processing ----
-      processedProjects = lib.mapAttrsToList (projectKey: p: {
+      processedProjects =
+        lib.mapAttrsToList (projectKey: p: {
           inherit projectKey;
           processed = flakeConfig.flake.lib.processProjectServices {
             projectName = projectNameFor projectKey;
@@ -445,7 +451,7 @@ in {
             inherit caddyNetworkName caddyExtraBackends;
           };
         })
-      projects;
+        projects;
       allProcessedServices = lib.concatMap (pp: pp.processed.services) processedProjects;
 
       # ---- host-wide aggregation (once) ----
@@ -478,7 +484,7 @@ in {
                   fi
                 fi
               '')
-            ([caddyNetworkName] ++ externalNetworks));
+              ([caddyNetworkName] ++ externalNetworks));
           };
         };
       };
@@ -492,26 +498,26 @@ in {
             wants = ["${hostName}-docker-networks.service"] ++ lib.optional hasSecrets "opnix-secrets.service" ++ lib.optional hasRuntimeEnv "${projectName}-secret-env.service";
           };
         })
-      processedProjects);
+        processedProjects);
       projectSecretEnvUnits = lib.listToAttrs (lib.concatMap (pp: let
-          projectName = projectNameFor pp.projectKey;
-          hasRuntimeEnv = projectHasRuntimeEnv pp;
-        in
-          lib.optional hasRuntimeEnv {
-            name = "${projectName}-secret-env";
-            value = {
-              description = "Prepare ${projectName} container secret env files";
-              after = ["opnix-secrets.service"];
-              requires = ["opnix-secrets.service"];
-              before = ["${projectName}.service"];
-              wantedBy = ["${projectName}.service"];
-              serviceConfig = {
-                Type = "oneshot";
-                RemainAfterExit = true;
-                ExecStart = flakeConfig.flake.lib.mkSecretEnvScript pkgs projectName pp.processed.services;
-              };
+        projectName = projectNameFor pp.projectKey;
+        hasRuntimeEnv = projectHasRuntimeEnv pp;
+      in
+        lib.optional hasRuntimeEnv {
+          name = "${projectName}-secret-env";
+          value = {
+            description = "Prepare ${projectName} container secret env files";
+            after = ["opnix-secrets.service"];
+            requires = ["opnix-secrets.service"];
+            before = ["${projectName}.service"];
+            wantedBy = ["${projectName}.service"];
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+              ExecStart = flakeConfig.flake.lib.mkSecretEnvScript pkgs projectName pp.processed.services;
             };
-          })
+          };
+        })
       processedProjects);
       caddyUnitName = "${hostName}-caddy";
       caddyHasRuntimeEnv = (caddyProject.serviceDef.envSecrets or {}) != {} || (caddyProject.serviceDef ? pgUrlSpecs);
@@ -581,10 +587,9 @@ in {
               projectNetworks // referencedExternalNetworks // caddyNetwork;
           };
         })
-      processedProjects);
+        processedProjects);
     in
-      assert checkAll;
-      {
+      assert checkAll; {
         imports = [inputs.self.modules.nixos.arion inputs.self.modules.nixos.opnix];
 
         host.caddyDomains = lib.concatMap (s: s.domains or []) allServices;
