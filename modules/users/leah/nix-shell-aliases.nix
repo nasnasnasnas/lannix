@@ -10,17 +10,41 @@ in {
     programs.fish.functions = {
       ns = {
         description = "Open a package shell from nixpkgs";
-        body = "nix shell nixpkgs#$argv";
+        body = ''
+          set -l packages
+
+          for package in $argv
+            set -a packages "nixpkgs#$package"
+          end
+
+          NIXPKGS_ALLOW_UNFREE=1 nix shell --impure $packages
+        '';
       };
 
       nsu = {
         description = "Open a package shell from nixpkgs unstable";
-        body = "nix shell nixpkgs-unstable#$argv";
+        body = ''
+          set -l packages
+
+          for package in $argv
+            set -a packages "nixpkgs-unstable#$package"
+          end
+
+          NIXPKGS_ALLOW_UNFREE=1 nix shell --impure $packages
+        '';
       };
 
       nsm = {
         description = "Open a package shell from nixpkgs master";
-        body = "nix shell nixpkgs-master#$argv";
+        body = ''
+          set -l packages
+
+          for package in $argv
+            set -a packages "nixpkgs-master#$package"
+          end
+
+          NIXPKGS_ALLOW_UNFREE=1 nix shell --impure $packages
+        '';
       };
     };
   };
