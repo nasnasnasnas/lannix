@@ -20,6 +20,7 @@
           padding = 6.0;
         }
       ];
+      capsule_radius = 0;
       center = [
         "workspaces"
         "clock"
@@ -35,6 +36,7 @@
         "group:g1"
         "control-center"
       ];
+      radius = 0;
       scale = 1.05;
       start = [
         "launcher"
@@ -439,6 +441,7 @@
     ];
   };
   shell = {
+    corner_radius_scale = 0.0;
     greeter_sync = {
       auto_sync = true;
     };
