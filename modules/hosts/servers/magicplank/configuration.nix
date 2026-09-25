@@ -35,7 +35,6 @@
       bun
       htop
       dua
-      unstable.fresh-editor
       master.kdePackages.plasma-bigscreen
       master.kdePackages.plasma-nm
       unstable.vacuum-tube

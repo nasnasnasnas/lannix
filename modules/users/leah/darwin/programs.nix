@@ -19,7 +19,6 @@ in {
       git
       ghostty-bin
       unstable.obsidian
-      fresh-editor
       vscode
       nil
       nodejs

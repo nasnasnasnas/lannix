@@ -152,9 +152,6 @@ in {
       unstable.jetbrains-toolbox
       unstable.antigravity-ide-fhs
 
-      unstable.fresh-editor
-      # inputs.fresh.packages.${pkgs.stdenv.hostPlatform.system}.default # replaced by above
-
       btop
       unstable.typst
       unstable.tinymist
