@@ -25,6 +25,11 @@
         "workspaces"
         "clock"
       ];
+      dead_zone = {
+        actions = {
+          back = "annotate";
+        };
+      };
       end = [
         "tray"
         "notifications"
@@ -267,11 +272,11 @@
       "lockscreen-login-box@DP-7" = {
         box_height = 196.0;
         box_width = 720.0;
-        cx = 1280.0;
-        cy = 1317.0;
+        cx = 512.0;
+        cy = 702.4000244140625;
         output = "DP-7";
-        placement_height = 1440.0;
-        placement_width = 2560.0;
+        placement_height = 768.0;
+        placement_width = 1024.0;
         rotation = 0.0;
         settings = {
           background_color = "surface_variant";
@@ -461,7 +466,7 @@
   };
   theme = {
     builtin = "Tokyo-Night";
-    mode = "auto";
+    mode = "dark";
     source = "builtin";
     templates = {
       builtin_ids = [
