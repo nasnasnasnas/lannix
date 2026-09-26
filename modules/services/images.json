@@ -89,7 +89,7 @@
   },
   "linuxserver/bazarr": {
     "tag": "latest",
-    "digest": "sha256:ab401a0f361cfad328e444838b13d5b334b189d0f556fc91a3623eb581df36df"
+    "digest": "sha256:8b30e81c4aec2991f469e78fae8afaa89ecc9b21a80e3897f50427216b55470c"
   },
   "linuxserver/jellyfin": {
     "tag": "latest",
