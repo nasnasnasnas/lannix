@@ -175,6 +175,6 @@
   },
   "docker.io/binwiederhier/ntfy": {
     "tag": "latest",
-    "digest": "sha256:f8060a494b69d53866ef505c36a205efcce3204618d6e183a87128cca6e7cac9"
+    "digest": "sha256:6ef4b819f722fccdc036af611c4774cfdc2de821ab74fdd48bbf4c9d6f8973da"
   }
 }
