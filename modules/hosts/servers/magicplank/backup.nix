@@ -7,7 +7,6 @@
       pulseSecretReference = "op://Secrets/updown.io pulse endpoints for backups/MagicPlank";
       sourceDirectories = [
         "/home/magicbox/data"
-        "/home/magicbox/smb"
       ];
       excludePatterns = [
         # Metrics, logs, and profiles are disposable and could exceed the shared quota.
