@@ -28,7 +28,7 @@
               NTFY_CACHE_FILE = "/var/cache/ntfy/cache.db";
               NTFY_UPSTREAM_BASE_URL = "https://ntfy.sh";
               NTFY_AUTH_USERS = "lavender:$2a$10$OlP6Pag7JjU0Rm68RlhRk.3cYlCZYBxDztoYazNmGnjCENIeMg5Ru:admin";
-              NTFY_AUTH_ACCESS = "*:private-*:write-only";
+              NTFY_AUTH_ACCESS = "*:*:write-only,*:public-*:read-write";
             };
           })
         ];
