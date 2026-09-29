@@ -7,7 +7,7 @@
     environment ? {},
     dataDir ? "/home/magicbox/data/ntfy",
   }: {
-    inherit domains;
+    inherit domains environment;
     container_name = "ntfy";
     inherit image;
     restart = "unless-stopped";
