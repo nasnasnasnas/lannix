@@ -25,7 +25,7 @@
   },
   "docker.io/matrixdotorg/synapse": {
     "tag": "latest",
-    "digest": "sha256:1231c84d217f290e73db498f46a9af52aaafa38015502b4ebb7c111c8d097196"
+    "digest": "sha256:7155ddc4835e5b8afa4e1598d92aa16ff1d03109f7d1cff61d493237d1210b1d"
   },
   "ghcr.io/debridmediamanager/zurg-testing": {
     "tag": "latest",
