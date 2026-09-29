@@ -136,12 +136,14 @@
           };
         };
 
-        services.borgmatic = {
-          enable = true;
-          inherit settings;
-        };
+      services.borgmatic = {
+        enable = true;
+        inherit settings;
+      };
+.
+      environment.systemPackages = [pkgs.borgbackup];
 
-        systemd.services.borgmatic = {
+      systemd.services.borgmatic = {
           description = "Back up ${config.networking.hostName} to rsync.net with borgmatic";
           wants = [ "network-online.target" ];
           requires = [ "opnix-secrets.service" ];
