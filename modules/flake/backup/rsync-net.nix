@@ -140,7 +140,7 @@
         enable = true;
         inherit settings;
       };
-.
+
       environment.systemPackages = [pkgs.borgbackup];
 
       systemd.services.borgmatic = {
