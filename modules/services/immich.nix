@@ -40,7 +40,7 @@
 
   flake.services.immich-machine-learning = {
     networks ? [],
-    image ? config.flake.lib.image "ghcr.io/immich-app/immich-machine-learning:v3.1.0-rocm",
+    image ? config.flake.lib.image "ghcr.io/immich-app/immich-machine-learning",
     cacheDir,
     container_name ? "immich-machine-learning",
     restart ? "always",
