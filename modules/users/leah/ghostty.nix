@@ -5,8 +5,12 @@ in {
     programs.ghostty = {
       enable = true;
       settings = {
-        background-opacity = 0.7;
+        background-opacity = 0.8;
       };
     };
+  };
+
+  flake.modules.homeManager."${username}-linux" = {
+    programs.ghostty.settings.theme = "noctalia";
   };
 }
