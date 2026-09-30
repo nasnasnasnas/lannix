@@ -175,7 +175,7 @@
   },
   "docker.io/binwiederhier/ntfy": {
     "tag": "latest",
-    "digest": "sha256:87312d334d009ee67ee0d2fba8fed01435547cc468e452243aef5133a9984d48"
+    "digest": "sha256:6ef4b819f722fccdc036af611c4774cfdc2de821ab74fdd48bbf4c9d6f8973da"
   },
   "ghcr.io/immich-app/immich-server": {
     "tag": "release",
