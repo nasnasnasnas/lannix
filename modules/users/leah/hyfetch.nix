@@ -2,6 +2,7 @@
   username = "leah";
 in {
   flake.modules.homeManager."${username}" = {pkgs, ...}: {
+    programs.fastfetch.enable = true;
     programs.hyfetch = {
       enable = true;
       settings = {
@@ -9,7 +10,9 @@ in {
         color_align = {
           mode = "horizontal";
         };
-        
+        mode = "rgb";
+        backend = "fastfetch";
+        pride_month_disable = false;
       };
     };
   };
