@@ -18,7 +18,7 @@
     boot.loader.efi.canTouchEfiVariables = true;
 
     boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "thunderbolt" "usbhid" "usb_storage" "sd_mod"];
-    boot.initrd.kernelModules = [];
+    boot.initrd.kernelModules = [ "amdgpu" ];
     boot.kernelModules = ["kvm-amd"];
     boot.extraModulePackages = [];
 

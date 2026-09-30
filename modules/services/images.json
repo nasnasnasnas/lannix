@@ -175,6 +175,23 @@
   },
   "docker.io/binwiederhier/ntfy": {
     "tag": "latest",
-    "digest": "sha256:6ef4b819f722fccdc036af611c4774cfdc2de821ab74fdd48bbf4c9d6f8973da"
+    "digest": "sha256:87312d334d009ee67ee0d2fba8fed01435547cc468e452243aef5133a9984d48"
+  },
+  "ghcr.io/immich-app/immich-server": {
+    "tag": "release",
+    "digest": "sha256:d317916b28090c33eb36b308464ea391f8b7df1d850fcfea227a39ec879718c2"
+  },
+  "ghcr.io/immich-app/immich-machine-learning": {
+    "tag": "v3-rocm",
+    "digest": "sha256:5be1881160b2fe976f5e3fca28b1b88f58ed7031fb391378fd9d955bc400a7db"
+  },
+  "ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0": {
+    "name": "ghcr.io/immich-app/postgres",
+    "tag": "14-vectorchord0.4.3-pgvectors0.2.0",
+    "digest": "sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23"
+  },
+  "valkey/valkey": {
+    "tag": "9",
+    "digest": "sha256:3acc0687f2a2e1091fae6450d7842dd658c941338cf0a873ddd9e14b9e4ea4dd"
   }
 }

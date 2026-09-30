@@ -229,6 +229,51 @@
           })
         ];
       };
+
+      immich = {
+        networks = ["immich-net"];
+        services = [
+          (immich {
+            domains = ["https://immich.szpunar.cloud"];
+            networks = ["immich-net"];
+            dataDir = "/home/magicbox/data/immich";
+            dbPasswordSecret = "op://Secrets/Immich DB/password";
+            devices = ["/dev/dri:/dev/dri"];
+          })
+          (immich-machine-learning {
+            networks = ["immich-net"];
+            cacheDir = "/home/magicbox/data/immich-model-cache";
+          })
+          (dedicated-postgres {
+            container_name = "immich-db";
+            image = inputs.self.lib.image "ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0";
+            networks = ["immich-net"];
+            dataDir = "/home/magicbox/data/immich-db";
+            db = "immich";
+            user = "immich";
+            initdbArgs = "--data-checksums";
+            envSecrets = {
+              POSTGRES_PASSWORD = "op://Secrets/Immich DB/password";
+            };
+            environment = {
+              DB_STORAGE_TYPE = "SSD";
+            };
+            extraVolumes = [
+              {
+                type = "tmpfs";
+                target = "/dev/shm";
+                tmpfs = {size = 134217728;};
+              }
+            ];
+          })
+          (redis {
+            container_name = "immich-redis";
+            image = inputs.self.lib.image "valkey/valkey";
+            networks = ["immich-net"];
+            dataDir = "/home/magicbox/data/immich-redis";
+          })
+        ];
+      };
     };
   };
 }

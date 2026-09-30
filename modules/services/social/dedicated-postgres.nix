@@ -14,6 +14,7 @@
     user,
     initdbArgs ? null,
     envSecrets ? {},
+    extraVolumes ? [],
     environment ? {},
   }: {
     inherit container_name image restart networks envSecrets;
@@ -28,7 +29,7 @@
         else {POSTGRES_INITDB_ARGS = initdbArgs;}
       )
       // environment;
-    volumes = ["${dataDir}:/var/lib/postgresql/data"];
+    volumes = ["${dataDir}:/var/lib/postgresql/data"] ++ extraVolumes;
     healthcheck = {
       test = ["CMD" "pg_isready" "-h" "127.0.0.1"];
       interval = "10s";
