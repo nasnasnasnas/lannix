@@ -13,4 +13,8 @@ in {
   flake.modules.homeManager."${username}-linux" = {
     programs.ghostty.settings.theme = "noctalia";
   };
+
+  flake.modules.homeManager."${username}-darwin" = {
+    programs.ghostty.program = null;
+  };
 }
