@@ -8,15 +8,19 @@
       "widgets"
     ];
     widgets = {
+      background_opacity = 0.4999999888241291;
       capsule_group = [
         {
+          accordion = false;
+          accordion_direction = "end";
+          enabled = true;
           fill = "surface_variant";
           id = "g1";
           members = [
             "battery"
             "power_profile"
           ];
-          opacity = 1.0;
+          opacity = 0.0;
           padding = 6.0;
         }
       ];
@@ -25,6 +29,7 @@
         "workspaces"
         "clock"
       ];
+      contact_shadow = true;
       dead_zone = {
         actions = {
           back = "annotate";
@@ -107,10 +112,56 @@
     };
     schema_version = 2;
     widget = {
-      desktop-widget-01 = {
+      desktop-widget-0000000000000005 = {
+        box_height = 256.0;
+        box_width = 512.0;
+        cx = 1423.0;
+        cy = 568.5;
+        output = "eDP-1";
+        placement_height = 1129.0;
+        placement_width = 1694.0;
+        rotation = -0.0;
+        settings = {
+          network_speed_compact = false;
+          stat = "net_rx";
+          stat2 = "net_tx";
+        };
+        type = "sysmon";
+      };
+      desktop-widget-0000000000000006 = {
+        box_height = 256.0;
+        box_width = 512.0;
+        cx = 271.0;
+        cy = 564.500244140625;
+        output = "eDP-1";
+        placement_height = 1129.0;
+        placement_width = 1694.0;
+        rotation = 0.0;
+        settings = {
+          stat = "cpu_temp";
+          stat2 = "cpu_freq";
+        };
+        type = "sysmon";
+      };
+      desktop-widget-0000000000000007 = {
         box_height = 256.0;
         box_width = 576.0;
-        cx = 303.0;
+        cx = 847.0;
+        cy = 884.5;
+        output = "eDP-1";
+        placement_height = 1129.0;
+        placement_width = 1694.0;
+        rotation = 0.0;
+        settings = {
+          stat = "gpu_usage";
+          stat2 = "gpu_vram_used";
+        };
+        type = "sysmon";
+      };
+      desktop-widget-01 = {
+        box_height = 256.0;
+        box_width = 512.0;
+        cx = 271.0;
         cy = 276.5;
         output = "eDP-1";
         placement_height = 1129.0;
@@ -123,8 +174,8 @@
       };
       desktop-widget-02 = {
         box_height = 256.0;
-        box_width = 448.0;
-        cx = 1455.0;
+        box_width = 512.0;
+        cx = 1423.0;
         cy = 276.5;
         output = "eDP-1";
         placement_height = 1129.0;
@@ -139,7 +190,7 @@
       desktop-widget-03 = {
         box_height = 256.0;
         box_width = 576.0;
-        cx = 911.0;
+        cx = 847.0;
         cy = 276.5;
         output = "eDP-1";
         placement_height = 1129.0;
@@ -152,10 +203,10 @@
         type = "media_player";
       };
       desktop-widget-04 = {
-        box_height = 128.0;
+        box_height = 256.0;
         box_width = 576.0;
-        cx = 911.0;
-        cy = 500.5001220703125;
+        cx = 847.0;
+        cy = 564.5;
         output = "eDP-1";
         placement_height = 1129.0;
         placement_width = 1694.0;
@@ -163,16 +214,19 @@
         settings = {
           aspect_ratio = 6.0;
           bands = 32;
-          show_when_idle = true;
+          show_when_idle = false;
         };
         type = "audio_visualizer";
       };
     };
     widget_order = [
+      "desktop-widget-0000000000000006"
       "desktop-widget-01"
       "desktop-widget-02"
       "desktop-widget-03"
       "desktop-widget-04"
+      "desktop-widget-0000000000000005"
+      "desktop-widget-0000000000000007"
     ];
   };
   idle = {
@@ -205,6 +259,10 @@
     showWeekNumberInCalendar = true;
     use12hourFormat = true;
     useFahrenheit = true;
+  };
+  lockscreen = {
+    blur_intensity = 0.9999999776482582;
+    blurred_desktop = true;
   };
   lockscreen_widgets = {
     enabled = true;
@@ -327,7 +385,7 @@
         box_height = 196.0;
         box_width = 720.0;
         cx = 847.0;
-        cy = 1006.0001831054688;
+        cy = 1006.0004272460938;
         output = "eDP-1";
         placement_height = 1129.0;
         placement_width = 1694.0;
@@ -356,8 +414,8 @@
         cx = 942.0;
         cy = 1920.0;
         output = "winit";
-        placement_height = 0.0;
-        placement_width = 0.0;
+        placement_height = 2058.0;
+        placement_width = 1884.0;
         rotation = 0.0;
         settings = {
           background_color = "surface_variant";
@@ -421,6 +479,17 @@
         };
         type = "weather";
       };
+      lockscreen-widget-0000000000000004 = {
+        box_height = 0.0;
+        box_width = 0.0;
+        cx = 847.0;
+        cy = 116.5;
+        output = "eDP-1";
+        placement_height = 1129.0;
+        placement_width = 1694.0;
+        rotation = 0.0;
+        type = "clock";
+      };
     };
     widget_order = [
       "lockscreen-login-box@DP-3"
@@ -432,11 +501,16 @@
       "lockscreen-widget-0000000000000001"
       "lockscreen-widget-0000000000000002"
       "lockscreen-widget-0000000000000003"
+      "lockscreen-widget-0000000000000004"
     ];
   };
   nightLight = {
     enabled = true;
     nightTemp = "4525";
+  };
+  notification = {
+    background_opacity = 0.8999999798834324;
+    layer = "overlay";
   };
   plugins = {
     enabled = [
@@ -447,6 +521,7 @@
   };
   shell = {
     corner_radius_scale = 0.0;
+    external_ip_enabled = true;
     greeter_sync = {
       auto_sync = true;
     };
@@ -466,7 +541,7 @@
   };
   theme = {
     builtin = "Tokyo-Night";
-    mode = "dark";
+    mode = "auto";
     source = "builtin";
     templates = {
       builtin_ids = [
@@ -476,6 +551,7 @@
         "ghostty"
         "niri"
         "qt"
+        "starship"
       ];
       community_ids = [
         "antigravity"

@@ -36,7 +36,7 @@ input {
         drag false
         // drag-lock
         natural-scroll
-        accel-speed 0.2
+        accel-speed 0.25
         // accel-profile "flat"
         // scroll-method "two-finger"
         // disabled-on-external-mouse
@@ -230,7 +230,7 @@ layout {
     // You can enable drop shadows for windows.
     shadow {
         // Uncomment the next line to enable shadows.
-        // on
+        on
 
         // By default, the shadow draws only around its window, and not behind it.
         // Uncomment this setting to make the shadow draw behind its window.
@@ -252,13 +252,13 @@ layout {
         // pixels and match the CSS box-shadow properties.
 
         // Softness controls the shadow blur radius.
-        softness 30
+        softness 0
 
         // Spread expands the shadow.
         spread 5
 
         // Offset moves the shadow relative to the window.
-        offset x=0 y=5
+        offset x=5 y=5
 
         // You can also change the shadow color and opacity.
         color "#0007"
@@ -344,6 +344,20 @@ window-rule {
     // - Flatpak Firefox (app-id is "org.mozilla.firefox")
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
+}
+
+window-rule {
+    match is-floating=true
+
+    background-effect {
+        xray false
+    }
+}
+
+window-rule {
+    background-effect {
+        blur true
+    }
 }
 
 // Example: block out two password managers from screen capture.
