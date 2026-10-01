@@ -155,7 +155,7 @@
   },
   "victoriametrics/victoria-logs": {
     "tag": "latest",
-    "digest": "sha256:47b820890d64c4575a2a0a46415dcd8a4fd59a0f1fcd6a377693d7aea639442e"
+    "digest": "sha256:251121fa882af99b95ba0c230a4a2f412ea602d2698c64a96c58dc9842bb755d"
   },
   "victoriametrics/victoria-metrics": {
     "tag": "latest",
