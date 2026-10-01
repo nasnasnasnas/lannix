@@ -15,6 +15,6 @@ in {
   };
 
   flake.modules.homeManager."${username}-darwin" = {
-    programs.ghostty.program = null;
+    programs.ghostty.package = null;
   };
 }
