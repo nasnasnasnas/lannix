@@ -81,8 +81,14 @@
     };
     enabled = true;
     refresh_minutes = 5;
+    reminders = {
+      all_day_digest_time = "10:00";
+    };
   };
   control_center = {
+    calendar = {
+      show_week_numbers = true;
+    };
     shortcuts = [
       {
         type = "wifi";
