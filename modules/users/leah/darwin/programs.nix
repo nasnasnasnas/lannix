@@ -40,6 +40,8 @@ in {
       fastfetch
 
       tailscale-gui
+
+      jujutsu
     ];
   };
 }
