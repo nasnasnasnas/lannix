@@ -109,6 +109,7 @@
         type = "dark_mode";
       }
     ];
+    width = 800;
   };
   desktop_widgets = {
     grid = {
