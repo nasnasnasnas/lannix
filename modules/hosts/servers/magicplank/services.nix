@@ -239,6 +239,7 @@
             dataDir = "/home/magicbox/data/immich";
             dbPasswordSecret = "op://Secrets/Immich DB/password";
             devices = ["/dev/dri:/dev/dri"];
+            volumes = ["/home/magicbox/data/immich-external:/external-libraries"];
           })
           (immich-machine-learning {
             networks = ["immich-net"];

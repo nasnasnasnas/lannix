@@ -19,6 +19,7 @@
       "immich-redis" = {condition = "service_healthy";};
     },
     environment ? {},
+    volumes ? [],
   }: {
     inherit domains container_name image restart networks depends_on devices;
     caddy_port = port;
@@ -35,7 +36,7 @@
     envSecrets = {
       DB_PASSWORD = dbPasswordSecret;
     };
-    volumes = ["${dataDir}:/data"];
+    volumes = volumes ++ ["${dataDir}:/data"];
   };
 
   flake.services.immich-machine-learning = {
