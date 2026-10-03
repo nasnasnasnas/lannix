@@ -21,7 +21,7 @@
   },
   "dock.mau.dev/gomuks/gomuks": {
     "tag": "latest",
-    "digest": "sha256:75c57595f71570c4fd6f2463b5662fbcbbefcbfcedeee66016100e6abb7ee3aa"
+    "digest": "sha256:4325b791d9c25e3f5abf60e2a67da06ccb16051c1c5b0428122cea82aded6322"
   },
   "docker.io/matrixdotorg/synapse": {
     "tag": "latest",
