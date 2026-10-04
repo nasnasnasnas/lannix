@@ -68,6 +68,9 @@
     };
     warning_threshold = 15;
   };
+  brightness = {
+    enable_ddcutil = true;
+  };
   calendar = {
     account = {
       fastmail = {
@@ -516,8 +519,11 @@
     nightTemp = "4525";
   };
   notification = {
-    background_opacity = 0.8999999798834324;
+    background_opacity = 0.7499999832361937;
     layer = "overlay";
+  };
+  osd = {
+    background_opacity = 0.6999999843537807;
   };
   plugins = {
     enabled = [
@@ -543,12 +549,17 @@
     polkit_agent = true;
     screen_time_enabled = true;
     settings_show_advanced = true;
+    settings_window_translucent = true;
     telemetry_enabled = true;
     ui_scale = 1.05;
+    window_switcher = {
+      mru = true;
+    };
   };
   theme = {
-    builtin = "Tokyo-Night";
-    mode = "auto";
+    builtin = "Catppuccin";
+    community_palette = "Oxocarbon";
+    mode = "dark";
     source = "builtin";
     templates = {
       builtin_ids = [
@@ -580,6 +591,7 @@
     directory = "/home/leah/Pictures/Wallpapers";
     fillColor = "#b89cff";
     overviewEnabled = true;
+    transition_on_startup = true;
   };
   weather = {
     refresh_minutes = 5;
@@ -588,6 +600,7 @@
   widget = {
     active_window = {
       capsule = true;
+      capsule_opacity = 0.0;
     };
     clock = {
       format = "{:%H:%M:%S}";

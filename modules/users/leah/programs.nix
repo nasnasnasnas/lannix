@@ -2,19 +2,21 @@
   inputs,
   self,
   ...
-}: let
+}:
+let
   username = "leah";
-in {
-  flake.modules.nixos."${username}" = {pkgs, ...}: {
+in
+{
+  flake.modules.nixos."${username}" = { pkgs, ... }: {
     # Install firefox.
     programs.firefox.enable = true;
     programs._1password.enable = true;
     programs._1password-gui.enable = true;
-    programs._1password-gui.polkitPolicyOwners = ["leah"];
+    programs._1password-gui.polkitPolicyOwners = [ "leah" ];
     programs.steam.enable = true;
     programs.steam.package = pkgs.steam.override {
-      extraPkgs = pkgs':
-        with pkgs'; [
+      extraPkgs =
+        pkgs': with pkgs'; [
           libxcursor
           libxi
           libxinerama
@@ -138,7 +140,7 @@ in {
       zulu25
 
       llm-agents.claude-code
-      #llm-agents.omp
+      llm-agents.omp
       llm-agents.opencode2
       llm-agents.junie
       llm-agents.herdr
@@ -174,7 +176,7 @@ in {
 
     # Enable the COSMIC desktop environment
     services.desktopManager.cosmic.enable = true;
-    environment.cosmic.excludePackages = [pkgs.networkmanagerapplet];
+    environment.cosmic.excludePackages = [ pkgs.networkmanagerapplet ];
     programs.niri.enable = true;
 
     programs.direnv.enable = true;
@@ -198,6 +200,6 @@ in {
     };
 
     programs.librepods.enable = true;
-    users.users."${username}".extraGroups = ["librepods"];
+    users.users."${username}".extraGroups = [ "librepods" ];
   };
 }

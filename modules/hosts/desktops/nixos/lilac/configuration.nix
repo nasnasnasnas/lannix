@@ -10,6 +10,7 @@
 
     environment.systemPackages = with pkgs; [
       # Add your system packages here
+      ddcutil
     ];
 
     programs.nix-ld = {
