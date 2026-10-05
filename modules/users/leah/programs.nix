@@ -123,6 +123,8 @@ in
       kdePackages.dolphin
       kdePackages.dolphin-plugins
 
+      nautilus
+
       unstable.protonup-qt
       unstable.protontricks
       libnotify
@@ -140,7 +142,7 @@ in
       zulu25
 
       llm-agents.claude-code
-      llm-agents.omp
+      unstable.omp
       llm-agents.opencode2
       llm-agents.junie
       llm-agents.herdr
@@ -151,6 +153,7 @@ in
       unstable.jetbrains.rust-rover
       unstable.jetbrains.clion
       unstable.jetbrains.phpstorm
+      unstable.jetbrains.goland
       unstable.jetbrains-toolbox
       unstable.antigravity-ide-fhs
 
