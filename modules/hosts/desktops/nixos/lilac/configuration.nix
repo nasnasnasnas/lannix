@@ -1,5 +1,5 @@
-{inputs, ...}: {
-  flake.modules.nixos.lilac = {pkgs, ...}: {
+{ inputs, ... }: {
+  flake.modules.nixos.lilac = { pkgs, ... }: {
     imports = with inputs.self.modules.nixos; [
       home-manager
       leah # (adds leah user + home manager config)
@@ -17,7 +17,7 @@
       enable = true;
     };
 
-    nix.settings.trusted-users = ["leah"];
+    nix.settings.trusted-users = [ "leah" ];
 
     users.users.root.openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM+9gEtoUZS0D6LAu7Jz8WnIRrKNna2zfH6F7QxzaeZa"
@@ -43,8 +43,11 @@
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
 
-    boot.initrd.kernelModules = ["amdgpu"];
-    boot.kernelParams = ["quiet" "splash"];
+    boot.initrd.kernelModules = [ "amdgpu" ];
+    boot.kernelParams = [
+      "quiet"
+      "splash"
+    ];
 
     boot.plymouth = {
       enable = true;
@@ -53,7 +56,7 @@
 
     boot.initrd.systemd.enable = true;
 
-    nixpkgs.overlays = [inputs.nix-cachyos-kernel.overlays.default];
+    nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.default ];
     boot.kernelPackages = pkgs.cachyosKernels."linuxPackages-cachyos-latest-lto-zen4";
 
     networking.networkmanager.enable = true;
@@ -83,7 +86,7 @@
     # Enable the X11 windowing system.
     # services.xserver.enable = true;
     #     services.xserver.enable = true;
-    services.xserver.videoDrivers = ["amdgpu"];
+    services.xserver.videoDrivers = [ "amdgpu" ];
 
     # Configure keymap in X11
     services.xserver.xkb = {
@@ -122,11 +125,12 @@
     services.displayManager.noctalia-greeter = {
       enable = true;
       package = inputs.noctalia-greeter.packages.${pkgs.stdenv.hostPlatform.system}.default;
-      passwordless-sync-users = ["leah"];
+      passwordless-sync-users = [ "leah" ];
 
       # Optional configuration
       greeter-args = "--session Niri";
     };
+    hardware.i2c.enable = true;
 
     services.tailscale = {
       enable = true;
@@ -139,16 +143,16 @@
       "100.100.100.100"
       "1.1.1.1"
     ];
-    networking.search = ["risk-sidemirror.ts.net"];
+    networking.search = [ "risk-sidemirror.ts.net" ];
 
     systemd.user.services.tailscale-systray = {
       enable = true;
-      after = ["tailscaled.service"];
-      wantedBy = ["default.target"];
+      after = [ "tailscaled.service" ];
+      wantedBy = [ "default.target" ];
       description = "Tailscale Systray";
       serviceConfig = {
         Type = "simple";
-        ExecStart = ''${pkgs.unstable.tailscale}/bin/tailscale systray'';
+        ExecStart = "${pkgs.unstable.tailscale}/bin/tailscale systray";
       };
     };
 
@@ -159,7 +163,7 @@
     };
 
     nix.optimise.automatic = true;
-    nix.optimise.dates = ["03:30"];
+    nix.optimise.dates = [ "03:30" ];
 
     # use gnome keyring
     services.gnome.gnome-keyring.enable = true;
@@ -169,7 +173,7 @@
       login.enableGnomeKeyring = true;
       sddm.enableGnomeKeyring = true;
     };
-    security.pam.services.swaylock = {};
+    security.pam.services.swaylock = { };
     programs.seahorse.enable = true;
     security.polkit.enable = true;
 
@@ -212,7 +216,12 @@
 
     services.nextdns = {
       enable = true;
-      arguments = ["-config" "3a5b4a" "-cache-size" "10MB"];
+      arguments = [
+        "-config"
+        "3a5b4a"
+        "-cache-size"
+        "10MB"
+      ];
     };
 
     # This value determines the NixOS release from which the default
