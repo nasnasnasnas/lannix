@@ -154,7 +154,6 @@ in
       unstable.jetbrains.clion
       unstable.jetbrains.phpstorm
       unstable.jetbrains.goland
-      unstable.jetbrains-toolbox
       unstable.antigravity-ide-fhs
 
       btop
