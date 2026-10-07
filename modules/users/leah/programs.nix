@@ -7,7 +7,10 @@ let
   username = "leah";
 in
 {
-  flake.modules.nixos."${username}" = { pkgs, ... }: {
+  flake.modules.nixos."${username}" = { pkgs, ... }:
+    let
+      agents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+    in {
     # Install firefox.
     programs.firefox.enable = true;
     programs._1password.enable = true;
@@ -43,10 +46,6 @@ in
         mode = "0755";
       };
     };
-
-    nixpkgs.overlays = [
-      inputs.llm-agents.overlays.shared-nixpkgs
-    ];
 
     # Allow unfree packages
     nixpkgs.config.allowUnfree = true;
@@ -141,11 +140,11 @@ in
       dua
       zulu25
 
-      llm-agents.claude-code
+      agents.claude-code
       inputs.omp.packages.${pkgs.stdenv.hostPlatform.system}.default
-      llm-agents.opencode2
-      llm-agents.junie
-      llm-agents.herdr
+      agents.opencode2
+      agents.junie
+      agents.herdr
 
       unstable.jetbrains.webstorm
       unstable.jetbrains.idea

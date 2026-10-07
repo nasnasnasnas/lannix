@@ -5,11 +5,10 @@ in {
     pkgs,
     lib,
     ...
-  }: {
-    nixpkgs.overlays = [
-      inputs.llm-agents.overlays.shared-nixpkgs
-    ];
-
+  }:
+    let
+      agents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+    in {
     programs.direnv.enable = true;
 
     environment.systemPackages = with pkgs; [
@@ -23,11 +22,11 @@ in {
       nil
       nodejs
 
-      llm-agents.claude-code
+      agents.claude-code
       inputs.omp.packages.${pkgs.stdenv.hostPlatform.system}.default
-      llm-agents.opencode2
-      llm-agents.junie
-      llm-agents.herdr
+      agents.opencode2
+      agents.junie
+      agents.herdr
 
       prismlauncher
       vesktop
