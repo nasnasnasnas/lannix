@@ -54,6 +54,7 @@
       url = "github:noctalia-dev/noctalia-greeter";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    omp.url = "github:can1357/oh-my-pi";
     opnix.url = "github:brizzbuzz/opnix";
     procon-scrape = {
       url = "github:nealol/procon-scrape";

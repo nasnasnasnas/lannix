@@ -142,7 +142,7 @@ in
       zulu25
 
       llm-agents.claude-code
-      unstable.omp
+      inputs.omp.packages.${pkgs.stdenv.hostPlatform.system}.default
       llm-agents.opencode2
       llm-agents.junie
       llm-agents.herdr

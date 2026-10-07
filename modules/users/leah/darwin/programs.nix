@@ -24,7 +24,7 @@ in {
       nodejs
 
       llm-agents.claude-code
-      llm-agents.omp
+      inputs.omp.packages.${pkgs.stdenv.hostPlatform.system}.default
       llm-agents.opencode2
       llm-agents.junie
       llm-agents.herdr
