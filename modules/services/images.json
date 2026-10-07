@@ -183,7 +183,7 @@
   },
   "ghcr.io/immich-app/immich-machine-learning": {
     "tag": "v3-rocm",
-    "digest": "sha256:5be1881160b2fe976f5e3fca28b1b88f58ed7031fb391378fd9d955bc400a7db"
+    "digest": "sha256:f0f594014b7210e716e314aa9711f60aca9ff4688b47b94902de2ec2ac083822"
   },
   "ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0": {
     "name": "ghcr.io/immich-app/postgres",
