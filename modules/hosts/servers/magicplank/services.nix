@@ -244,6 +244,9 @@
           (immich-machine-learning {
             networks = ["immich-net"];
             cacheDir = "/home/magicbox/data/immich-model-cache";
+            environment = {
+              MACHINE_LEARNING_MODEL_REVISION = "v2";
+            };
           })
           (dedicated-postgres {
             container_name = "immich-db";
