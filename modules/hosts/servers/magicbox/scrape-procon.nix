@@ -10,7 +10,7 @@
       enable = true;
       secrets.proconLicense = {
         path = "/var/lib/opnix/secrets/scrape-procon/license";
-        reference = "op://Secrets/CloakBrowser Pro License/credential";
+        reference = "op://Secrets/CloakBrowser Pro License/password";
         mode = "0640";
       };
     };
