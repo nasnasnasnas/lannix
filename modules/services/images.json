@@ -73,7 +73,7 @@
   },
   "grafana/pyroscope": {
     "tag": "latest",
-    "digest": "sha256:73b23dbb99f154a0803c136abafdff825475f415dd4d4587538d014c672b5a55"
+    "digest": "sha256:b7e62699a27463aa3533efe3f88c320da594da495731fd6eabca6f44f92cdd7b"
   },
   "hif1/heisenbridge": {
     "tag": "latest",
