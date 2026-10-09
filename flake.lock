@@ -653,11 +653,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1791546702,
-        "narHash": "sha256-n7/PzHEDgDsEBehLnriJrxnQIHnug3AFYLTzcLmYYI0=",
+        "lastModified": 1791568054,
+        "narHash": "sha256-of9eP2Qr8kf5/sIgtgvQRzKFnbGlYrCSUGeKx9A71a0=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "e1d11b0787ece2947bd01914ff295df937fe0f65",
+        "rev": "6b956af55cc6109ac80d8f79f4721a78b6b5f457",
         "type": "github"
       },
       "original": {
@@ -669,11 +669,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1791541090,
-        "narHash": "sha256-dglDN75nbQTlcNgujXCtERcPCc31XZ/yuAD9hD7Gfwo=",
+        "lastModified": 1791568540,
+        "narHash": "sha256-Cp49f6Nrvc4EDlpJ8MCzbx51nYMUX8TqQwoq6RBeL4U=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "07f11c6fa9cf6dc221185d5bf17a0099a0ee025b",
+        "rev": "c5ec9844a37aa3ecadd8ba248a38aa532bea40e5",
         "type": "github"
       },
       "original": {
@@ -989,11 +989,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1791545857,
-        "narHash": "sha256-M4+5vin4EKYw8CP55zxtrvxS3sc7ZFwQooUIUbIoKuk=",
+        "lastModified": 1791568321,
+        "narHash": "sha256-zsV42gAb/XZdZ+UCKlJ/pnq46dmXr02WoNS8o47ra60=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "9ba7b252a8d42b9f12b769617b581f24ab79930c",
+        "rev": "6f38529ceb083cbc9a98588d0da444c65184f834",
         "type": "github"
       },
       "original": {
@@ -1197,11 +1197,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791541573,
-        "narHash": "sha256-mtndoRYrdI7vhnsow92ij70CbDYkkt7Owf9V/YZlqVE=",
+        "lastModified": 1791554119,
+        "narHash": "sha256-koepvlA8wY8gBTURAxdC5gLzSSsqV0bdrZFwQctGNP4=",
         "owner": "noctalia-dev",
         "repo": "noctalia",
-        "rev": "a0ef2d027b2cf3a750e41749a10706969cdde663",
+        "rev": "b2e3ffb259c746606eb4477703ba7e9882ade37e",
         "type": "github"
       },
       "original": {
@@ -1240,11 +1240,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1791546853,
-        "narHash": "sha256-Qvpvd0y7BrClqf4qytLFvq+/PYFhdE7+BKFKXJLSpLA=",
+        "lastModified": 1791566835,
+        "narHash": "sha256-PPTr6AiN+f5EX4iHZ86VqY4OWH09AJhK6T1B7Jr8xvM=",
         "owner": "can1357",
         "repo": "oh-my-pi",
-        "rev": "b4e288210c052e1c62042515e739919c9304f14e",
+        "rev": "5aafbec7a2f03c836fe2b938b3adfbbd46e8482e",
         "type": "github"
       },
       "original": {
