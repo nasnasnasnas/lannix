@@ -38,6 +38,7 @@
     };
 
     services.fwupd.enable = true;
+    hardware.framework.enableKmod = true;
 
     # Bootloader.
     boot.loader.systemd-boot.enable = true;
