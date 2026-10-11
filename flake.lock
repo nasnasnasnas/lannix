@@ -282,11 +282,11 @@
     },
     "flake-file": {
       "locked": {
-        "lastModified": 1791576388,
-        "narHash": "sha256-7gXT6QUhBlqEk6601Zap6eafgLPAVPuKGghEXn9lN50=",
+        "lastModified": 1791696462,
+        "narHash": "sha256-Iu862mflVRLHE3ivJD1ah5j/pprVyxnXMMUPMR9C1Wg=",
         "owner": "denful",
         "repo": "flake-file",
-        "rev": "f21ea26068584e19ed8dc48928adfb8ad7049ac7",
+        "rev": "4ccd0b92aee0943b94324ec4c39949df1769f123",
         "type": "github"
       },
       "original": {
@@ -653,11 +653,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1791674063,
-        "narHash": "sha256-xZESZVk1M4ll20HvlPPG51yOWbit2CcYrrFQcb2Lzc8=",
+        "lastModified": 1791696006,
+        "narHash": "sha256-4gkwHfnPMUD1/wkOGpHKlP0YjuZx0eR18Rk19nf3tKY=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "086dfbab8a72cd87eab20a8ff7e974db70051883",
+        "rev": "f5fe62ac621d621bcfbd3dad0a7eb2b596273e6f",
         "type": "github"
       },
       "original": {
@@ -669,11 +669,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1791675701,
-        "narHash": "sha256-seebF/585ImLKp71GP9ybYv2HpNpXaztMVeFqUia5SM=",
+        "lastModified": 1791697563,
+        "narHash": "sha256-ZMC6gBDAPeMYpmsTwWcG9wLO/UyulMDlZLJfHV8lOVg=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "3c09418e50ad51f7f241f4062ffcd7bffe36e3ce",
+        "rev": "76bed08f66bd6486f0ce207fb652dbf830f13c44",
         "type": "github"
       },
       "original": {
@@ -725,11 +725,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1791668524,
-        "narHash": "sha256-DLtkboR2GRhtoRzfFMBJCCv5dQjOAjBhgI7ENqm+OMk=",
+        "lastModified": 1791694029,
+        "narHash": "sha256-b+mFzz9j9T3PntDAT4Jw3PzgzGVY/XJXJ2/k6c9s9To=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "1f66efd395d3509dc0704c9647fbfb6bf3c2cae3",
+        "rev": "45773c4749ca4cc1ca87d2afe15ef6adfc463b97",
         "type": "github"
       },
       "original": {
@@ -989,11 +989,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1791676013,
-        "narHash": "sha256-Jk0CUdNmLbdqbuPG+0bedixG7cs7Oa0s8ek9UJc3BnU=",
+        "lastModified": 1791697901,
+        "narHash": "sha256-GKYj77DIWWwIGKXOPXFR+FyaqoqQOJTj8qn/klwwLAQ=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "4a988308293e2b8cfc8b24b17706efa13cf85e64",
+        "rev": "5d9cf2ef1d755c4edf1bf7f5681ee206bf06844e",
         "type": "github"
       },
       "original": {
@@ -1197,11 +1197,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791672315,
-        "narHash": "sha256-lhwieDm+hVinZ0uEgsy2G2H2NHNDyTBppeHkwmivuLI=",
+        "lastModified": 1791691567,
+        "narHash": "sha256-gyIWW3/IEayQ4QnVCkYcGVzd8RyvgYywGoFDbA78XYk=",
         "owner": "noctalia-dev",
         "repo": "noctalia",
-        "rev": "7c1de346b3edae13f75a1c3fed1467acfb464906",
+        "rev": "4a79d1b2b67b3373bb66dc3dd6854120680d18e3",
         "type": "github"
       },
       "original": {
@@ -1217,11 +1217,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1791371992,
-        "narHash": "sha256-+M3rbqo/h5z0ayFIg+hWFa6hDewa79IBc0UUMSR0v0c=",
+        "lastModified": 1791686973,
+        "narHash": "sha256-2omKJnenFJbgPvD90TbZBb/EJKgFByFWQV1J0LaxZlk=",
         "owner": "noctalia-dev",
         "repo": "noctalia-greeter",
-        "rev": "836071bcbc490c6ab7095d0aae5d0885bd2c5659",
+        "rev": "f6714c9e04801a9f15dae0a543122925c86284b3",
         "type": "github"
       },
       "original": {
@@ -1240,11 +1240,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1791674936,
-        "narHash": "sha256-SkrXMlScLn/If9/hWW6vhueZldG+Ia4AcF86Pq8d6zI=",
+        "lastModified": 1791693489,
+        "narHash": "sha256-N9rIENmmtUNE+0874n1PSmq4Q/4CxxU1Y2FuHbYGp1A=",
         "owner": "can1357",
         "repo": "oh-my-pi",
-        "rev": "4585b144ff86b9d3dd6d9d17263cbd541a4ba8aa",
+        "rev": "c9de2b02b997f37cc89639282ed35dec86f139e8",
         "type": "github"
       },
       "original": {
