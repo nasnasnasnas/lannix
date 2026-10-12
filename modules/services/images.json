@@ -1,7 +1,7 @@
 {
   "codeberg.org/forgejo/forgejo": {
     "tag": "15",
-    "digest": "sha256:7b25db4c437426c8ee049a64b54b28a5eedddf2d479c867f5a2150597a767b29"
+    "digest": "sha256:7b2f61163ff1d19f2aaf62d37ae4e805e822c2f86d6628b2bd468470929beacb"
   },
   "crccheck/hello-world": {
     "tag": "latest",
