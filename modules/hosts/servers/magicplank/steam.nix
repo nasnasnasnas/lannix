@@ -33,7 +33,7 @@
     programs.steam.enable = true;
     programs.steam.remotePlay.openFirewall = true;
     programs.steam.gamescopeSession.enable = true;
-    programs.steam.gamescopeSession.steamArgs = "-steamos3 -steamos -gamepadui";
+    programs.steam.gamescopeSession.steamArgs = ["-steamos3" "-steamos" "-gamepadui"];
     programs.steam.protontricks.enable = true;
     programs.gamescope = {
       enable = true;
