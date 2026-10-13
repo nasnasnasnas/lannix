@@ -1,7 +1,7 @@
 {
   "codeberg.org/forgejo/forgejo": {
-    "tag": "15",
-    "digest": "sha256:7b25db4c437426c8ee049a64b54b28a5eedddf2d479c867f5a2150597a767b29"
+    "tag": "16",
+    "digest": "sha256:e2c34a699543ca8a00217ee9ab2bea5feedc98bd6d0ea95ec287d3b7ae1355c6"
   },
   "crccheck/hello-world": {
     "tag": "latest",
@@ -9,19 +9,19 @@
   },
   "dock.mau.dev/mautrix/discord": {
     "tag": "latest",
-    "digest": "sha256:7716389dfb11dc7a44c8363348a48e91c1c463ded012f0fb08cdf266fcb20246"
+    "digest": "sha256:065405ca2f961b2687ca577c4eb65592c139d641342a9611d98b5394f30cf84a"
   },
   "dock.mau.dev/mautrix/signal": {
     "tag": "latest",
-    "digest": "sha256:e83f2b61099896a1351662bfd559f413058c66e8b63dca17b97c563c6801f3e8"
+    "digest": "sha256:cd11650817fde664774416c6b0ea6b9dc2f26477105a9abcba9ad169ef8d9dd6"
   },
   "dock.mau.dev/mautrix/telegram": {
     "tag": "latest",
-    "digest": "sha256:2c18ed5c8f020246a373ad4c2433a7cdefd5be7f9f8a59bd7e7cb8968efde585"
+    "digest": "sha256:9a28a5ac45d4d53071f4b69da53ff8cd3c770cfdd4d465cb0e3b376fe9160d94"
   },
   "dock.mau.dev/gomuks/gomuks": {
     "tag": "latest",
-    "digest": "sha256:3c3447802e33cd64d3ab481e19b268a06ce5cad0cf431736ca7217066c62ae17"
+    "digest": "sha256:b7010178b9322f5e92cc6eee7e1c7372f71ceedf7b237d23a32e1c80a796e714"
   },
   "docker.io/matrixdotorg/synapse": {
     "tag": "latest",
@@ -29,15 +29,15 @@
   },
   "ghcr.io/debridmediamanager/zurg-testing": {
     "tag": "latest",
-    "digest": "sha256:5c47ef99443ac67c9a5ede82204b5be75d30eb25b4ac4885b6612d7526243baa"
+    "digest": "sha256:9bde9836ea1e8495f0d7d892e3923ec72c6b6bb224d2e0755c9a84a09d21be17"
   },
   "ghcr.io/element-hq/lk-jwt-service": {
     "tag": "latest",
-    "digest": "sha256:fe787619877b9c12d4370ed39dc8edecf99b1a71fa8958c0fdcb687c1d31c775"
+    "digest": "sha256:d210fd778ba38b7e42e6fc64e8a24a7d66ccc3b938fb20d73bd713224af2dfea"
   },
   "ghcr.io/lukegus/termix": {
     "tag": "latest",
-    "digest": "sha256:ed2334ca3ef246b4a6be71666e95e2e3c1c4b92df08101a1650654b70af41701"
+    "digest": "sha256:3b893227a5a4bb45104b7ba07a7b4520b1b5c571a27eb08a32a7ea7a203712a5"
   },
   "ghcr.io/nealol/caddy-cloudflare-l4": {
     "tag": "latest",
@@ -45,11 +45,11 @@
   },
   "ghcr.io/nealol/realtime-server": {
     "tag": "latest",
-    "digest": "sha256:7c43886073fecfda70afd20f5e0a3b3af0c3b7ffaf469909bf1477dd001a27cf"
+    "digest": "sha256:c1013569b42973c4c3cf98577ba43e95860fe049205a5c9e70264ff0e804b90f"
   },
   "ghcr.io/open-webui/open-webui": {
     "tag": "main",
-    "digest": "sha256:a26effeb220e132482bf7e0560b3404843e7bc40d23051144e062960df8df6b0"
+    "digest": "sha256:e597ba2ca4425ff40f1f677930baae1278cc1e44cea399d5f588d5ce53611910"
   },
   "ghcr.io/pocket-id/pocket-id": {
     "tag": "v2",
@@ -69,11 +69,11 @@
   },
   "grafana/grafana": {
     "tag": "latest",
-    "digest": "sha256:b28bae15e219c998fb0e0424ed724930cc61b1f61fb404d47c862f9a23f9e572"
+    "digest": "sha256:dbbc38ea21103cefb50396340cd88afec779c7e070b0a7bf5a75b4ce46651d3f"
   },
   "grafana/pyroscope": {
     "tag": "latest",
-    "digest": "sha256:73b23dbb99f154a0803c136abafdff825475f415dd4d4587538d014c672b5a55"
+    "digest": "sha256:b7e62699a27463aa3533efe3f88c320da594da495731fd6eabca6f44f92cdd7b"
   },
   "hif1/heisenbridge": {
     "tag": "latest",
@@ -81,23 +81,23 @@
   },
   "itzg/mc-monitor": {
     "tag": "latest",
-    "digest": "sha256:1f8e21bcc30dc1c00de481f118c75c08095e3e3c4712e5195d5bd05750479136"
+    "digest": "sha256:f30307791501a6eec4190f4b2c32296d5f17c6673aceb18943c5ed0f56f4edfe"
   },
   "itzg/minecraft-server": {
     "tag": "java21",
-    "digest": "sha256:99dc8b37f97c3b95915452180bbedf29a7ac8252932e372ce6e5b6e383a5d1e2"
+    "digest": "sha256:2e2252ca93b6a0bd8310007c774ffc97f3c66da7c73b28f5cc85d9e8a278546e"
   },
   "linuxserver/bazarr": {
     "tag": "latest",
-    "digest": "sha256:ab401a0f361cfad328e444838b13d5b334b189d0f556fc91a3623eb581df36df"
+    "digest": "sha256:c1673816321156b904af9b7e6415ea547ae9622e4acc375358f1e1eb9ed1e904"
   },
   "linuxserver/jellyfin": {
     "tag": "latest",
-    "digest": "sha256:bb8d372e35d5c4a6cb61d830a06f5b5846528315b97cf5d38b80eea1e430efa7"
+    "digest": "sha256:1bb4f88d822a0510bb3604b68aacb80d77c1d2a30181e500090c65111b98723b"
   },
   "linuxserver/lidarr": {
     "tag": "latest",
-    "digest": "sha256:f60ee67694bc4a218efe0fb2dc0b0021d193ac5f15be2638d17ab4eeb6966946"
+    "digest": "sha256:67887807b13ae025c0fe979da298347c8609969087ab064c81d8e9acc1e06bbf"
   },
   "linuxserver/mylar": {
     "tag": "latest",
@@ -105,27 +105,27 @@
   },
   "linuxserver/prowlarr": {
     "tag": "latest",
-    "digest": "sha256:2f3d31307beba3ba2dd226d191f5f5c14ee3b4d8b49277c64683f5ed97083179"
+    "digest": "sha256:f9151e5bc1025c6d0a630d503210cdcb6bb55a7cc098562609d96a408d838902"
   },
   "linuxserver/radarr": {
     "tag": "latest",
-    "digest": "sha256:e35056574cdc695a9ee745aa1ecda9eab3842450bf4b7b8471b023790fa3861d"
+    "digest": "sha256:cfbc4fa09dc9d78f7cedc898f4ec48c6277cacedc523c4e159db6ff1c741959c"
   },
   "linuxserver/sabnzbd": {
     "tag": "latest",
-    "digest": "sha256:f12cb77b4e16d2d60fc8226e433daf69884e83874d90447c6ff1d57ef4247d6f"
+    "digest": "sha256:382f9bd4e3f6df2abf7bcc92edada0c5bd4d4ff26eb5416f257ac54989464fa1"
   },
   "linuxserver/sonarr": {
     "tag": "latest",
-    "digest": "sha256:24acea2956a0ccb11f103877d9f4f8576600fb34bff34820ed749c2256dab89f"
+    "digest": "sha256:0deb8db6c839ac475e9cd86277712772c40ba7f929a003d7e1de36c4b666bc13"
   },
   "livekit/livekit-server": {
     "tag": "latest",
-    "digest": "sha256:3497163e15c48fef6e7830c78716f9e9d5edc28abf7aa90b61c86e93bbc306b1"
+    "digest": "sha256:d0c04791bf63ca8dcea123571827d56ba9504bd57c8d5de60ee03b5408cc3154"
   },
   "nextcloud": {
     "tag": "stable",
-    "digest": "sha256:72f5cc3347042dd5dcad72edc376b19d0e042194af344a549820affd04804c8f"
+    "digest": "sha256:0e5688ba0988b9112cf03f9c6bab53eccb466d278435f6596f16c1f25acacf74"
   },
   "nzbdav/nzbdav": {
     "tag": "latest",
@@ -139,15 +139,15 @@
   "postgres:latest": {
     "name": "postgres",
     "tag": "latest",
-    "digest": "sha256:c2d42a104eb6b37b286a2d9c5cf83f349de4d6516d513d00a2bd9610e2c2e5e4"
+    "digest": "sha256:74935e72241653ca55e0414067e6d8763aceb8a810eb51b452253ec3dcfc4336"
   },
   "rclone/rclone": {
     "tag": "latest",
-    "digest": "sha256:623378ad0ff3ebd5cebf77720843c0e02edfe46e2d5b5ac6bed54c6371780dfb"
+    "digest": "sha256:2687085f718d3c628f7fdfb77c52a1d344332aed543110bb88088f2c70d43eb5"
   },
   "redis": {
     "tag": "7-alpine",
-    "digest": "sha256:e7723ff73d963f5cc6d9c4643ea3d989527a402a319239054e9472a7fb9219a2"
+    "digest": "sha256:858f009f9709ce576febc734aa78b8f6d624b82571f9ddb6bda4377c833b3499"
   },
   "registry.activitypub.software/transfem-org/sharkey": {
     "tag": "latest",
@@ -159,7 +159,7 @@
   },
   "victoriametrics/victoria-metrics": {
     "tag": "latest",
-    "digest": "sha256:b8703ff12ed437effad4fc36492fec14824277f2890a5876b8a9e6cfe5139839"
+    "digest": "sha256:4bd592341587d669b7f57d54bbb82bd21ac8675f4e24234b7703a7c0f85197d8"
   },
   "ghcr.io/nealol/nzbdav": {
     "tag": "0.6.5",
@@ -167,7 +167,7 @@
   },
   "unsloth/unsloth": {
     "tag": "latest",
-    "digest": "sha256:981740e0e0097b56b39663a67f78195cd24a4a2bb0d66363f98f9afb00797d41"
+    "digest": "sha256:d92789ea0296e59c40db5afc4b5e8ca12fd88085f0224173036238238dc925be"
   },
   "ghcr.io/umami-software/umami": {
     "tag": "latest",
@@ -175,15 +175,15 @@
   },
   "docker.io/binwiederhier/ntfy": {
     "tag": "latest",
-    "digest": "sha256:6ef4b819f722fccdc036af611c4774cfdc2de821ab74fdd48bbf4c9d6f8973da"
+    "digest": "sha256:8563a39da2f5a47360618b2ab9200239c76b37f4145f6d627d9ab4368abd23f0"
   },
   "ghcr.io/immich-app/immich-server": {
     "tag": "release",
-    "digest": "sha256:be56bc12c17a84617a979ad1eab1d9105bbec1955ffa7da09b3f9cf79d3bd09d"
+    "digest": "sha256:db996e352359771c6a3db121a0ed8761516b22f727fc092a0f46dcfef82c1bc1"
   },
   "ghcr.io/immich-app/immich-machine-learning": {
     "tag": "v3-rocm",
-    "digest": "sha256:f0f594014b7210e716e314aa9711f60aca9ff4688b47b94902de2ec2ac083822"
+    "digest": "sha256:0936fa0414903164315c9c80a9f2c2a6ed9b8387ce05decbfe606d1d54e7a2ca"
   },
   "ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0": {
     "name": "ghcr.io/immich-app/postgres",
