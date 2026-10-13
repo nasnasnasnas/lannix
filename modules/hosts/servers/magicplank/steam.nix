@@ -73,6 +73,7 @@
 
     environment.systemPackages = with pkgs; [
       mangohud
+      unstable.vacuum-tube
     ];
 
     # Enable sound with pipewire.
