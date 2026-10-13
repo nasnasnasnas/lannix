@@ -133,6 +133,7 @@
     };
     hardware.i2c.enable = true;
     boot.loader.systemd-boot.memtest86.enable = true;
+    boot.loader.grub.memtest86.enable = true;
 
     services.tailscale = {
       enable = true;
@@ -170,8 +171,15 @@
     # use gnome keyring
     services.gnome.gnome-keyring.enable = true;
     security.pam.services = {
-      greetd.enableGnomeKeyring = true;
-      greetd-password.enableGnomeKeyring = true;
+      # Require a login password so PAM can decrypt the keyring; keep fingerprints elsewhere.
+      greetd = {
+        enableGnomeKeyring = true;
+        fprintAuth = false;
+      };
+      greetd-password = {
+        enableGnomeKeyring = true;
+        fprintAuth = false;
+      };
       login.enableGnomeKeyring = true;
       sddm.enableGnomeKeyring = true;
     };

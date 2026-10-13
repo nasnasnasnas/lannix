@@ -34,6 +34,9 @@
     programs.steam.remotePlay.openFirewall = true;
     programs.steam.gamescopeSession.enable = true;
     programs.steam.gamescopeSession.steamArgs = ["-steamos3" "-steamos" "-gamepadui"];
+    programs.steam.gamescopeSession.env = {
+      STEAM_ENABLE_CEC = "1";
+    };
     programs.steam.protontricks.enable = true;
     programs.gamescope = {
       enable = true;
@@ -65,9 +68,9 @@
       ];
     };
 
-      environment.systemPackages = with pkgs; [
-        mangohud
-      ];
+    environment.systemPackages = with pkgs; [
+      mangohud
+    ];
 
     # Enable sound with pipewire.
     services.pulseaudio.enable = false;
