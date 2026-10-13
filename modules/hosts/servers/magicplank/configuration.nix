@@ -120,6 +120,12 @@
     services.tlp.enable = false;
     powerManagement.cpuFreqGovernor = "performance";
 
+    services.ananicy = {
+      enable = true;
+      package = pkgs.ananicy-cpp;
+      rulesProvider = pkgs.ananicy-cpp;
+    };
+
     # services = {
     #   desktopManager.plasma6.enable = true;
 
