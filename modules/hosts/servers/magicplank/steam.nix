@@ -39,8 +39,9 @@
       capSysNice = false;
     };
 
+    services.xserver.enable = true;
     services.displayManager.sddm = {
-      wayland.enable = true;
+      # wayland.enable = true;
       enable = true;
       settings = {
         Autologin = {
