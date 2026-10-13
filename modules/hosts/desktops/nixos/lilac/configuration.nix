@@ -132,6 +132,7 @@
       greeter-args = "--session Niri";
     };
     hardware.i2c.enable = true;
+    boot.loader.systemd-boot.memtest86.enable = true;
 
     services.tailscale = {
       enable = true;

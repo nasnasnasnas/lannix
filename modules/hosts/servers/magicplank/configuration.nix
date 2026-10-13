@@ -132,54 +132,6 @@
     # };
     programs.kdeconnect.enable = true;
 
-    programs.steam.package = pkgs.steam.override {
-      extraPkgs = pkgs':
-        with pkgs'; [
-          libXcursor
-          libXi
-          libXinerama
-          libXScrnSaver
-          libpng
-          libpulseaudio
-          libvorbis
-          stdenv.cc.cc.lib # Provides libstdc++.so.6
-          libkrb5
-          keyutils
-          # Add other libraries as needed
-        ];
-    };
-    programs.steam.enable = true;
-    programs.steam.remotePlay.openFirewall = true;
-    programs.steam.gamescopeSession.enable = true;
-    programs.steam.protontricks.enable = true;
-    programs.gamescope = {
-      enable = true;
-      capSysNice = false;
-    };
-
-    systemd.user.services.steam = {
-      enable = true;
-      description = "Open Steam in the background at boot";
-      serviceConfig = {
-        ExecStart = "${pkgs.steam}/bin/steam -nochatui -nofriendsui -silent %U";
-        wantedBy = ["graphical-session.target"];
-        Restart = "on-failure";
-        RestartSec = "5s";
-      };
-    };
-
-    services.ananicy = {
-      enable = true;
-      package = pkgs.ananicy-cpp;
-      rulesProvider = pkgs.ananicy-cpp;
-      extraRules = [
-        {
-          "name" = "gamescope";
-          "nice" = -20;
-        }
-      ];
-    };
-
     # This value determines the NixOS release from which the default
     # settings for stateful data, like file locations and database versions
     # on your system were taken. It‘s perfectly fine and recommended to leave
