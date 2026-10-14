@@ -76,6 +76,7 @@
         postgresql
         nodejs
         screen
+        inputs.omp.packages.${pkgs.stdenv.hostPlatform.system}.default
       ]
       ++ (with unstable; [
         bun
