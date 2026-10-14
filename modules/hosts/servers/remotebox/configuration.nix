@@ -75,6 +75,7 @@
         dua
         postgresql
         nodejs
+        python3
         screen
         inputs.omp.packages.${pkgs.stdenv.hostPlatform.system}.default
       ]
