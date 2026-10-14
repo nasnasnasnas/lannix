@@ -22,13 +22,9 @@
     # Its vendored source currently conflicts with Nixpkgs' inherited patches.
     nixpkgs.overlays = lib.mkAfter [
       (_final: prev: let
-        gamescope = inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system}.gamescope;
+        upstream = inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system};
       in {
-        inherit gamescope;
-        gamescope-wsi = gamescope.override {
-          enableExecutable = false;
-          enableWsi = true;
-        };
+        inherit (upstream) gamescope gamescope-wsi;
       })
     ];
 
