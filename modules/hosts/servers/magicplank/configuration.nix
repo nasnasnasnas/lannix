@@ -118,7 +118,6 @@
     };
 
     services.tlp.enable = false;
-    powerManagement.cpuFreqGovernor = "powersave";
     hardware.graphics.enable = true;
     hardware.enableRedistributableFirmware = true;
 
