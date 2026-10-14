@@ -53,6 +53,12 @@
       };
     };
 
+    powerManagement.cpuFreqGovernor = "performance";
+    services.auto-epp = {
+      enable = true;
+      settings.Settings.epp_state_for_AC = "balance_performance";
+    };
+
     users.users.steamuser = {
       isNormalUser = true;
       description = "steamuser";
