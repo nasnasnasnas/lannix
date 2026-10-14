@@ -71,37 +71,17 @@
     };
     programs.steam.enable = true;
     programs.steam.remotePlay.openFirewall = true;
-    programs.steam.gamescopeSession.enable = true;
-    programs.steam.gamescopeSession.steamArgs = ["-steamos3" "-steamos" "-gamepadui"];
-    # programs.steam.gamescopeSession.args = ["-h" "1080"];
-    programs.steam.gamescopeSession.env = {
-      STEAM_ENABLE_CEC = "1";
-    };
-    programs.steam.protontricks.enable = true;
-    programs.gamescope = {
-      enable = true;
-      capSysNice = false;
-    };
+    jovian.steam.autoStart = true;
+    jovian.hardware.has.amd.gpu = true;
 
     jovian.decky-loader.enable = true;
     jovian.steamos.enableHdmiCecIntegration = true;
+    jovian.steam.enable = true;
+    jovian.steam.user = "steamuser";
 
     programs.gamemode = {
       enable = true;
       enableRenice = true;
-    };
-
-    services.xserver.enable = true;
-    services.displayManager.sddm = {
-      # wayland.enable = true;
-      enable = true;
-      settings = {
-        Autologin = {
-          Session = "steam.desktop";
-          User = "steamuser";
-        };
-      };
-      autoLogin.relogin = true;
     };
 
     services.ananicy = {
