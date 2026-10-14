@@ -79,6 +79,7 @@
     jovian.steamos.enableHdmiCecIntegration = true;
     jovian.steam.enable = true;
     jovian.steam.user = "steamuser";
+    networking.networkmanager.enable = true;
 
     programs.gamemode = {
       enable = true;
