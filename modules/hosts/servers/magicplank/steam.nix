@@ -81,6 +81,10 @@
     jovian.steam.user = "steamuser";
     networking.networkmanager.enable = true;
 
+    # TODO: fix after qt dependency issues are resolved
+    services.displayManager.sddm.wayland.enable = lib.mkForce false;
+    services.xserver.enable = true;
+
     programs.gamemode = {
       enable = true;
       enableRenice = true;
