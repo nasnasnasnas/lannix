@@ -66,7 +66,7 @@
     programs.steam.remotePlay.openFirewall = true;
     programs.steam.gamescopeSession.enable = true;
     programs.steam.gamescopeSession.steamArgs = ["-steamos3" "-steamos" "-gamepadui"];
-    programs.steam.gamescopeSession.args = ["-h" "1080"];
+    # programs.steam.gamescopeSession.args = ["-h" "1080"];
     programs.steam.gamescopeSession.env = {
       STEAM_ENABLE_CEC = "1";
     };
