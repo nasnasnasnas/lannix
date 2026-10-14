@@ -1,13 +1,38 @@
 {...}: {
-  flake.modules.nixos.magicbox = {pkgs, ...}: let
-    mountConsumerUnits = map (project: "magicbox-${project}.service") [
-      "media"
+  flake.modules.nixos.magicbox = {
+    lib,
+    pkgs,
+    ...
+  }: let
+    # The media project owns the rclone FUSE mounts. The other projects bind them.
+    mountOwnerUnit = "magicbox-media";
+    mountConsumerUnits = map (project: "magicbox-${project}") [
       "sonarr"
       "radarr"
       "lidarr"
       "mylar"
       "bazarr"
     ];
+
+    # A killed rclone leaves its mount behind, and every stat on it fails with
+    # ENOTCONN. That breaks `mountpoint` and Docker bind mounts alike. findmnt
+    # reads the mount table without touching the mount, so it still finds the
+    # dead entry for a lazy unmount.
+    staleMountCleanup = pkgs.writeShellScript "magicbox-stale-mount-cleanup" ''
+      for mountpoint in /mnt/nzbdav /mnt/zurg; do
+        while ${pkgs.util-linux}/bin/findmnt -rn --mountpoint "$mountpoint" >/dev/null \
+          && ! ${pkgs.coreutils}/bin/stat "$mountpoint" >/dev/null 2>&1; do
+          echo "Lazily unmounting dead mount $mountpoint"
+          ${pkgs.util-linux}/bin/umount -l "$mountpoint" || break
+        done
+
+        if ! ${pkgs.util-linux}/bin/findmnt -rn --mountpoint "$mountpoint" >/dev/null; then
+          ${pkgs.coreutils}/bin/mkdir -p "$mountpoint"
+          ${pkgs.coreutils}/bin/chown 1000:100 "$mountpoint"
+          ${pkgs.coreutils}/bin/chmod 755 "$mountpoint"
+        fi
+      done
+    '';
   in {
     environment.systemPackages = with pkgs; [
       git
@@ -89,31 +114,24 @@
 
     networking.firewall.allowedTCPPorts = [22 80 443 5432 6767];
 
-    systemd.services.magicbox-stale-mount-cleanup = {
-      description = "Clean up stale Magicbox rclone mountpoints";
-      before = mountConsumerUnits;
-      wantedBy = mountConsumerUnits;
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        ExecStart = pkgs.writeShellScript "magicbox-stale-mount-cleanup" ''
-          cleanup_mount() {
-            local mountpoint="$1"
-
-            if ${pkgs.util-linux}/bin/mountpoint -q "$mountpoint" && ! ${pkgs.coreutils}/bin/stat "$mountpoint" >/dev/null 2>&1; then
-              ${pkgs.util-linux}/bin/umount -l "$mountpoint" || true
-            fi
-
-            ${pkgs.coreutils}/bin/mkdir -p "$mountpoint"
-            ${pkgs.coreutils}/bin/chown 1000:100 "$mountpoint" || true
-            ${pkgs.coreutils}/bin/chmod 755 "$mountpoint" || true
-          }
-
-          cleanup_mount /mnt/nzbdav
-          cleanup_mount /mnt/zurg
-        '';
-      };
-    };
+    systemd.services =
+      {
+        # Systemd signals the whole cgroup on stop, so docker compose sees a
+        # second signal and SIGKILLs every container. An explicit compose stop
+        # gives rclone its grace period to unmount cleanly.
+        ${mountOwnerUnit}.serviceConfig = {
+          ExecStartPre = [staleMountCleanup];
+          ExecStop = pkgs.writeShellScript "${mountOwnerUnit}-stop" ''
+            exec arion --prebuilt-file "$ARION_PREBUILT" stop
+          '';
+        };
+      }
+      # Ordering after the owner makes consumers stop first, which releases
+      # their bind mounts before rclone tries to unmount.
+      // lib.genAttrs mountConsumerUnits (_: {
+        after = ["${mountOwnerUnit}.service"];
+        serviceConfig.ExecStartPre = [staleMountCleanup];
+      });
 
     server-observability.enable = true;
 

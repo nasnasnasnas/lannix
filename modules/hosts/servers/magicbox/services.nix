@@ -11,21 +11,22 @@
       media = {
         networks = ["zurg"];
         services = [
-          (zurg {
-            networks = ["zurg"];
-            volumes = [
-              "/home/magicbox/config/zurg-testing/config.yml:/app/config.yml"
-              "/home/magicbox/data/zurg-testing:/app/data"
-            ];
-          })
-
-          (zurg-rclone {
-            networks = ["zurg"];
-            volumes = [
-              "/mnt/zurg:/data:rshared"
-              "/home/magicbox/config/zurg-testing/rclone.conf:/config/rclone/rclone.conf"
-            ];
-          })
+          # Zurg and its rclone mount are disabled for now.
+          # (zurg {
+          #   networks = ["zurg"];
+          #   volumes = [
+          #     "/home/magicbox/config/zurg-testing/config.yml:/app/config.yml"
+          #     "/home/magicbox/data/zurg-testing:/app/data"
+          #   ];
+          # })
+          #
+          # (zurg-rclone {
+          #   networks = ["zurg"];
+          #   volumes = [
+          #     "/mnt/zurg:/data:rshared"
+          #     "/home/magicbox/config/zurg-testing/rclone.conf:/config/rclone/rclone.conf"
+          #   ];
+          # })
 
           (nzbdav {
             domains = ["https://nzbdav.szpunar.cloud" "https://nzbdav.nea.rip"];
@@ -49,10 +50,11 @@
             domains = ["https://stream.szpunar.cloud" "https://stream.nea.rip" "https://jf.nea.rip"];
             networks = ["magicbox-network"];
             nvidia = true;
-            depends_on = {
-              zurg = {condition = "service_healthy";};
-              rclone = {condition = "service_healthy";};
-            };
+            # Restore with zurg above.
+            # depends_on = {
+            #   zurg = {condition = "service_healthy";};
+            #   rclone = {condition = "service_healthy";};
+            # };
             volumes = [
               "/home/magicbox/config/jellyfin:/config"
               "/home/magicbox/data/jellyfin:/cache"
