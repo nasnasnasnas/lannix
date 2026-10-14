@@ -72,6 +72,7 @@
     programs.steam.enable = true;
     programs.steam.remotePlay.openFirewall = true;
     jovian.steam.autoStart = true;
+    jovian.steam.desktopSession = "gamescope-wayland";
     jovian.hardware.has.amd.gpu = true;
 
     jovian.decky-loader.enable = true;
