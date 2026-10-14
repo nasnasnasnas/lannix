@@ -118,7 +118,7 @@
     };
 
     services.tlp.enable = false;
-    powerManagement.cpuFreqGovernor = "performance";
+    powerManagement.cpuFreqGovernor = "powersave";
 
     services.ananicy = {
       enable = true;
