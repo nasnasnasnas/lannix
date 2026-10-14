@@ -32,6 +32,10 @@
       flake = false;
     };
     import-tree.url = "github:denful/import-tree";
+    json2steamshortcut = {
+      url = "github:ChrisOboe/json2steamshortcut";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     lazyvim.url = "github:pfassina/lazyvim-nix";
     llm-agents.url = "github:numtide/llm-agents.nix";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";

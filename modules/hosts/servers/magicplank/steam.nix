@@ -1,9 +1,41 @@
 {inputs, ...}: {
+  flake-file.inputs.json2steamshortcut = {
+    url = "github:ChrisOboe/json2steamshortcut";
+    inputs.nixpkgs.follows = "nixpkgs";
+  };
+
   flake.modules.nixos.magicplank = {
     pkgs,
     lib,
     ...
   }: {
+    imports = [inputs.self.modules.nixos.home-manager];
+
+    home-manager.users.steamuser = {
+      imports = [inputs.json2steamshortcut.homeModules.default];
+      home.stateVersion = "26.05";
+
+      services.steam-shortcuts = {
+        enable = true;
+        # Owns the entire non-Steam shortcut list; add future entries below.
+        # Exit Steam before rebuilding, then reopen it to load the new VDF.
+        overwriteExisting = true;
+        # Numeric userdata directory from Magicplank's steamuser account.
+        steamUserId = 336245150;
+        shortcuts = [
+          {
+            AppName = "VacuumTube";
+            Exe = lib.getExe pkgs.unstable.vacuum-tube;
+            StartDir = "/home/steamuser";
+            # Keep Steam's injected libraries out of Electron.
+            LaunchOptions = "LD_PRELOAD= LD_LIBRARY_PATH= %command% --fullscreen";
+            Icon = "${pkgs.unstable.vacuum-tube}/share/icons/hicolor/256x256/apps/rocks.shy.VacuumTube.png";
+            Tags = ["Media"];
+          }
+        ];
+      };
+    };
+
     users.users.steamuser = {
       isNormalUser = true;
       description = "steamuser";
