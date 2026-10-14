@@ -44,8 +44,8 @@
             AppName = "VacuumTube";
             Exe = lib.getExe pkgs.unstable.vacuum-tube;
             StartDir = "/home/steamuser";
-            # Keep Steam's injected libraries out of Electron.
-            LaunchOptions = "LD_PRELOAD= LD_LIBRARY_PATH= %command% --fullscreen";
+            # Exclude Steam's injected libraries, but let Electron dlopen VA-API.
+            LaunchOptions = "LD_PRELOAD= LD_LIBRARY_PATH=${lib.makeLibraryPath [pkgs.unstable.libva]} %command% --fullscreen";
             Icon = "${pkgs.unstable.vacuum-tube}/share/icons/hicolor/256x256/apps/rocks.shy.VacuumTube.png";
             Tags = ["Media"];
           }
