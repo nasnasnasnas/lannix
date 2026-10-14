@@ -119,6 +119,7 @@
 
     services.tlp.enable = false;
     powerManagement.cpuFreqGovernor = "powersave";
+    hardware.graphics.enable = true;
 
     services.ananicy = {
       enable = true;
