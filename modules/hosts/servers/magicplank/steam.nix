@@ -1,7 +1,14 @@
 {inputs, ...}: {
-  flake-file.inputs.json2steamshortcut = {
-    url = "github:ChrisOboe/json2steamshortcut";
-    inputs.nixpkgs.follows = "nixpkgs";
+  flake-file.inputs = {
+    json2steamshortcut = {
+      url = "github:ChrisOboe/json2steamshortcut";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    jovian = {
+      url = "github:Jovian-Experiments/Jovian-NixOS";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   flake.modules.nixos.magicplank = {
@@ -9,7 +16,7 @@
     lib,
     ...
   }: {
-    imports = [inputs.self.modules.nixos.home-manager];
+    imports = [inputs.self.modules.nixos.home-manager inputs.jovian.nixosModules.jovian];
 
     home-manager.users.steamuser = {
       imports = [inputs.json2steamshortcut.homeModules.default];
@@ -75,6 +82,9 @@
       enable = true;
       capSysNice = false;
     };
+
+    jovian.decky-loader.enable = true;
+    jovian.steamos.enableHdmiCecIntegration = true;
 
     programs.gamemode = {
       enable = true;
