@@ -18,6 +18,20 @@
   }: {
     imports = [inputs.self.modules.nixos.home-manager inputs.jovian.nixosModules.jovian];
 
+    # Keep Jovian's session, but use matching Nixpkgs executable/WSI packages.
+    # Its vendored source currently conflicts with Nixpkgs' inherited patches.
+    nixpkgs.overlays = lib.mkAfter [
+      (_final: prev: let
+        gamescope = inputs.nixpkgs.legacyPackages.${prev.stdenv.hostPlatform.system}.gamescope;
+      in {
+        inherit gamescope;
+        gamescope-wsi = gamescope.override {
+          enableExecutable = false;
+          enableWsi = true;
+        };
+      })
+    ];
+
     home-manager.users.steamuser = {
       imports = [inputs.json2steamshortcut.homeModules.default];
       home.stateVersion = "26.05";
