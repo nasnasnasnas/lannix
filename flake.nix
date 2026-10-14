@@ -32,6 +32,10 @@
       flake = false;
     };
     import-tree.url = "github:denful/import-tree";
+    jovian = {
+      url = "github:Jovian-Experiments/Jovian-NixOS";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     json2steamshortcut = {
       url = "github:ChrisOboe/json2steamshortcut";
       inputs.nixpkgs.follows = "nixpkgs";
