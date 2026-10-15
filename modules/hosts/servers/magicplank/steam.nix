@@ -124,6 +124,7 @@
       enable = true;
       autoStart = true;
       capSysAdmin = true;
+      package = pkgs.unstable.sunshine;
     };
 
     # Enable sound with pipewire.
