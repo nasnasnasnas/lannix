@@ -122,7 +122,6 @@
         networks = ["synapse-net"];
         services = [
           (synapse {
-            # matrix.szp.lol serves client+federation; szp.lol serves the well-known delegation.
             domains = ["https://matrix.szp.lol" "https://szp.lol"];
             networks = ["synapse-net"];
             dataDir = "/home/magicbox/data/synapse";

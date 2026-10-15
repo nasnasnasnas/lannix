@@ -171,7 +171,6 @@
     # use gnome keyring
     services.gnome.gnome-keyring.enable = true;
     security.pam.services = {
-      # Require a login password so PAM can decrypt the keyring; keep fingerprints elsewhere.
       greetd = {
         enableGnomeKeyring = true;
         fprintAuth = false;

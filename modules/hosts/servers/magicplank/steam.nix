@@ -120,6 +120,12 @@
       unstable.vacuum-tube
     ];
 
+    services.sunshine = {
+      enable = true;
+      autoStart = true;
+      capSysAdmin = true;
+    };
+
     # Enable sound with pipewire.
     services.pulseaudio.enable = false;
     security.rtkit.enable = true;
