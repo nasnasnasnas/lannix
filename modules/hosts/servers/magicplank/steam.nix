@@ -118,6 +118,7 @@
     environment.systemPackages = with pkgs; [
       mangohud
       unstable.vacuum-tube
+      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.cec-audio-control
     ];
 
     services.sunshine = {
@@ -125,6 +126,15 @@
       autoStart = true;
       capSysAdmin = true;
       package = pkgs.unstable.sunshine;
+    };
+
+    systemd.user.services.cec-audio-control = {
+      enable = true;
+      description = "HDMI CEC volume and mute control";
+      serviceConfig = {
+        Type = "exec";
+        ExecStart = "${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.cec-audio-control}/bin/cec-audio-control";
+      };
     };
 
     # Enable sound with pipewire.
