@@ -137,7 +137,7 @@
       };
     };
 
-    systemd.users.sockets.cec-audio-control = {
+    systemd.user.sockets.cec-audio-control = {
       enable = true;
       description = "HDMI CEC volume and mute control";
       listenStreams = [
