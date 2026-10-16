@@ -133,6 +133,7 @@
       description = "HDMI CEC volume and mute control";
       serviceConfig = {
         Type = "exec";
+        Environment = "RUST_LOG=info";
         ExecStart = "${inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.cec-audio-control}/bin/cec-audio-control";
       };
     };
