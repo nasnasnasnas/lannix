@@ -109,7 +109,7 @@
   },
   "linuxserver/radarr": {
     "tag": "latest",
-    "digest": "sha256:cfbc4fa09dc9d78f7cedc898f4ec48c6277cacedc523c4e159db6ff1c741959c"
+    "digest": "sha256:fc0ae3c50f8128b97e84381903ec8d6845c3a569641cb7117c124376cccb57c1"
   },
   "linuxserver/sabnzbd": {
     "tag": "latest",
