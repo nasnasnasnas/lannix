@@ -19,12 +19,16 @@
     imports = [inputs.self.modules.nixos.home-manager inputs.jovian.nixosModules.jovian];
 
     # Keep Jovian's session, but use matching Nixpkgs executable/WSI packages.
-    # Its vendored source currently conflicts with Nixpkgs' inherited patches.
+    # Override both package scopes: Jovian's vendored source conflicts with inherited patches.
     nixpkgs.overlays = lib.mkAfter [
       (_final: prev: let
         upstream = inputs.nixpkgs-unstable.legacyPackages.${prev.stdenv.hostPlatform.system};
       in {
         inherit (upstream) gamescope gamescope-wsi;
+
+        jovianPackages = prev.jovianPackages.overrideScope (_self: _super: {
+          inherit (upstream) gamescope gamescope-wsi;
+        });
       })
     ];
 
