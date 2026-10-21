@@ -1,8 +1,7 @@
-{...}: {
+{inputs, ...}: {
   flake.modules.nixos.magicbox = {
     lib,
     pkgs,
-    inputs,
     ...
   }: let
     # The media project owns the rclone FUSE mounts. The other projects bind them.
