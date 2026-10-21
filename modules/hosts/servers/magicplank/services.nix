@@ -77,11 +77,6 @@
           })
         ];
       };
-      unsloth = {
-        services = [
-          (unsloth {domains = ["https://unsloth.szpunar.cloud"];})
-        ];
-      };
 
       observability = {
         services = [

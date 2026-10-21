@@ -165,10 +165,6 @@
     "tag": "0.6.5",
     "digest": "sha256:b3d37069d3c9b0158d00e6b2e016260cbff38f8317ab5de30936190284732022"
   },
-  "unsloth/unsloth": {
-    "tag": "latest",
-    "digest": "sha256:4feef67545fe61b1a1445bace081cc7079c52d475fc9d9d8735a61dca6da02ba"
-  },
   "ghcr.io/umami-software/umami": {
     "tag": "latest",
     "digest": "sha256:85909afc45bdcda1917394594a087421fdbb05610fded0fa9f6fb861abb2f367"
