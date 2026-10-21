@@ -2,6 +2,7 @@
   flake.modules.nixos.magicbox = {
     lib,
     pkgs,
+    inputs,
     ...
   }: let
     # The media project owns the rclone FUSE mounts. The other projects bind them.
@@ -48,6 +49,7 @@
       dua
       fd
       damon
+      inputs.omp.packages.${pkgs.stdenv.hostPlatform.system}.default
     ];
 
     nix.settings.trusted-users = ["nixos" "nea" "magicbox"];
