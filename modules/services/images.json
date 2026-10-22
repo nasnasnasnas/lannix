@@ -113,7 +113,7 @@
   },
   "linuxserver/sabnzbd": {
     "tag": "latest",
-    "digest": "sha256:382f9bd4e3f6df2abf7bcc92edada0c5bd4d4ff26eb5416f257ac54989464fa1"
+    "digest": "sha256:3ac1c9ea03bafa2588dd8acdcb809857bae305e71d2d90e11d689c78076a9c01"
   },
   "linuxserver/sonarr": {
     "tag": "latest",
