@@ -47,9 +47,10 @@
           gnused
           nodejs
           wget
-          nix
+          lixPackageSets.stable.lix
           attic-client
-          nix-fast-build
+          lixPackageSets.stable.nix-eval-jobs
+          lixPackageSets.stable.nix-fast-build
           jq
           openssh
           nixos-rebuild

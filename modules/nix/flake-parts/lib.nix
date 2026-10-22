@@ -19,12 +19,13 @@
           inputs.self.modules.nixos.server-observability
           inputs.self.modules.nixos.postgres-puppy
           inputs.self.modules.nixos.nix-cache
+          inputs.self.modules.nixos.lix
           {nixpkgs.hostPlatform = lib.mkDefault system;}
           ({pkgs, ...}: {
             networking.hostName = name;
 
             # TODO: move these to somewhere that isn't here
-            nix.settings.experimental-features = ["nix-command" "flakes" "pipe-operators"];
+            nix.settings.experimental-features = ["nix-command" "flakes"];
             nixpkgs.overlays = [
               (final: _prev:
                 (inputs.self.packages.${system} or {})
@@ -55,12 +56,13 @@
       ${name} = inputs.nix-darwin.lib.darwinSystem {
         modules = [
           inputs.self.modules.darwin.nix-cache
+          inputs.self.modules.darwin.lix
           inputs.self.modules.darwin.${name}
           {nixpkgs.hostPlatform = lib.mkDefault system;}
           ({pkgs, ...}: {
             networking.hostName = name;
             # TODO: move these to somewhere that isn't here
-            nix.settings.experimental-features = ["nix-command" "flakes" "pipe-operators"];
+            nix.settings.experimental-features = ["nix-command" "flakes"];
             nixpkgs.config.allowUnfree = true;
             nixpkgs.overlays = [
               (final: _prev:

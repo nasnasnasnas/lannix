@@ -74,7 +74,7 @@ jobs:
         run: |
           set -euo pipefail
           nix-fast-build \
-            --eval-workers 1 \
+            --eval-workers 2 \
             -j 4 \
             --skip-cached \
             --no-nom \

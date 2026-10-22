@@ -60,8 +60,15 @@ jobs:
       - name: Evaluate all host configurations
         run: |
           set -euo pipefail
-          nix eval --show-trace --json .#checks \
-            --apply 'systems: builtins.mapAttrs (_system: checks: builtins.mapAttrs (_name: check: check.drvPath) checks) systems'
+          # nix-eval-jobs reports individual evaluation failures as JSON rows.
+          nix-eval-jobs --flake .#checks --force-recurse --workers 2 --show-trace \
+            | jq --slurp --exit-status '
+                if any(.[]; has("error")) then
+                  error(map(select(has("error"))) | tojson)
+                else
+                  .
+                end
+              '
 
       - name: Cleanup
         if: always()
