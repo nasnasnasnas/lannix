@@ -6,6 +6,7 @@
       inputs.nix-flatpak.nixosModules.nix-flatpak
       inputs.solaar.nixosModules.default
       inputs.noctalia-greeter.nixosModules.default
+      inputs.bootvine.nixosModules.default
     ];
 
     environment.systemPackages = with pkgs; [
@@ -50,10 +51,12 @@
       "splash"
     ];
 
-    boot.plymouth = {
-      enable = true;
-      theme = "bgrt";
-    };
+    # boot.plymouth = {
+    #   enable = true;
+    #   theme = "bgrt";
+    # };
+
+    services.bootvine.enable = true;
 
     boot.initrd.systemd.enable = true;
 
