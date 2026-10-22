@@ -46,10 +46,10 @@
     boot.loader.efi.canTouchEfiVariables = true;
 
     boot.initrd.kernelModules = [ "amdgpu" ];
-    boot.kernelParams = [
-      "quiet"
-      "splash"
-    ];
+    # boot.kernelParams = [
+    #   "quiet"
+    #   "splash"
+    # ];
 
     # boot.plymouth = {
     #   enable = true;
