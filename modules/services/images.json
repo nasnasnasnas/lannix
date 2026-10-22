@@ -37,7 +37,7 @@
   },
   "ghcr.io/lukegus/termix": {
     "tag": "latest",
-    "digest": "sha256:3b893227a5a4bb45104b7ba07a7b4520b1b5c571a27eb08a32a7ea7a203712a5"
+    "digest": "sha256:28a627c1e2a568ea8c2d3fd83861675fdd3d8327a09f5a245c399b4864ad5ceb"
   },
   "ghcr.io/nealol/caddy-cloudflare-l4": {
     "tag": "latest",
