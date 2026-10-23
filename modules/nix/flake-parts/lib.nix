@@ -32,12 +32,12 @@
                 // {
                   unstable = import inputs.nixpkgs-unstable {
                     inherit (final) config;
-                    system = pkgs.stdenv.hostPlatform.system;
+                    localSystem = pkgs.stdenv.hostPlatform;
                   };
 
                   master = import inputs.nixpkgs-master {
                     inherit (final) config;
-                    system = pkgs.stdenv.hostPlatform.system;
+                    localSystem = pkgs.stdenv.hostPlatform;
                   };
                 })
             ];

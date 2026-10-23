@@ -1,5 +1,9 @@
-{ inputs, ... }: {
-  flake.modules.nixos.lilac = { pkgs, ... }: {
+{
+  inputs,
+  lib,
+  ...
+}: {
+  flake.modules.nixos.lilac = {pkgs, ...}: {
     imports = with inputs.self.modules.nixos; [
       home-manager
       leah # (adds leah user + home manager config)
@@ -18,7 +22,7 @@
       enable = true;
     };
 
-    nix.settings.trusted-users = [ "leah" ];
+    nix.settings.trusted-users = ["leah"];
 
     users.users.root.openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM+9gEtoUZS0D6LAu7Jz8WnIRrKNna2zfH6F7QxzaeZa"
@@ -45,7 +49,7 @@
     boot.loader.systemd-boot.enable = true;
     boot.loader.efi.canTouchEfiVariables = true;
 
-    boot.initrd.kernelModules = [ "amdgpu" ];
+    boot.initrd.kernelModules = ["amdgpu"];
     # boot.kernelParams = [
     #   "quiet"
     #   "splash"
@@ -56,11 +60,20 @@
     #   theme = "bgrt";
     # };
 
+    nix.settings.system-features = lib.mkAfter ["gccarch-znver5"];
+    nixpkgs.hostPlatform = {
+      system = "x86_64-linux";
+      gcc = {
+        arch = "znver5";
+        tune = "znver5";
+      };
+    };
+
     services.bootvine.enable = true;
 
     boot.initrd.systemd.enable = true;
 
-    nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.default ];
+    nixpkgs.overlays = [inputs.nix-cachyos-kernel.overlays.default];
     boot.kernelPackages = pkgs.cachyosKernels."linuxPackages-cachyos-latest-lto-zen4";
 
     networking.networkmanager.enable = true;
@@ -90,7 +103,7 @@
     # Enable the X11 windowing system.
     # services.xserver.enable = true;
     #     services.xserver.enable = true;
-    services.xserver.videoDrivers = [ "amdgpu" ];
+    services.xserver.videoDrivers = ["amdgpu"];
 
     # Configure keymap in X11
     services.xserver.xkb = {
@@ -129,7 +142,7 @@
     services.displayManager.noctalia-greeter = {
       enable = true;
       package = inputs.noctalia-greeter.packages.${pkgs.stdenv.hostPlatform.system}.default;
-      passwordless-sync-users = [ "leah" ];
+      passwordless-sync-users = ["leah"];
 
       # Optional configuration
       greeter-args = "--session Niri";
@@ -149,12 +162,12 @@
       "100.100.100.100"
       "1.1.1.1"
     ];
-    networking.search = [ "risk-sidemirror.ts.net" ];
+    networking.search = ["risk-sidemirror.ts.net"];
 
     systemd.user.services.tailscale-systray = {
       enable = true;
-      after = [ "tailscaled.service" ];
-      wantedBy = [ "default.target" ];
+      after = ["tailscaled.service"];
+      wantedBy = ["default.target"];
       description = "Tailscale Systray";
       serviceConfig = {
         Type = "simple";
@@ -169,7 +182,7 @@
     };
 
     nix.optimise.automatic = true;
-    nix.optimise.dates = [ "03:30" ];
+    nix.optimise.dates = ["03:30"];
 
     # use gnome keyring
     services.gnome.gnome-keyring.enable = true;
@@ -185,7 +198,7 @@
       login.enableGnomeKeyring = true;
       sddm.enableGnomeKeyring = true;
     };
-    security.pam.services.swaylock = { };
+    security.pam.services.swaylock = {};
     programs.seahorse.enable = true;
     security.polkit.enable = true;
 
