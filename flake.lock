@@ -166,6 +166,26 @@
         "type": "github"
       }
     },
+    "cider": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792612890,
+        "narHash": "sha256-i+cdbBCyXmUIaIsXYJmdRj8Gx4SUAtTeZ5uWg2wOszA=",
+        "owner": "dmnc98",
+        "repo": "cider-flake",
+        "rev": "5ae580750d11619af13b0b87e48b12f1f3610b8d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dmnc98",
+        "repo": "cider-flake",
+        "type": "github"
+      }
+    },
     "crane": {
       "locked": {
         "lastModified": 1790899423,
@@ -1201,6 +1221,7 @@
         "arion": "arion",
         "bootvine": "bootvine",
         "bun2nix": "bun2nix",
+        "cider": "cider",
         "flake-file": "flake-file",
         "flake-parts": "flake-parts_3",
         "home-manager": "home-manager",
