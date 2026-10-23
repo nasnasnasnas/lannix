@@ -169,6 +169,8 @@ in
       })
 
       unstable.obsidian
+
+      inputs.cider.packages.${pkgs.stdenv.hostPlatform.system}.cider
     ];
 
     programs.zsh.enable = true;

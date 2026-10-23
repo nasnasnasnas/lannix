@@ -47,6 +47,9 @@
       url = "git+https://codeberg.org/wvhulle/bootvine";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    cider.url = "github:dmnc98/cider-flake";
+    cider.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   # imports = [

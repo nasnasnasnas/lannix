@@ -16,6 +16,10 @@
       url = "github:nix-community/bun2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    cider = {
+      url = "github:dmnc98/cider-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-file.url = "github:denful/flake-file";
     flake-parts.url = "github:hercules-ci/flake-parts";
     home-manager = {
