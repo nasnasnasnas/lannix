@@ -23,6 +23,8 @@
       "d /home/magicbox/data/victoriametrics 0755 magicbox users -"
     ];
 
+    nix.settings.system-features = lib.mkAfter ["gccarch-znver5"];
+
     environment.systemPackages = with pkgs; [
       git
       wget
