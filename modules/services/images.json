@@ -117,7 +117,7 @@
   },
   "linuxserver/sonarr": {
     "tag": "latest",
-    "digest": "sha256:0deb8db6c839ac475e9cd86277712772c40ba7f929a003d7e1de36c4b666bc13"
+    "digest": "sha256:48e36b608b461273b9dae857725cd0561a127f2c694b687318f6d0c5ce63e5c9"
   },
   "livekit/livekit-server": {
     "tag": "latest",
