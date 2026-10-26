@@ -2,24 +2,21 @@
   inputs,
   self,
   ...
-}:
-let
+}: let
   username = "leah";
-in
-{
-  flake.modules.nixos."${username}" = { pkgs, ... }:
-    let
-      agents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
-    in {
+in {
+  flake.modules.nixos."${username}" = {pkgs, ...}: let
+    agents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+  in {
     # Install firefox.
     programs.firefox.enable = true;
     programs._1password.enable = true;
     programs._1password-gui.enable = true;
-    programs._1password-gui.polkitPolicyOwners = [ "leah" ];
+    programs._1password-gui.polkitPolicyOwners = ["leah"];
     programs.steam.enable = true;
     programs.steam.package = pkgs.steam.override {
-      extraPkgs =
-        pkgs': with pkgs'; [
+      extraPkgs = pkgs':
+        with pkgs'; [
           libxcursor
           libxi
           libxinerama
@@ -63,6 +60,7 @@ in
       ghostty
       alacritty
       unstable.vesktop
+      unstable.discord
       unstable.element-desktop
       unstable.nheko
       # unstable.fluffychat
@@ -179,7 +177,7 @@ in
 
     # Enable the COSMIC desktop environment
     services.desktopManager.cosmic.enable = true;
-    environment.cosmic.excludePackages = [ pkgs.networkmanagerapplet ];
+    environment.cosmic.excludePackages = [pkgs.networkmanagerapplet];
     programs.niri.enable = true;
 
     programs.direnv.enable = true;
@@ -203,6 +201,6 @@ in
     };
 
     programs.librepods.enable = true;
-    users.users."${username}".extraGroups = [ "librepods" ];
+    users.users."${username}".extraGroups = ["librepods"];
   };
 }
