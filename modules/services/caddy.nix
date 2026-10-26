@@ -4,6 +4,7 @@
     image ? config.flake.lib.image "ghcr.io/nealol/caddy-cloudflare-l4",
     caddyfilePath,
     envSecrets ? {},
+    fileSecrets ? {},
     env_file ? [],
     dataDir ? "/home/magicbox/data/caddy",
     extraPorts ? [],
@@ -22,7 +23,7 @@
         retries = 3;
         start_period = "10s";
       };
-      inherit networks envSecrets;
+      inherit networks envSecrets fileSecrets;
       ports =
         [
           "80:80"

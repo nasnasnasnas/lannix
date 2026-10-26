@@ -1,4 +1,10 @@
-{inputs, ...}: {
+{inputs, ...}: let
+  ingestionAuthFiles = [
+    "/etc/caddy/observability/magicbox.auth"
+    "/etc/caddy/observability/magicplank.auth"
+    "/etc/caddy/observability/remotebox.auth"
+  ];
+in {
   flake.modules.nixos.magicplank = inputs.self.lib.mkHostServices {
     publicIPs = ["107.219.61.126"];
     caddyExtraBackends = ["auth-service"];
@@ -34,6 +40,11 @@
       '';
       envSecrets = {
         CF_API_TOKEN = "op://Secrets/Caddy Cloudflare Token for HTTPS/password";
+      };
+      fileSecrets = {
+        "/etc/caddy/observability/magicbox.auth" = "op://Secrets/Observability Ingestion magicbox/caddy-auth";
+        "/etc/caddy/observability/magicplank.auth" = "op://Secrets/Observability Ingestion magicplank/caddy-auth";
+        "/etc/caddy/observability/remotebox.auth" = "op://Secrets/Observability Ingestion remotebox/caddy-auth";
       };
     };
     projects = with inputs.self.services; {
@@ -95,11 +106,13 @@
           })
 
           (victoriametrics {
+            inherit ingestionAuthFiles;
             domains = ["https://victoriametrics.szpunar.cloud" "https://victoriametrics.nea.rip"];
             dataDir = "/home/magicbox/data/victoriametrics";
           })
 
           (victorialogs {
+            inherit ingestionAuthFiles;
             domains = ["https://victorialogs.szpunar.cloud" "https://victorialogs.nea.rip"];
             dataDir = "/home/magicbox/data/victorialogs";
           })
