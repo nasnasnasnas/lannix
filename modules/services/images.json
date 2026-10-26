@@ -151,7 +151,7 @@
   },
   "registry.activitypub.software/transfem-org/sharkey": {
     "tag": "latest",
-    "digest": "sha256:1e5a60b9e0ef77dc04fe2b9bd1fffb0f41bc81e6e8c996deb944170453229edc"
+    "digest": "sha256:5bb3c083c657b7568db6f1a439fcd71e789260fbffde06f29e0327fe1dd6b933"
   },
   "victoriametrics/victoria-logs": {
     "tag": "latest",
