@@ -7,7 +7,7 @@ in {
     ];
 
     programs.fish.functions = {
-      nos-rebuild = {
+      lannix-rebuild = {
         description = "Does a nixos-rebuild with nix-output-monitor";
         body = ''
           pushd /home/leah/lannix
