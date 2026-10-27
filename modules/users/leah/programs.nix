@@ -170,7 +170,7 @@ in {
 
       inputs.cider.packages.${pkgs.stdenv.hostPlatform.system}.cider
 
-      unstable.freecad
+      freecad
     ];
 
     programs.zsh.enable = true;
