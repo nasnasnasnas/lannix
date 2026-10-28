@@ -572,11 +572,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793124281,
-        "narHash": "sha256-KdGTOgYXgMDA/ymTV10yLMt9tOjz9EmTgnTvaD+bhe4=",
+        "lastModified": 1793193205,
+        "narHash": "sha256-X6xa6sGA7RnJQuZGbFMC+K+KToWAlBDCCjJXfTwEPsw=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "1e3ebeb683d055d1675d3f64e6d2b186cb2ee504",
+        "rev": "095fef2f265c3c0da4fe315efba8f8a04495ab34",
         "type": "github"
       },
       "original": {
@@ -610,11 +610,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1793187431,
-        "narHash": "sha256-2on5IO0YXK5JQUT1UA33916pbTu/mVdBb3/voRI/cLw=",
+        "lastModified": 1793210055,
+        "narHash": "sha256-axWRCy8mZ/2X3fyQM8hgN2LL71DfTqH2cb5Ozi+mXwI=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "cb8d5c85cd00e2bfe60c2b9c71a3028582c07ded",
+        "rev": "d5c98a9b5fa8fd20fd62714c4e282e5f66cf0a80",
         "type": "github"
       },
       "original": {
@@ -626,11 +626,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1793188144,
-        "narHash": "sha256-dYsYQXE8yFehfGdKBQO51kQe+2theSJoPJsZOwyRYXY=",
+        "lastModified": 1793208966,
+        "narHash": "sha256-Vs3bpyJxJ8QOeN1PeNYeQppIUj5PUTiZATxZmGOGXhM=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "1c1237a857dfde509c2aebf94f4aef4d4284b4c2",
+        "rev": "1a899147e37cb5077250b74dcef8d21802999b5d",
         "type": "github"
       },
       "original": {
@@ -724,11 +724,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1793167323,
-        "narHash": "sha256-JxeqQKUhBn5kj6xfE4nIrxw/q3jFJyT+TKc8mLsnuhc=",
+        "lastModified": 1793208650,
+        "narHash": "sha256-sRiPPA3/QX5eRqfwZh0S6wloxaeUEUcm9w+6oURIHfY=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "91ff550fe42d4dd51dcf8b6bad87a0134fe7f314",
+        "rev": "5b33e7b9df24e256c8559064d19e7246e12dd463",
         "type": "github"
       },
       "original": {
@@ -973,11 +973,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1793188198,
-        "narHash": "sha256-sblsMR6jJtM5emYmU1tN93WJNoakYXuOvSYdEX3yidg=",
+        "lastModified": 1793209843,
+        "narHash": "sha256-b34ULQwRzH7QZlPsYw3hXeD6abhR+TashMJxK7+ZBjw=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "2991e8278e9e6109734a20d22731f68133a8c4ad",
+        "rev": "47d29a47656cd746e0e151068198430f77ad9830",
         "type": "github"
       },
       "original": {
@@ -1005,11 +1005,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1792116957,
-        "narHash": "sha256-EjZqHKObBfIOeHZnMRVV87HB3pPq/WBkmRJWyFxmZu8=",
+        "lastModified": 1793136825,
+        "narHash": "sha256-2pkE69JpFRInaARSczZytcfPw83IL82E2KdhbWGwdMs=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f20cd90e28fe0403873f473b29e42662cd86e8c4",
+        "rev": "f05535a0efcb2134c478d1e88434fadf486d42b5",
         "type": "github"
       },
       "original": {
@@ -1135,11 +1135,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1793187823,
-        "narHash": "sha256-RR7PVBQsmvIiDtkDm+r2FHnn/t6kCHVHxZ+bdE5Cjuc=",
+        "lastModified": 1793197634,
+        "narHash": "sha256-WlPp2Q/F/8ZAPBK9SyIpnaMDGd+jU0XRLuFaOBTWOXc=",
         "owner": "noctalia-dev",
         "repo": "noctalia",
-        "rev": "c3be167558abb9f55a4cee1fc15f811e1cd7dffd",
+        "rev": "0c1e2e7872e0ae056e4f802f7a1b1c2b0140a130",
         "type": "github"
       },
       "original": {
@@ -1179,11 +1179,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1793188347,
-        "narHash": "sha256-PadVCcxOZ8/VpPwQvpCMa09ymNMq7s/+nlsL4xclrro=",
+        "lastModified": 1793209389,
+        "narHash": "sha256-fQrdTtliCGjsfVj3NiiwW/1TXFCyuWsjT5gv6Gezhu4=",
         "owner": "can1357",
         "repo": "oh-my-pi",
-        "rev": "cfba7f024e5d59d7ae235d0c61a4627f81615869",
+        "rev": "48ab8687eed83c1f33a73bdc5489034c41b9a935",
         "type": "github"
       },
       "original": {
