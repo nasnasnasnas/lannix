@@ -14,10 +14,11 @@
       background_opacity = 0.4999999888241291;
       capsule_group = [
         {
-          accordion = false;
+          accordion = true;
           accordion_direction = "end";
+          border_width = 1.0;
           enabled = true;
-          fill = "surface_variant";
+          fill = "surface_container";
           id = "g1";
           members = [
             "battery"
@@ -28,11 +29,7 @@
         }
       ];
       capsule_radius = 0;
-      center = [
-        "workspaces"
-        "clock"
-        "bar"
-      ];
+      center = [];
       contact_shadow = true;
       dead_zone = {
         actions = {
@@ -43,13 +40,13 @@
         "recorder"
         "tray"
         "notifications"
-        "clipboard"
         "network"
         "bluetooth"
         "volume"
         "brightness"
         "airpods"
         "group:g1"
+        "clock"
         "control-center"
         "privacy"
       ];
@@ -57,8 +54,10 @@
       scale = 1.05;
       start = [
         "launcher"
+        "workspaces"
         "active_window"
         "media"
+        "now_playing_2"
       ];
       thickness = 36;
       widget_spacing = 8;
@@ -300,7 +299,7 @@
         placement_width = 2560.0;
         rotation = 0.0;
         settings = {
-          background_color = "surface_variant";
+          background_color = "surface_container";
           background_opacity = 0.88;
           background_radius = 12.0;
           center_password_text = false;
@@ -327,7 +326,7 @@
         placement_width = 0.0;
         rotation = 0.0;
         settings = {
-          background_color = "surface_variant";
+          background_color = "surface_container";
           background_opacity = 0.88;
           background_radius = 12.0;
           center_password_text = false;
@@ -354,7 +353,7 @@
         placement_width = 2560.0;
         rotation = 0.0;
         settings = {
-          background_color = "surface_variant";
+          background_color = "surface_container";
           background_opacity = 0.88;
           background_radius = 12.0;
           center_password_text = false;
@@ -381,7 +380,7 @@
         placement_width = 2560.0;
         rotation = 0.0;
         settings = {
-          background_color = "surface_variant";
+          background_color = "surface_container";
           background_opacity = 0.88;
           background_radius = 12.0;
           center_password_text = false;
@@ -408,7 +407,7 @@
         placement_width = 1694.0;
         rotation = 0.0;
         settings = {
-          background_color = "surface_variant";
+          background_color = "surface_container";
           background_opacity = 0.88;
           background_radius = 12.0;
           center_password_text = false;
@@ -435,7 +434,7 @@
         placement_width = 1884.0;
         rotation = 0.0;
         settings = {
-          background_color = "surface_variant";
+          background_color = "surface_container";
           background_opacity = 0.88;
           background_radius = 12.0;
           center_password_text = false;
@@ -532,17 +531,21 @@
   osd = {
     background_opacity = 0.6999999843537807;
   };
+  plugin_settings = {
+    "dragged/cider" = {
+      apptoken = "ik1ej80e49lkfeoch7oil1ok";
+    };
+  };
   plugins = {
     enabled = [
       "noctalia/bongocat"
       "noctalia/screen_recorder"
       "noctalia/timer"
       "harveywuk/airpods"
-      "felipeartur/ai-usagebar"
       "noctalia/wallpaper_depth"
       "noctalia/kaomoji"
       "noctalia/wallhaven"
-      "noctalia/mpvpaper"
+      "tranzem/media-lyrics"
     ];
   };
   shell = {
@@ -561,6 +564,7 @@
     password_style = "random";
     polkit_agent = true;
     screen_time_enabled = true;
+    settings_expand_all_groups = true;
     settings_show_advanced = true;
     settings_window_translucent = true;
     telemetry_enabled = true;
@@ -588,7 +592,6 @@
         "antigravity"
         "opencode"
         "pi-agent"
-        "zen-browser"
         "discord"
         "neovim"
         "obsidian"
@@ -628,6 +631,7 @@
     active_window = {
       capsule = true;
       capsule_opacity = 0.0;
+      max_length = 200;
     };
     airpods = {
       enable_scroll = false;
@@ -643,10 +647,24 @@
     media = {
       capsule = true;
       capsule_opacity = 0.0;
+      enabled = false;
+      hide_when_idle = true;
       hide_when_no_media = true;
     };
     network = {
       show_label = false;
+    };
+    now_playing_2 = {
+      actions = {
+        scroll_down = "none";
+        scroll_up = "none";
+      };
+      artist_first = true;
+      hide_when_no_media = true;
+      max_length = 680;
+      show_lyric_line = true;
+      title_scroll = "on_hover";
+      type = "tranzem/media-lyrics:now-playing";
     };
     privacy = {
       hide_inactive = true;
