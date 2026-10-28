@@ -9,7 +9,7 @@ in {
     environment.systemPackages = with pkgs; [
       unstable.vesktop
       (unstable.discord.override {
-        # withOpenASAR = true; # complementary
+        withOpenASAR = true; # complementary
         withVencord = true;
       })
     ];
