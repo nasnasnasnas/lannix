@@ -59,8 +59,6 @@ in {
       vscode-fhs
       ghostty
       alacritty
-      unstable.vesktop
-      unstable.discord
       unstable.element-desktop
       unstable.nheko
       # unstable.fluffychat
