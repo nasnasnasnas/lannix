@@ -15,11 +15,11 @@ in {
     ];
   };
 
-  flake.modules.homeManager."${username}-linux" = {pkgs, ...}: {
-    services.arrpc = {
-      enable = true;
-      package = pkgs.arrpc; # Default
-      systemdTarget = "graphical-session.target"; # default
-    };
-  };
+  # flake.modules.homeManager."${username}-linux" = {pkgs, ...}: {
+  #   services.arrpc = {
+  #     enable = true;
+  #     package = pkgs.arrpc; # Default
+  #     systemdTarget = "graphical-session.target"; # default
+  #   };
+  # };
 }
