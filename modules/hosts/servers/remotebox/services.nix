@@ -121,6 +121,7 @@
       uptime-kuma = {
         services = with inputs.self.services; [
           (uptime-kuma {
+            container
             domains = ["https://uptime-kuma.system-151.szpunar.cloud"];
             dataDir = "/home/magicbox/data/uptime-kuma-system-151";
           })
