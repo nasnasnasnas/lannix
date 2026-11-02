@@ -189,5 +189,9 @@
   "valkey/valkey": {
     "tag": "9",
     "digest": "sha256:418652cfb58ef879d4978c33553735d7147016032d5aefaa14c828e611eb9dfd"
+  },
+  "louislam/uptime-kuma": {
+    "tag": "2",
+    "digest": "sha256:92eb954ce9a68eca749efe76ef9c6dffe43d23a56ed68f35f3866a29f7108b6e"
   }
 }
