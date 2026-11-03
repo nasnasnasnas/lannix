@@ -2,205 +2,212 @@
   inputs,
   self,
   ...
-}: let
+}:
+let
   username = "leah";
-in {
-  flake.modules.nixos."${username}" = {pkgs, ...}: let
-    agents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
-  in {
-    # Install firefox.
-    programs.firefox.enable = true;
-    programs._1password.enable = true;
-    programs._1password-gui.enable = true;
-    programs._1password-gui.polkitPolicyOwners = ["leah"];
-    programs.steam.enable = true;
-    programs.steam.package = pkgs.steam.override {
-      extraPkgs = pkgs':
-        with pkgs'; [
-          libxcursor
-          libxi
-          libxinerama
-          libxscrnsaver
-          libpng
-          libpulseaudio
-          libvorbis
-          stdenv.cc.cc.lib # Provides libstdc++.so.6
-          libkrb5
-          keyutils
-          # Add other libraries as needed
-        ];
-    };
-    programs.kdeconnect.enable = true;
-    programs.localsend.enable = true;
-
-    environment.etc = {
-      "1password/custom_allowed_browsers" = {
-        text = ''
-          zen-beta
-          zen
-          vivaldi
-        '';
-        mode = "0755";
+in
+{
+  flake.modules.nixos."${username}" =
+    { pkgs, ... }:
+    let
+      agents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
+    in
+    {
+      # Install firefox.
+      programs.firefox.enable = true;
+      programs._1password.enable = true;
+      programs._1password-gui.enable = true;
+      programs._1password-gui.polkitPolicyOwners = [ "leah" ];
+      programs.steam.enable = true;
+      programs.steam.package = pkgs.steam.override {
+        extraPkgs =
+          pkgs': with pkgs'; [
+            libxcursor
+            libxi
+            libxinerama
+            libxscrnsaver
+            libpng
+            libpulseaudio
+            libvorbis
+            stdenv.cc.cc.lib # Provides libstdc++.so.6
+            libkrb5
+            keyutils
+            # Add other libraries as needed
+          ];
       };
-    };
+      programs.kdeconnect.enable = true;
+      programs.localsend.enable = true;
 
-    # Allow unfree packages
-    nixpkgs.config.allowUnfree = true;
+      environment.etc = {
+        "1password/custom_allowed_browsers" = {
+          text = ''
+            zen-beta
+            zen
+            vivaldi
+          '';
+          mode = "0755";
+        };
+      };
 
-    # List packages installed in system profile. To search, run:
-    # $ nix search wget
-    environment.systemPackages = with pkgs; [
-      #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-      wget
-      git
-      gh
-      unstable.bun
-      unstable.nodejs_24
-      vscode-fhs
-      ghostty
-      alacritty
-      unstable.element-desktop
-      unstable.nheko
-      # unstable.fluffychat
-      microsoft-edge
-      fastfetch
-      hyfetch
-      prismlauncher
-      lunar-client
-      powertop
-      rustup
-      epiphany
-      seahorse
-      (catppuccin-sddm.override {
-        flavor = "mocha";
-        accent = "lavender";
-        font = "Noto Sans";
-        fontSize = "13";
-        background = "${./nas-flag-wallpaper.png}";
-        loginBackground = true;
-      })
+      # Allow unfree packages
+      nixpkgs.config.allowUnfree = true;
 
-      inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
-      unstable.floorp-bin
-      unstable.ollama
-      unstable.kdePackages.kamoso
-      cheese
-      wl-clipboard
-      libreoffice-fresh
-      # libreoffice-collabora
-      onlyoffice-desktopeditors
-      rustup
-      clang
-      github-desktop
-      gh
-      fuzzel
-      waybar
+      # List packages installed in system profile. To search, run:
+      # $ nix search wget
+      environment.systemPackages = with pkgs; [
+        #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+        wget
+        git
+        gh
+        unstable.bun
+        unstable.nodejs_24
+        vscode-fhs
+        ghostty
+        alacritty
+        unstable.element-desktop
+        unstable.nheko
+        # unstable.fluffychat
+        microsoft-edge
+        fastfetch
+        hyfetch
+        prismlauncher
+        lunar-client
+        powertop
+        rustup
+        epiphany
+        seahorse
+        (catppuccin-sddm.override {
+          flavor = "mocha";
+          accent = "lavender";
+          font = "Noto Sans";
+          fontSize = "13";
+          background = "${./nas-flag-wallpaper.png}";
+          loginBackground = true;
+        })
 
-      nil
-      nixd
-      powershell
-      xwayland-satellite
-      # swaylock
-      swayidle
-      # mako
-      xeyes
-      gimp3
-      android-studio
-      brightnessctl
-      polkit_gnome
+        inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
+        unstable.floorp-bin
+        unstable.ollama
+        unstable.kdePackages.kamoso
+        cheese
+        wl-clipboard
+        libreoffice-fresh
+        # libreoffice-collabora
+        onlyoffice-desktopeditors
+        rustup
+        clang
+        github-desktop
+        gh
+        fuzzel
+        waybar
 
-      # kde stuff
-      kdePackages.ark
-      kdePackages.gwenview
-      kdePackages.okular
-      kdePackages.kate
-      kdePackages.ktexteditor
-      kdePackages.dolphin
-      kdePackages.dolphin-plugins
+        nil
+        nixd
+        powershell
+        xwayland-satellite
+        # swaylock
+        swayidle
+        # mako
+        xeyes
+        gimp3
+        android-studio
+        brightnessctl
+        polkit_gnome
 
-      nautilus
+        # kde stuff
+        kdePackages.ark
+        kdePackages.gwenview
+        kdePackages.okular
+        kdePackages.kate
+        kdePackages.ktexteditor
+        kdePackages.dolphin
+        kdePackages.dolphin-plugins
 
-      unstable.protonup-qt
-      unstable.protontricks
-      libnotify
-      flyctl
+        nautilus
 
-      inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
-      gpu-screen-recorder
-      whitesur-icon-theme
-      unstable.flameshot
-      easyeffects
+        unstable.protonup-qt
+        unstable.protontricks
+        libnotify
+        flyctl
 
-      nextdns
-      bottles
-      dua
-      zulu25
+        inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default
+        gpu-screen-recorder
+        whitesur-icon-theme
+        unstable.flameshot
+        easyeffects
 
-      agents.claude-code
-      inputs.omp.packages.${pkgs.stdenv.hostPlatform.system}.default
-      agents.opencode2
-      agents.junie
-      agents.herdr
+        nextdns
+        bottles
+        dua
+        zulu25
 
-      unstable.jetbrains.webstorm
-      unstable.jetbrains.idea
-      unstable.jetbrains.rider
-      unstable.jetbrains.rust-rover
-      unstable.jetbrains.clion
-      unstable.jetbrains.phpstorm
-      unstable.jetbrains.goland
-      unstable.antigravity-ide-fhs
+        agents.claude-code
+        inputs.omp.packages.${pkgs.stdenv.hostPlatform.system}.default
+        agents.opencode2
+        agents.junie
+        agents.herdr
 
-      btop
-      unstable.typst
-      unstable.tinymist
-      unstable.typstyle
-      zotero
+        unstable.jetbrains.webstorm
+        unstable.jetbrains.idea
+        unstable.jetbrains.rider
+        unstable.jetbrains.rust-rover
+        unstable.jetbrains.clion
+        unstable.jetbrains.phpstorm
+        unstable.jetbrains.goland
+        unstable.antigravity-ide-fhs
 
-      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.radaromega
-      (unstable.vivaldi.override {
-        enableWidevine = true;
-        proprietaryCodecs = true;
-        inherit widevine-cdm vivaldi-ffmpeg-codecs;
-      })
+        btop
+        unstable.typst
+        unstable.tinymist
+        unstable.typstyle
+        zotero
 
-      unstable.obsidian
+        inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.radaromega
+        (unstable.vivaldi.override {
+          enableWidevine = true;
+          proprietaryCodecs = true;
+          inherit widevine-cdm vivaldi-ffmpeg-codecs;
+        })
 
-      inputs.cider.packages.${pkgs.stdenv.hostPlatform.system}.cider
+        unstable.obsidian
 
-      freecad
-    ];
+        inputs.cider.packages.${pkgs.stdenv.hostPlatform.system}.cider
 
-    programs.zsh.enable = true;
+        freecad
 
-    programs.alvr.enable = true;
-
-    # Enable the COSMIC desktop environment
-    services.desktopManager.cosmic.enable = true;
-    environment.cosmic.excludePackages = [pkgs.networkmanagerapplet];
-    programs.niri.enable = true;
-
-    programs.direnv.enable = true;
-
-    programs.gamescope = {
-      enable = true;
-      capSysNice = false;
-    };
-    programs.steam.gamescopeSession.enable = true;
-
-    services.ananicy = {
-      enable = true;
-      package = pkgs.ananicy-cpp;
-      rulesProvider = pkgs.ananicy-cpp;
-      extraRules = [
-        {
-          "name" = "gamescope";
-          "nice" = -20;
-        }
+        unstable.signal-desktop
       ];
-    };
 
-    programs.librepods.enable = true;
-    users.users."${username}".extraGroups = ["librepods"];
-  };
+      programs.zsh.enable = true;
+
+      programs.alvr.enable = true;
+
+      # Enable the COSMIC desktop environment
+      services.desktopManager.cosmic.enable = true;
+      environment.cosmic.excludePackages = [ pkgs.networkmanagerapplet ];
+      programs.niri.enable = true;
+
+      programs.direnv.enable = true;
+
+      programs.gamescope = {
+        enable = true;
+        capSysNice = false;
+      };
+      programs.steam.gamescopeSession.enable = true;
+
+      services.ananicy = {
+        enable = true;
+        package = pkgs.ananicy-cpp;
+        rulesProvider = pkgs.ananicy-cpp;
+        extraRules = [
+          {
+            "name" = "gamescope";
+            "nice" = -20;
+          }
+        ];
+      };
+
+      programs.librepods.enable = true;
+      users.users."${username}".extraGroups = [ "librepods" ];
+    };
 }
