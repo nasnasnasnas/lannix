@@ -49,7 +49,7 @@
   },
   "ghcr.io/open-webui/open-webui": {
     "tag": "main",
-    "digest": "sha256:0b399a8ba34558e181d316750455f2a95376a38cd60a61b9c942e138898944bd"
+    "digest": "sha256:975e3965dcf5832804d2f77e167920794757027c5a2046917d42023d75fac431"
   },
   "ghcr.io/pocket-id/pocket-id": {
     "tag": "v2",
