@@ -48,7 +48,7 @@
       dua
       fd
       damon
-      inputs.omp.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.omp
     ];
 
     nix.settings.trusted-users = ["nixos" "nea" "magicbox"];

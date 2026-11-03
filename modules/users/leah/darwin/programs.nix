@@ -23,7 +23,7 @@ in {
       nodejs
 
       agents.claude-code
-      inputs.omp.packages.${pkgs.stdenv.hostPlatform.system}.default
+      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.omp
       agents.opencode2
       agents.junie
       agents.herdr

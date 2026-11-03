@@ -1,0 +1,12 @@
+diff --git a/src/input/mod.rs b/src/input/mod.rs
+--- a/src/input/mod.rs
++++ b/src/input/mod.rs
+@@ -3867,7 +3867,7 @@
+         let res = self
+             .niri
+             .layout
+-            .overview_gesture_update(-uninverted_delta_y, timestamp);
++            .overview_gesture_update(uninverted_delta_y, timestamp);
+         if let Some(redraw) = res {
+             if redraw {
+                 self.niri.queue_redraw_all();

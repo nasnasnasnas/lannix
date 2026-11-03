@@ -1,0 +1,119 @@
+/* Overlays Spotify draws for its dark UI that Catppuccin Latte leaves dark.
+   `:root` raises specificity above Spotify's lazily loaded stylesheets, which
+   are inserted after user.css. */
+
+/* Tinted surfaces (filter chips, home shortcuts, ...) use Spotify's dark
+   tokens, white at 10-21% alpha, which vanish on Latte. Spotify's own light
+   theme uses black at 8/12/19%; these use the Latte text color instead. */
+.encore-dark-theme,
+.encore-dark-theme .encore-base-set {
+  --background-tinted-base: rgba(var(--spice-rgb-text), 0.08);
+  --background-tinted-highlight: rgba(var(--spice-rgb-text), 0.12);
+  --background-tinted-press: rgba(var(--spice-rgb-text), 0.19);
+}
+:root .view-homeShortcutsGrid-shortcut:hover,
+:root .view-homeShortcutsGrid-shortcut:focus-within,
+:root .view-homeShortcutsGrid-shortcut[data-context-menu-open="true"] {
+  background: var(--background-tinted-highlight);
+}
+
+/* Headers paint a color taken from the cover art (inline, or as an inline
+   --background-base) under black fades. All of it is dropped so headers sit
+   on the flat Latte base like the rest of the page. */
+
+/* Home header and the sticky filter-chip bar that takes over its color once
+   scrolled (with a 60% black ::after at times). */
+:root .main-home-homeHeader {
+  background-color: transparent !important;
+  background-image: none;
+}
+:root .main-home-filterChipsSection {
+  background-color: var(--spice-main);
+}
+:root .main-home-filterChipsSection::after {
+  background-color: transparent;
+}
+
+/* Playlist and album headers, the playlist header's separate black overlay,
+   and the action bars below that continue the color in both layouts. */
+:root .main-entityHeader-backgroundColor,
+:root .main-actionBarBackground-background,
+:root .playlist-playlist-actionBarBackground-background {
+  background-color: transparent !important;
+  background-image: none;
+}
+
+/* Artist hero image: a fade to 50% black under the name, and an ::after that
+   fades in --background-base while scrolling; with the image gone it leaves
+   the ::after's own base-colored background. The overlay has no stable class;
+   it is the hero element carrying an inline --background-base. */
+:root .before-scroll-node [style*="--background-base"],
+:root .before-scroll-node [style*="--background-base"]::after {
+  background-image: none;
+}
+
+/* Without the fade, the artist name and stats sit directly on the photo. A
+   halo in the base color keeps them legible; on flat headers it matches the
+   background and does not show. */
+:root .main-entityHeader-headerText {
+  text-shadow: 0 0 2px var(--spice-main), 0 0 8px var(--spice-main), 0 0 16px var(--spice-main);
+}
+
+/* Sticky top bar once scrolled: 60% black over a background Catppuccin
+   already forces to the base color. */
+:root .main-topBar-overlay {
+  background-color: transparent;
+}
+
+/* White text in headers: the metadata line sets --text-subdued inline, and
+   the tracklist sort dropdown falls back to #ffffffb3 when this is unset. */
+:root .main-entityHeader-metaData {
+  --text-subdued: var(--spice-subtext) !important;
+}
+:root {
+  --sort-box-text-color: var(--spice-subtext);
+}
+
+/* Shelf scroll fades: rgba(18, 18, 18, 0.7) overlays at both edges, and a
+   mask fading the cards themselves out where the row overflows. */
+:root .search-searchCategory-contentArea::before,
+:root .search-searchCategory-contentArea::after {
+  background-image: none;
+}
+:root .search-searchCategory-categoryGrid {
+  mask-image: none;
+}
+
+/* Now playing: dark band behind the track title under the cover. */
+:root .main-nowPlayingView-contextItemInfo::before {
+  background: none;
+}
+
+/* About the artist: the inline black fade over the photo is screened away
+   (black is the identity for screen). */
+:root .main-nowPlayingView-aboutArtist [style*="background-image"] {
+  background-blend-mode: screen, normal;
+}
+
+/* Cover art casts black shadows up to 60px wide (library list, cards, home
+   shortcuts, headers, player bar), a grey haze around every image on Latte.
+   Named wrappers are listed; the rest are hashed classes caught by having
+   the image as a direct child. Menus and popovers keep their shadows. */
+:root :is(
+  .x-entityImage-imageContainer,
+  .main-cardImage-imageWrapper,
+  .cover-art,
+  .main-entityHeader-shadow,
+  .view-homeShortcutsGrid-imageWrapper,
+  img,
+  :has(> img)
+) {
+  box-shadow: none !important;
+}
+
+/* The now-playing panel redefines --text-subdued as #ffffffb3. (Plain
+   `color: #ffffffb3` rules are rewritten to the token at build time in
+   spicetify.nix.) */
+:root .main-nowPlayingView-mainWrapper {
+  --text-subdued: var(--spice-subtext);
+}

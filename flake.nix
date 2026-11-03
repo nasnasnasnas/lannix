@@ -22,6 +22,17 @@
     };
     flake-file.url = "github:denful/flake-file";
     flake-parts.url = "github:hercules-ci/flake-parts";
+    helium = {
+      url = "github:tomsch/helium-nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    hex = {
+      url = "github:anomalyco/hex/v3.2.0";
+      inputs = {
+        home-manager.follows = "home-manager-unstable";
+        nixpkgs.follows = "nixpkgs-unstable";
+      };
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -49,6 +60,10 @@
     };
     lazyvim.url = "github:pfassina/lazyvim-nix";
     llm-agents.url = "github:numtide/llm-agents.nix";
+    nirinit = {
+      url = "github:amaanq/nirinit";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
@@ -76,6 +91,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     solaar.url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz";
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    tern = {
+      url = "github:theoparis/nix-tern";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     winapps = {
       url = "github:winapps-org/winapps";
       inputs.nixpkgs.follows = "nixpkgs-unstable";

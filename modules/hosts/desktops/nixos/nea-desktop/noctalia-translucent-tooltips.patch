@@ -1,0 +1,42 @@
+--- a/src/shell/tooltip/tooltip_manager.cpp
++++ b/src/shell/tooltip/tooltip_manager.cpp
+@@ -8,6 +8,7 @@
+ #include "render/render_target.h"
+ #include "render/scene/input_area.h"
+ #include "render/scene/node.h"
++#include "shell/panel/panel_surface_style.h"
+ #include "ui/builders.h"
+ #include "ui/palette.h"
+ #include "ui/style.h"
+@@ -690,15 +691,28 @@
+   m_sceneRoot->setHitTestVisible(false);
+   m_surface->setSceneRoot(m_sceneRoot.get());
+ 
++  // Follow the panel transparency mode (solid/soft/glass) and blur what lies beneath when translucent.
++  const float backgroundOpacity = shell::panel_surface::backgroundOpacity(m_config);
++  const float radius = Style::scaledRadiusMd();
+   m_sceneRoot->addChild(
+       ui::box({
+-          .fill = colorSpecFromRole(ColorRole::Surface),
+-          .radius = Style::scaledRadiusMd(),
++          .fill = scaleAlpha(colorSpecFromRole(ColorRole::Surface), backgroundOpacity),
++          .radius = radius,
+           .width = w,
+           .height = h,
+-          .configure = [](Box& box) { box.setBorder(colorSpecFromRole(ColorRole::OutlineVariant), kBorder); },
++          .configure =
++              [backgroundOpacity](Box& box) {
++                box.setBorder(scaleAlpha(colorSpecFromRole(ColorRole::OutlineVariant), backgroundOpacity), kBorder);
++              },
+       })
+   );
++  if (backgroundOpacity < 1.0F) {
++    m_surface->setBlurRegion(Surface::tessellateRoundedRect(
++        0, 0, static_cast<int>(std::ceil(w)), static_cast<int>(std::ceil(h)), radius
++    ));
++  } else {
++    m_surface->clearBlurRegion();
++  }
+ 
+   const float scale = (m_config != nullptr) ? std::max(0.1F, m_config->config().accessibility.uiScale) : 1.0F;
+   const float maxContentWidth = kMaxContentWidth * scale;

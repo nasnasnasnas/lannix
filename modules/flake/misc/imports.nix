@@ -40,6 +40,15 @@
     llm-agents.url = "github:numtide/llm-agents.nix";
     omp.url = "github:can1357/oh-my-pi";
 
+    helium = {
+      url = "github:tomsch/helium-nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    tern = {
+      url = "github:theoparis/nix-tern";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     bun2nix.url = "github:nix-community/bun2nix";
     bun2nix.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -48,8 +57,29 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    hex = {
+      # Stable release; the default `dev` branch is untested on Linux.
+      url = "github:anomalyco/hex/v3.2.0";
+      # Needs rustc >= 1.97 (26.05 ships 1.95). Hex's glibc must not be older
+      # than the system graphics drivers' or it finds no Vulkan adapter;
+      # unstable's 2.44 is newer than 26.05's 2.42.
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.home-manager.follows = "home-manager-unstable";
+    };
+
+    nirinit = {
+      url = "github:amaanq/nirinit";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     cider.url = "github:dmnc98/cider-flake";
     cider.inputs.nixpkgs.follows = "nixpkgs";
+
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      # master tracks nixos-unstable.
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   # imports = [

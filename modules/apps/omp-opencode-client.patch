@@ -1,0 +1,35 @@
+Figma's remote MCP server (https://mcp.figma.com/mcp) only issues OAuth
+client registrations to clients in its MCP catalog. Its dynamic client
+registration endpoint (https://api.figma.com/v1/oauth/mcp/register) rejects
+every request whose RFC 7591 `client_name` is not exactly one of the
+catalog names — "oh-my-pi" gets 403 Forbidden, and so do "Claude", "Cursor"
+and "Claude Code" typo variants. "opencode" is accepted (200), which is what
+opencode itself sends (packages/core/src/mcp/oauth.ts).
+
+Identify as opencode during MCP dynamic client registration and in the MCP
+initialize handshake, matching opencode's own client metadata
+(name "opencode", version "unknown").
+--- a/packages/coding-agent/src/mcp/oauth-flow.ts
++++ b/packages/coding-agent/src/mcp/oauth-flow.ts
+@@ -626,7 +626,7 @@
+ 
+ 		try {
+ 			const registrationBody: Record<string, unknown> = {
+-				client_name: "oh-my-pi",
++				client_name: "opencode",
+ 				redirect_uris: [redirectUri],
+ 				grant_types: ["authorization_code", "refresh_token"],
+ 				response_types: ["code"],
+--- a/packages/coding-agent/src/mcp/client.ts
++++ b/packages/coding-agent/src/mcp/client.ts
+@@ -42,8 +42,8 @@
+ 
+ /** Client info sent during initialization */
+ const CLIENT_INFO = {
+-	name: "omp-coding-agent",
+-	version: "1.0.0",
++	name: "opencode",
++	version: "unknown",
+ };
+ 
+ /**

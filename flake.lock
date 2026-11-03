@@ -216,6 +216,28 @@
         "type": "github"
       }
     },
+    "fenix": {
+      "inputs": {
+        "nixpkgs": [
+          "nirinit",
+          "nixpkgs"
+        ],
+        "rust-analyzer-src": "rust-analyzer-src"
+      },
+      "locked": {
+        "lastModified": 1792926139,
+        "narHash": "sha256-uLMpwLKdV5U1966bkbe5DzC+5Gp8O6g+wjydKmih7zQ=",
+        "owner": "nix-community",
+        "repo": "fenix",
+        "rev": "44ec3e059cf1631403a0faca34106be5fdb17631",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "fenix",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -512,7 +534,7 @@
     },
     "flake-utils_6": {
       "inputs": {
-        "systems": "systems_10"
+        "systems": "systems_11"
       },
       "locked": {
         "lastModified": 1731533236,
@@ -541,6 +563,50 @@
         "owner": "srid",
         "ref": "1.0.0",
         "repo": "haskell-flake",
+        "type": "github"
+      }
+    },
+    "helium": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793397160,
+        "narHash": "sha256-c2BnUMQyL7AeMWVEE4eCrATGf3B4vawEtGq94zkSUU0=",
+        "owner": "tomsch",
+        "repo": "helium-nix",
+        "rev": "9ffee6eeca0133673c2a33a534bf84028c8f09ca",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tomsch",
+        "repo": "helium-nix",
+        "type": "github"
+      }
+    },
+    "hex": {
+      "inputs": {
+        "home-manager": [
+          "home-manager-unstable"
+        ],
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793568107,
+        "narHash": "sha256-xcYZ4pXdTxHAdcE49JmMwngOsFWfa2XTn6YLxMis9tA=",
+        "owner": "anomalyco",
+        "repo": "hex",
+        "rev": "00610c581a0501e02631b7d915d504dec3729b03",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anomalyco",
+        "ref": "v3.2.0",
+        "repo": "hex",
         "type": "github"
       }
     },
@@ -734,6 +800,27 @@
       "original": {
         "owner": "numtide",
         "repo": "llm-agents.nix",
+        "type": "github"
+      }
+    },
+    "nirinit": {
+      "inputs": {
+        "fenix": "fenix",
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793552437,
+        "narHash": "sha256-8t155m1xkE1aSZizll5xsHU+KYTBV23lI8EH1rVdACw=",
+        "owner": "amaanq",
+        "repo": "nirinit",
+        "rev": "0bc16ff08bab040a0d0ef806556f4109228f21ff",
+        "type": "github"
+      },
+      "original": {
+        "owner": "amaanq",
+        "repo": "nirinit",
         "type": "github"
       }
     },
@@ -1240,6 +1327,8 @@
         "cider": "cider",
         "flake-file": "flake-file",
         "flake-parts": "flake-parts_3",
+        "helium": "helium",
+        "hex": "hex",
         "home-manager": "home-manager",
         "home-manager-unstable": "home-manager-unstable",
         "homebrew-cask": "homebrew-cask",
@@ -1249,6 +1338,7 @@
         "json2steamshortcut": "json2steamshortcut",
         "lazyvim": "lazyvim",
         "llm-agents": "llm-agents",
+        "nirinit": "nirinit",
         "nix-cachyos-kernel": "nix-cachyos-kernel",
         "nix-darwin": "nix-darwin",
         "nix-flatpak": "nix-flatpak",
@@ -1264,8 +1354,27 @@
         "opnix": "opnix",
         "procon-scrape": "procon-scrape",
         "solaar": "solaar",
+        "spicetify-nix": "spicetify-nix",
+        "tern": "tern",
         "winapps": "winapps",
         "zen-browser": "zen-browser"
+      }
+    },
+    "rust-analyzer-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792691653,
+        "narHash": "sha256-3/DMV3Lpmthk6OV2b7bJSJ5Okouyvl755YZENyLwllo=",
+        "owner": "rust-lang",
+        "repo": "rust-analyzer",
+        "rev": "0c4d74686b21f2b3bd8872b6d3cf36ad2e740d49",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rust-lang",
+        "ref": "nightly",
+        "repo": "rust-analyzer",
+        "type": "github"
       }
     },
     "rust-overlay": {
@@ -1328,6 +1437,27 @@
         "url": "https://flakehub.com/f/Svenum/Solaar-Flake/%2A.tar.gz"
       }
     },
+    "spicetify-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ],
+        "systems": "systems_10"
+      },
+      "locked": {
+        "lastModified": 1793531264,
+        "narHash": "sha256-rbmfLn4/UWs1mrMJgMEJXMfdhN7o7i++c5jPtUdlP+8=",
+        "owner": "Gerg-L",
+        "repo": "spicetify-nix",
+        "rev": "d818ab64010272bc0072d0c325838a63038796e9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Gerg-L",
+        "repo": "spicetify-nix",
+        "type": "github"
+      }
+    },
     "systems": {
       "locked": {
         "lastModified": 1776166891,
@@ -1344,6 +1474,21 @@
       }
     },
     "systems_10": {
+      "locked": {
+        "lastModified": 1791244623,
+        "narHash": "sha256-uuanbkFk8a313Zfrxdcz8Us/yQtaxNnKJtX8v0ZPpd8=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "d36eeed142f88b5a636f2e3856a53c61654cf29b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_11": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
@@ -1475,6 +1620,26 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "tern": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1792532759,
+        "narHash": "sha256-/E0X4T7G5p3VYYCxSDLt5AKswBcO5Ve81ig4pUgids4=",
+        "owner": "theoparis",
+        "repo": "nix-tern",
+        "rev": "c6b007f5d4f027acaf433b3dfdff97494c8ffa8c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "theoparis",
+        "repo": "nix-tern",
         "type": "github"
       }
     },

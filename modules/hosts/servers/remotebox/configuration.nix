@@ -77,7 +77,7 @@
         nodejs
         python3
         screen
-        inputs.omp.packages.${pkgs.stdenv.hostPlatform.system}.default
+        inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.omp
       ]
       ++ (with unstable; [
         bun
