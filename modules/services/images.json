@@ -121,7 +121,7 @@
   },
   "livekit/livekit-server": {
     "tag": "latest",
-    "digest": "sha256:89ca9ce0791e18d6e03bf6e2c49ceb27e1c754eae8bd50c989386c1a5963791a"
+    "digest": "sha256:25cd902de7cacbd5f1f779f6a6ac1eae20ba8f56b0935934ce6b0ab80d1e3d20"
   },
   "nextcloud": {
     "tag": "stable",
