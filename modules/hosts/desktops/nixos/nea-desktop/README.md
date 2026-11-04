@@ -155,6 +155,10 @@ to a `lix` store path.
   The expected hash is pinned in `tern.nix`; the archive is not part of this repo.
   Tern-only upgrades can install the package and its desktop entry into the
   user Nix profile without rebuilding or activating the desktop system.
+- SSH graphical askpass is disabled with `programs.ssh.enableAskPassword = false`
+  and `SSH_ASKPASS_REQUIRE=never`. SSH can still use the 1Password agent or
+  prompt in a terminal; noninteractive authentication fails without credentials
+  instead of starting an X11 password dialog.
 - WinApps credentials remain local: activation preserves the existing config as
   a mode-0600 regular file before retiring the old Home Manager symlink.
 - Existing unmanaged Home Manager files are saved with `.lannix-backup` suffixes

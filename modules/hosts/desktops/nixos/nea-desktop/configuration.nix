@@ -107,6 +107,7 @@
       enable = true;
       polkitPolicyOwners = ["nea"];
     };
+    programs.ssh.enableAskPassword = false;
     environment.etc."1password/custom_allowed_browsers" = {
       text = "helium\n";
       mode = "0755";
@@ -131,6 +132,7 @@
     };
     environment.sessionVariables = {
       BROWSER = "helium";
+      SSH_ASKPASS_REQUIRE = "never";
       NIXOS_OZONE_WL = "1";
       QT_QPA_PLATFORM = "wayland;xcb";
       QT_QPA_PLATFORMTHEME = "qt6ct";
