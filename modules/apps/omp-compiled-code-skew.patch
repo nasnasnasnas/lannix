@@ -1,0 +1,24 @@
+Standalone binaries load immutable embedded code, but extract their native
+addon into a versioned cache after the process starts. Its fresh mtime is not
+a source update. Keep timestamp-based worker skew detection for source/npm
+installs, where modules really can change between main and worker startup.
+--- a/packages/coding-agent/src/thread/code-skew.ts
++++ b/packages/coding-agent/src/thread/code-skew.ts
+@@ -12,6 +12,7 @@
+  * modules that cannot change, so their paths never stat and never count.
+  */
+ import * as fs from "node:fs";
++import { isCompiledBinary } from "@oh-my-pi/pi-utils/env";
+ 
+ /** A worker refused because its code differs from the main thread's; subagents run on the main thread instead. */
+ export class SubagentCodeChangedError extends Error {
+@@ -26,6 +27,9 @@
+ /** Files of the modules this thread loaded that were modified after `sinceMs` (epoch ms). */
+ export function loadedModulesChangedSince(sinceMs: number): string[] {
++	// Compiled code is immutable; its native addon is extracted after startup.
++	if (isCompiledBinary()) return [];
++
+ 	const changed: string[] = [];
+ 	for (const modulePath in require.cache) {
+ 		let mtimeMs: number;
+ 		try {

@@ -139,6 +139,9 @@ to a `lix` store path.
   (`https://api.figma.com/v1/oauth/mcp/register`) returns 403 to every RFC 7591
   `client_name` outside its MCP catalog; `omp-opencode-client.patch` rewrites
   omp's `client_name` and MCP `clientInfo`, which is all Figma checks.
+  `omp-compiled-code-skew.patch` prevents freshly extracted native addons
+  from being mistaken for changed source in standalone binaries. Source/npm
+  installs retain worker code-skew detection, and install checks stay enabled.
   Update this input independently with `nix flake update omp`. Native Rust
   compilation belongs on the CI runner rather than the desktop.
 - Tern uses `theoparis/nix-tern`, overridden to package the downloaded 0.9.10 beta
