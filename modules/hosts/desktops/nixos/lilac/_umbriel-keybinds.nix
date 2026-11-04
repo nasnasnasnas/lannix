@@ -96,8 +96,8 @@ in
   "Mod+W" = once "column-toggle-tabbed";
 
   # Umbriel-specific additions, without replacing Niri-style shortcuts.
-  "Mod+Space" = once "scratchpad-toggle terminal";
-  "Mod+Ctrl+Space" = once "window-toggle-scratchpad terminal";
+  "Mod+Space" = once "scratchpad-toggle general";
+  "Mod+Ctrl+Space" = once "window-toggle-scratchpad general";
   "Mod+Alt+D" = once "workspace-set-layout toggle scrolling dwindle master";
   "Mod+Alt+Left" = "column-focus-tab-previous";
   "Mod+Alt+Right" = "column-focus-tab-next";
@@ -119,6 +119,9 @@ in
   "Mod+Shift+Space" = once "spawn 1password --quick-access";
   "Ctrl+Shift+Space" = once "spawn 1password --quick-access";
   "Alt+Tab" = once "spawn noctalia msg window-switcher hold";
+  # Framework gear key controls the auto-launching terminal scratchpad.
+  "XF86AudioMedia" = once "scratchpad-toggle terminal";
+  "Ctrl+XF86AudioMedia" = once "window-toggle-scratchpad terminal";
   "XF86AudioRaiseVolume" = { action = "spawn noctalia msg volume-up"; allow_when_locked = true; };
   "XF86AudioLowerVolume" = { action = "spawn noctalia msg volume-down"; allow_when_locked = true; };
   "XF86AudioMute" = { action = "spawn noctalia msg volume-mute"; allow_when_locked = true; repeat = false; };

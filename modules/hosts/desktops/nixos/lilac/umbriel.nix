@@ -34,10 +34,15 @@
         general.autostart = [ "noctalia" "kdeconnect-indicator" ];
         # Named pads support launch-on-empty; the helper also handles an
         # already-running Tern process, whose new windows lose launch tokens.
-        scratchpad = [{
-          name = "terminal";
-          spawn_when_empty = lib.getExe scratchpadLauncher;
-        }];
+        scratchpad = [
+          # Named pads replace Umbriel's implicit default. Keep a general
+          # scratchpad on Mod+Space, separate from the gear-key terminal pad.
+          { name = "general"; }
+          {
+            name = "terminal";
+            spawn_when_empty = lib.getExe scratchpadLauncher;
+          }
+        ];
         keybinds = import ./_umbriel-keybinds.nix {
           inherit lib;
           ternLauncher = lib.getExe ternLauncher;
