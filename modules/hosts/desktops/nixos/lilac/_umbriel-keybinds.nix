@@ -8,7 +8,6 @@ in
   "Mod+T" = once "spawn ${ternLauncher} tab";
   "Mod+Shift+T" = once "spawn ${ternLauncher} window";
   "Super+Alt+S" = { action = "spawn pkill orca || exec orca"; allow_when_locked = true; repeat = false; };
-  "XF86AudioMicMute" = { action = "spawn wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; allow_when_locked = true; repeat = false; };
   "Mod+O" = once "overview-toggle";
   "Mod+Q" = once "window-close";
 
@@ -120,14 +119,16 @@ in
   "Mod+Shift+Space" = once "spawn 1password --quick-access";
   "Ctrl+Shift+Space" = once "spawn 1password --quick-access";
   "Alt+Tab" = once "spawn noctalia msg window-switcher hold";
-  "XF86AudioRaiseVolume" = "spawn noctalia msg volume-up";
-  "XF86AudioLowerVolume" = "spawn noctalia msg volume-down";
-  "XF86AudioMute" = once "spawn noctalia msg volume-mute";
-  "XF86AudioPrev" = "spawn playerctl previous";
-  "XF86AudioPlay" = once "spawn playerctl play-pause";
-  "XF86AudioNext" = "spawn playerctl next";
-  "XF86MonBrightnessUp" = "spawn noctalia msg brightness-up";
-  "XF86MonBrightnessDown" = "spawn noctalia msg brightness-down";
+  "XF86AudioRaiseVolume" = { action = "spawn noctalia msg volume-up"; allow_when_locked = true; };
+  "XF86AudioLowerVolume" = { action = "spawn noctalia msg volume-down"; allow_when_locked = true; };
+  "XF86AudioMute" = { action = "spawn noctalia msg volume-mute"; allow_when_locked = true; repeat = false; };
+  "XF86AudioPlay" = { action = "spawn noctalia msg media toggle"; allow_when_locked = true; repeat = false; };
+  "XF86AudioNext" = { action = "spawn noctalia msg media next"; allow_when_locked = true; };
+  "XF86AudioPrev" = { action = "spawn noctalia msg media previous"; allow_when_locked = true; };
+  "XF86MonBrightnessUp" = { action = "spawn noctalia msg brightness-up"; allow_when_locked = true; };
+  "XF86MonBrightnessDown" = { action = "spawn noctalia msg brightness-down"; allow_when_locked = true; };
+  
+  "Super+P" = once "spawn noctalia msg caffeine-toggle";
 }
 // lib.listToAttrs (lib.concatMap (n:
   let number = toString n; in [

@@ -5,7 +5,7 @@
 
     # Rebuild with --flake path:.#lilac while this file is untracked, then
     # select Umbriel in Noctalia Greeter. Niri remains the default session.
-    home-manager.users.leah = { pkgs, lib, ... }:
+    home-manager.users.leah = { pkgs, lib, ... }@hm:
     let
       umbriel = config.programs.umbriel.package;
       ternLauncher = pkgs.writeShellApplication {
@@ -30,6 +30,7 @@
       home.packages = [ ternLauncher ];
       xdg.configFile."umbriel/config.toml".source = (pkgs.formats.toml { }).generate "umbriel-config.toml" {
         include.files = [ "${defaults}" ];
+        include.optional.files = [ "${hm.config.xdg.configHome}/umbriel/noctalia.toml" ];
         general.autostart = [ "noctalia" "kdeconnect-indicator" ];
         # Named pads support launch-on-empty; the helper also handles an
         # already-running Tern process, whose new windows lose launch tokens.
