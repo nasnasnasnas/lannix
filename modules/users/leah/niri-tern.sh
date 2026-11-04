@@ -13,7 +13,8 @@ if [ -z "$window_id" ]; then
 fi
 if created=$("$tern_bin" new tab --cwd "$HOME" --json); then
     block_id=$(printf '%s\n' "$created" | awk '/"block":/ { gsub(/,/, "", $2); print $2; exit }')
-    # Wait for the normal terminal before replacing its shell with login Fish.
+    # The default Tern shell does not reliably load the configured Fish environment.
+    # Replace it after the prompt so Tern still treats this as an idle shell.
     if "$tern_bin" wait "$block_id" --until prompt --timeout 10; then
         "$tern_bin" send "$block_id" text "$(printf 'exec /run/current-system/sw/bin/fish -l\r')"
     fi

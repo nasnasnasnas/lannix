@@ -161,7 +161,11 @@ to a `lix` store path.
   system rebuild. Both hosts use the same pin, Fish override, WebKit/GIO TLS
   environment, runtime library fix, and desktop entry. `lilac` additionally
   defines its `tern-remote` user service, using that same package; its
-  `niri-tern` keybinding helper uses the system-installed Tern.
+  `niri-tern` keybinding helper uses the system-installed Tern. It waits for
+  the new tab's prompt, then sends `exec /run/current-system/sw/bin/fish -l`
+  to load Leah's configured Fish/Starship environment. Keep this workaround:
+  the default tab shell did not load that environment, and passing Fish as
+  an explicit launch command changes Tern's close-confirmation behavior.
   `lilac` no longer enables nix-ld: the package patches Tern's ELF interpreter
   and runtime library paths directly.
   Leah's Linux Fish initialization recovers a missing `NIRI_SOCKET` from the
