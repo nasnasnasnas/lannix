@@ -146,12 +146,12 @@ to a `lix` store path.
   installs retain worker code-skew detection, and install checks stay enabled.
   Update this input independently with `nix flake update omp`. Native Rust
   compilation belongs on the CI runner rather than the desktop.
-- Tern uses `theoparis/nix-tern`, overridden to package the downloaded 0.9.10 beta
+- Tern uses `theoparis/nix-tern`, overridden to package the downloaded 0.9.11 beta
   and use Fish. Import the downloaded archive before building this host, then
   follow the CI source caching instructions below:
 
   ```sh
-  nix-prefetch-url file://$HOME/Downloads/Tern-0.9.10-linux-x86_64.tar.gz
+  nix-prefetch-url file://$HOME/Downloads/Tern-0.9.11-linux-x86_64.tar.gz
   ```
 
   The expected hash is pinned in `tern.nix`; the archive is not part of this repo.
@@ -167,10 +167,16 @@ to a `lix` store path.
   variable, but its new shells omit it; changing `tern-remote` ordering does
   not fix that. Existing shells need the variable exported manually or a
   fresh Fish shell after activating the Home Manager change.
-- SSH graphical askpass is disabled with `programs.ssh.enableAskPassword = false`
-  and `SSH_ASKPASS_REQUIRE=never`. SSH can still use the 1Password agent or
-  prompt in a terminal; noninteractive authentication fails without credentials
-  instead of starting an X11 password dialog.
+- Graphical askpass is disabled for both SSH and Git. SSH uses
+  `programs.ssh.enableAskPassword = false` and `SSH_ASKPASS_REQUIRE=never`;
+  Git uses an empty `core.askPass` and `GIT_ASKPASS`, since Git otherwise
+  falls back to `SSH_ASKPASS` without consulting `SSH_ASKPASS_REQUIRE`.
+  New Fish shells clear inherited helpers too: a rebuild cannot update the
+  environment of an already-running Niri or terminal daemon. In an existing
+  Fish terminal, `set -gx GIT_ASKPASS ""; set -gx SSH_ASKPASS "";
+  set -gx SSH_ASKPASS_REQUIRE never` applies the same policy immediately.
+  Agent authentication and terminal prompts remain available; noninteractive
+  commands fail without credentials instead of opening an X11 dialog.
 - WinApps credentials remain local: activation preserves the existing config as
   a mode-0600 regular file before retiring the old Home Manager symlink.
 - Existing unmanaged Home Manager files are saved with `.lannix-backup` suffixes
@@ -210,7 +216,7 @@ still requires its own Stencil account sign-in.
 
    ```sh
    attic push --no-closure personal:lannix \
-     /nix/store/z3lyygh9v13mlrijcgpfg0lc8cylq707-Tern-0.9.10-linux-x86_64.tar.gz \
+     /nix/store/pixbx6han9kf1rhdw2y8gdxasyfv0dgb-Tern-0.9.11-linux-x86_64.tar.gz \
      /nix/store/53f03jfyqldh2801kargkg2z9kl6wg7g-macOS27.tar.gz
    ```
 

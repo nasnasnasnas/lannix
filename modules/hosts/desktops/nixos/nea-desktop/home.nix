@@ -15,6 +15,7 @@
       gtk.enable = true;
     };
     programs.git.signing.key = lib.mkForce "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMA24bYEOA0Y0wtbXsra/gG5YXWnFSbnSpmBXp86JmC/";
+    programs.git.settings.core.askPass = "";
     programs.gh = {
       enable = true;
       gitCredentialHelper.enable = true;
@@ -30,7 +31,13 @@
       };
     };
     programs.fish = {
-      interactiveShellInit = "set -U fish_greeting";
+      interactiveShellInit = ''
+        set -U fish_greeting
+        # Running terminal/compositor processes can retain pre-rebuild helpers.
+        set -gx GIT_ASKPASS ""
+        set -gx SSH_ASKPASS ""
+        set -gx SSH_ASKPASS_REQUIRE never
+      '';
       plugins = [
         {
           name = "nvm";

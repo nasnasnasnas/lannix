@@ -132,6 +132,7 @@
     };
     environment.sessionVariables = {
       BROWSER = "helium";
+      GIT_ASKPASS = "";
       SSH_ASKPASS_REQUIRE = "never";
       NIXOS_OZONE_WL = "1";
       QT_QPA_PLATFORM = "wayland;xcb";
