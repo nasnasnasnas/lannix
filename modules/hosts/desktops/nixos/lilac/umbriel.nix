@@ -86,6 +86,13 @@
             offset_x = 5;
             offset_y = 5;
           };
+          blur = {
+            enabled = true;
+            optimized = true;
+            radius = 3;
+            passes = 1;
+            saturation = 1.25;
+          };
         };
         colors.border = {
           focused = "#b89cff";
