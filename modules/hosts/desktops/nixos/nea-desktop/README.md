@@ -146,20 +146,22 @@ to a `lix` store path.
   installs retain worker code-skew detection, and install checks stay enabled.
   Update this input independently with `nix flake update omp`. Native Rust
   compilation belongs on the CI runner rather than the desktop.
-- Tern uses `theoparis/nix-tern`, overridden to package the downloaded 0.9.11 beta
-  and use Fish. Import the downloaded archive before building this host, then
-  follow the CI source caching instructions below:
+- Tern is shared with `lilac` through `modules/apps/tern.nix`, which defines
+  `packages.tern` and the common NixOS desktop integration. It uses
+  `theoparis/nix-tern`, overridden to package the downloaded 0.9.11 beta and use
+  Fish. Import the downloaded archive before building, then follow the CI
+  source caching instructions below:
 
   ```sh
   nix-prefetch-url file://$HOME/Downloads/Tern-0.9.11-linux-x86_64.tar.gz
   ```
 
-  The expected hash is pinned in `tern.nix`; the archive is not part of this repo.
-  Tern-only upgrades can install the package and its desktop entry into the
-  user Nix profile without rebuilding or activating the desktop system.
-  `lilac` uses the same pinned archive, Fish override, and runtime library fix.
-  Its desktop entry, `niri-tern` keybinding helper, and `tern-remote` user
-  service now use the Nix package rather than a user-local Tern installation.
+  The expected hash is pinned in `modules/apps/tern.nix`; the archive is not
+  part of this repo. `nix build .#tern` builds the shared package without a
+  system rebuild. Both hosts use the same pin, Fish override, WebKit/GIO TLS
+  environment, runtime library fix, and desktop entry. `lilac` additionally
+  defines its `tern-remote` user service, using that same package; its
+  `niri-tern` keybinding helper uses the system-installed Tern.
   `lilac` no longer enables nix-ld: the package patches Tern's ELF interpreter
   and runtime library paths directly.
   Leah's Linux Fish initialization recovers a missing `NIRI_SOCKET` from the
