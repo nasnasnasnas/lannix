@@ -1,21 +1,25 @@
-{inputs, ...}: let
-  username = "leah";
-in {
-  flake.modules.homeManager."${username}" = {pkgs, ...}: {
-    home.packages = with pkgs; [
-      nix-output-monitor
-    ];
-
-    programs.fish.functions = {
-      lannix-rebuild = {
-        description = "Does a nixos-rebuild with nix-output-monitor";
-        body = ''
-          pushd /home/leah/lannix
-          sudo -v
-          sudo nixos-rebuild switch --flake --log-format internal-json |& nom --json
-          popd
+{...}: {
+  flake.modules.homeManager.leah = {pkgs, ...}: let
+    # pkexec clears PATH; rebuild and activation tools need the NixOS system
+    # commands. Use only root-managed paths, never the caller's user profile.
+    privilegedRebuild = pkgs.writeShellScript "lannix-rebuild-root" ''
+      export PATH=/run/current-system/sw/bin:/run/wrappers/bin
+      exec /run/current-system/sw/bin/nixos-rebuild "$@"
+    '';
+  in {
+    home.packages = [
+      (pkgs.writeShellApplication {
+        name = "lannix-rebuild";
+        runtimeInputs = [pkgs.nix-output-monitor];
+        # Use NixOS's privileged pkexec wrapper. An absolute flake path survives
+        # pkexec's working-directory reset; nom still runs as the normal user.
+        # pipefail propagates authentication cancellation and rebuild failures.
+        text = ''
+          /run/wrappers/bin/pkexec ${privilegedRebuild} \
+            switch --flake /home/leah/lannix --log-format internal-json 2>&1 | nom --json
         '';
-      };
-    };
+      })
+      pkgs.nix-output-monitor
+    ];
   };
 }

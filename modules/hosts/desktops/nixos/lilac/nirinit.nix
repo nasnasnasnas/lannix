@@ -11,5 +11,8 @@
         "dev.noctalia.Noctalia"
       ];
     };
+
+    # graphical-session.target also starts under Umbriel, which has no Niri IPC.
+    systemd.user.services.nirinit.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=niri";
   };
 }

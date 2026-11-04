@@ -24,6 +24,9 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    # Keep Umbriel's own nixpkgs lock so upstream's binary cache can match.
+    umbriel.url = "github:noctalia-dev/umbriel";
+
     winapps = {
       url = "github:winapps-org/winapps";
       inputs.nixpkgs.follows = "nixpkgs-unstable";

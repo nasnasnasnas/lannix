@@ -99,6 +99,7 @@
       url = "github:theoparis/nix-tern";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    umbriel.url = "github:noctalia-dev/umbriel";
     winapps = {
       url = "github:winapps-org/winapps";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
