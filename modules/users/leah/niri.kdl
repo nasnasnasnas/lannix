@@ -713,6 +713,14 @@ window-rule {
   }
 }
 
+blur {
+    // off
+    passes 1
+    offset 3
+    noise 0.02
+    saturation 1.5
+}
+
 /*
   Noctalia
   Disable xray on all our surfaces so it looks more realistic.
