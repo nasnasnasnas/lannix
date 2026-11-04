@@ -1,6 +1,6 @@
 #!/bin/sh
 # Reuse Tern for tabs; a plain Tern launch always opens a new window.
-tern_bin="${TERN_BIN:-$HOME/.local/bin/tern}"
+tern_bin="${TERN_BIN:-/run/current-system/sw/bin/tern}"
 if [ "${1:-tab}" = window ]; then
     exec "$tern_bin"
 fi

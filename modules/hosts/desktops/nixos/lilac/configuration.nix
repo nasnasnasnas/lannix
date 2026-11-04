@@ -14,10 +14,6 @@
       ddcutil
     ];
 
-    programs.nix-ld = {
-      enable = true;
-    };
-
     nix.settings.trusted-users = [ "leah" ];
 
     users.users.root.openssh.authorizedKeys.keys = [

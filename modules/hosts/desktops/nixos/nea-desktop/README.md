@@ -129,6 +129,8 @@ to a `lix` store path.
   and outputs at login. 1Password, Hex, and Noctalia's settings window are
   skipped because they start on their own. Delete the session file to start
   fresh. The user service is enabled for every user on this host.
+  `lilac` uses the same module and save interval, skipping 1Password and
+  Noctalia (it does not run Hex).
 - Helium comes from `tomsch/helium-nix` and is the default HTTP/HTTPS/HTML browser.
   `programs.nix` adds libglvnd and the OpenGL driver directory to its
   `LD_LIBRARY_PATH`. Without them, ANGLE can't load `libEGL.so.1` and WebGL
@@ -155,6 +157,16 @@ to a `lix` store path.
   The expected hash is pinned in `tern.nix`; the archive is not part of this repo.
   Tern-only upgrades can install the package and its desktop entry into the
   user Nix profile without rebuilding or activating the desktop system.
+  `lilac` uses the same pinned archive, Fish override, and runtime library fix.
+  Its desktop entry, `niri-tern` keybinding helper, and `tern-remote` user
+  service now use the Nix package rather than a user-local Tern installation.
+  `lilac` no longer enables nix-ld: the package patches Tern's ELF interpreter
+  and runtime library paths directly.
+  Leah's Linux Fish initialization recovers a missing `NIRI_SOCKET` from the
+  systemd user environment when its socket exists. Tern's daemon has the
+  variable, but its new shells omit it; changing `tern-remote` ordering does
+  not fix that. Existing shells need the variable exported manually or a
+  fresh Fish shell after activating the Home Manager change.
 - SSH graphical askpass is disabled with `programs.ssh.enableAskPassword = false`
   and `SSH_ASKPASS_REQUIRE=never`. SSH can still use the 1Password agent or
   prompt in a terminal; noninteractive authentication fails without credentials

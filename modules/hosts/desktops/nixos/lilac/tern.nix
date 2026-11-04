@@ -1,51 +1,44 @@
-{ ... }: {
+{ inputs, ... }: {
   flake.modules.nixos.lilac =
     { pkgs, lib, ... }:
     let
-      # The closed-beta download stays outside the store: CI builds only this launcher.
-      # Install/update without rebuilding NixOS:
-      #   mkdir -p ~/.local/share
-      #   tar -xzf ~/Downloads/Tern-VERSION-linux-x86_64.tar.gz -C ~/.local/share
-      # Or extract into $XDG_DATA_HOME when it is set. The archive contains tern/tern.
-      runtimePackages = with pkgs; [
-        stdenv.cc.cc.lib
-        libxcb
-        libxkbcommon
-        wayland
-        vulkan-loader
-        libglvnd
-        libpulseaudio
-        pipewire
-        pam
-        webkitgtk_4_1
-      ];
-      runtimeLibraries = lib.makeLibraryPath runtimePackages;
-      tern = pkgs.writeShellScriptBin "tern" ''
-        binary="''${XDG_DATA_HOME:-$HOME/.local/share}/tern/tern"
-        if [ ! -x "$binary" ]; then
-          printf 'Tern binary missing: %s\nExtract the Linux x86_64 archive into %s/.. first.\n' "$binary" "$(dirname "$binary")" >&2
-          exit 1
-        fi
-        export LD_LIBRARY_PATH="${runtimeLibraries}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
-        # Run the ELF itself through nix-ld so /proc/self/exe stays Tern.
-        # Invoking ld.so explicitly breaks Tern's generated services and re-exec.
-        export NIX_LD="${pkgs.stdenv.cc.bintools.dynamicLinker}"
-        export NIX_LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
-        exec "$binary" "$@"
-      '';
+      # Use the same pinned beta and Fish shell as nea-desktop.
+      # Import/cache instructions: ../nea-desktop/README.md, CI source caching.
+      tern = inputs.tern.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
+        version = "0.9.10";
+        src = pkgs.requireFile {
+          name = "Tern-0.9.10-linux-x86_64.tar.gz";
+          hash = "sha256-W9eCMo3w7iMw809gxAei8CUrrG6AbmINIrdEvOrUxtU=";
+          message = ''
+            Download Tern 0.9.10 from https://build.stencil.so/ and run:
+              nix-prefetch-url file://$HOME/Downloads/Tern-0.9.10-linux-x86_64.tar.gz
+            Push the imported archive to the lannix Attic cache for CI;
+            see modules/hosts/desktops/nixos/nea-desktop/README.md.
+          '';
+        };
+        installPhase =
+          builtins.replaceStrings
+            [ "--set SHELL ${old.passthru.loginShell}/bin/nu" ]
+            [ "--set SHELL ${lib.getExe pkgs.fish}" ]
+            old.installPhase;
+        postFixup = (old.postFixup or "") + ''
+          patchelf --add-rpath "${
+            lib.makeLibraryPath [
+              pkgs.pam
+              pkgs.libpulseaudio
+            ]
+          }" "$out/opt/tern/tern"
+        '';
+      });
     in
     {
-      # Tern registers desktop/autostart entries pointing at its ELF, not this wrapper.
-      # nix-ld must also supply the libraries for those launches and daemon re-exec.
-      programs.nix-ld.libraries = runtimePackages;
-
       environment.systemPackages = [
         tern
         (pkgs.makeDesktopItem {
           name = "so.stencil.tern";
           desktopName = "Tern";
           comment = "Stencil native workspace";
-          exec = "${tern}/bin/tern %F";
+          exec = "${lib.getExe tern} %F";
           terminal = false;
           startupWMClass = "so.stencil.tern";
           categories = [
@@ -55,7 +48,7 @@
         })
       ];
 
-      # Keep the remote service on the wrapper, including after beta binary updates.
+      # Keep remote sessions on the same packaged Tern as the desktop.
       # Native clients connect as leah@lilac:8376 over Tailscale (UDP/QUIC).
       # User mode retains Tern's ~/.ssh/authorized_keys authentication policy.
       # Diagnose locally with: tern remote doctor leah@127.0.0.1
