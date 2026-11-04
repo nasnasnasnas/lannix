@@ -31,7 +31,13 @@ in {
 
   # linux-only home manager bits (niri, noctalia, ...); imported by the nixos
   # user module in configuration.nix but left out of the darwin one
-  flake.modules.homeManager."${username}-linux" = {
+  flake.modules.homeManager."${username}-linux" = {pkgs, ...}: {
+    # Tern uses Zenity for close-confirmation dialogs on Linux.
+    home.packages = [pkgs.zenity];
     xdg.configFile."niri/config.kdl".source = ./niri.kdl;
+    home.file.".local/bin/niri-tern" = {
+      source = ./niri-tern.sh;
+      executable = true;
+    };
   };
 }
