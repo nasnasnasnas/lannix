@@ -753,10 +753,3 @@ debug {
   honor-xdg-activation-with-invalid-serial
 }
 
-// Tern blur trial: let Tern handle its own glass instead of compositor blur.
-window-rule {
-  match app-id="^so\\.stencil\\.tern$"
-  background-effect {
-    blur false
-  }
-}
