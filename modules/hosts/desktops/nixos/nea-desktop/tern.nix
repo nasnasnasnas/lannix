@@ -4,14 +4,19 @@
     lib,
     ...
   }: let
-    # Import the private beta once with:
-    # nix-prefetch-url file://$HOME/Downloads/Tern-0.9.8-linux-x86_64.tar.gz
+    # Import the downloaded archive and push its fixed-output store path to
+    # Attic so CI can substitute it; see README.md.
     tern = inputs.tern.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
-      version = "0.9.8";
+      version = "0.9.10";
       src = pkgs.requireFile {
-        name = "Tern-0.9.8-linux-x86_64.tar.gz";
-        hash = "sha256-TCCTx1UXTmAtT4bJeB5UOhVkrxrvI/NCFSLUNs9goFQ=";
-        message = "Download Tern 0.9.8 from https://build.stencil.so/ and run nix-prefetch-url file://$HOME/Downloads/Tern-0.9.8-linux-x86_64.tar.gz";
+        name = "Tern-0.9.10-linux-x86_64.tar.gz";
+        hash = "sha256-W9eCMo3w7iMw809gxAei8CUrrG6AbmINIrdEvOrUxtU=";
+        message = ''
+          Download Tern 0.9.10 from https://build.stencil.so/ and run:
+            nix-prefetch-url file://$HOME/Downloads/Tern-0.9.10-linux-x86_64.tar.gz
+          Push the imported archive to the lannix Attic cache for CI;
+          see modules/hosts/desktops/nixos/nea-desktop/README.md.
+        '';
       };
       # Use the account's configured login shell rather than upstream's Nushell probe.
       installPhase =

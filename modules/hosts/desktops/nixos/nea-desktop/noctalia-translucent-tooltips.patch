@@ -1,14 +1,32 @@
 --- a/src/shell/tooltip/tooltip_manager.cpp
 +++ b/src/shell/tooltip/tooltip_manager.cpp
-@@ -8,6 +8,7 @@
+@@ -4,10 +4,13 @@
+ #include "core/deferred_call.h"
+ #include "core/log.h"
+ #include "core/ui_phase.h"
++#include "ext-background-effect-v1-client-protocol.h"
+ #include "render/render_context.h"
  #include "render/render_target.h"
  #include "render/scene/input_area.h"
  #include "render/scene/node.h"
 +#include "shell/panel/panel_surface_style.h"
++#include "shell/wayland/background_effect_globals.h"
+ #include "shell/wayland/layer_shell.h"
  #include "ui/builders.h"
  #include "ui/palette.h"
- #include "ui/style.h"
-@@ -690,15 +691,28 @@
+@@ -532,7 +535,11 @@
+     m_surface->setDismissedCallback(nullptr);
+     m_surface->setSceneRoot(nullptr);
+   }
++  if (m_backgroundEffect != nullptr) {
++    ext_background_effect_surface_v1_destroy(m_backgroundEffect);
++    m_backgroundEffect = nullptr;
++  }
+   m_surface.reset();
+   m_activeLayerParent = nullptr;
+   m_activeXdgParent = nullptr;
+   m_activeOutput = nullptr;
+@@ -691,15 +698,44 @@
    m_sceneRoot->setHitTestVisible(false);
    m_surface->setSceneRoot(m_sceneRoot.get());
  
@@ -30,13 +48,44 @@
 +              },
        })
    );
-+  if (backgroundOpacity < 1.0F) {
-+    m_surface->setBlurRegion(Surface::tessellateRoundedRect(
-+        0, 0, static_cast<int>(std::ceil(w)), static_cast<int>(std::ceil(h)), radius
-+    ));
-+  } else {
-+    m_surface->clearBlurRegion();
++  auto& effects = m_wayland->extension<BackgroundEffectGlobals>();
++  if (backgroundOpacity < 1.0F && effects.hasBlur() && effects.manager() != nullptr) {
++    if (m_backgroundEffect == nullptr) {
++      m_backgroundEffect = ext_background_effect_manager_v1_get_background_effect(
++          effects.manager(), m_surface->wlSurface()
++      );
++    }
++    if (m_backgroundEffect != nullptr) {
++      wl_region* region = wl_compositor_create_region(m_wayland->compositor());
++      if (region != nullptr) {
++        for (const auto& rect : Surface::tessellateRoundedRect(
++                 0, 0, static_cast<int>(std::ceil(w)), static_cast<int>(std::ceil(h)), radius
++             )) {
++          wl_region_add(region, rect.x, rect.y, rect.width, rect.height);
++        }
++        ext_background_effect_surface_v1_set_blur_region(m_backgroundEffect, region);
++        wl_region_destroy(region);
++      }
++    }
++  } else if (m_backgroundEffect != nullptr) {
++    ext_background_effect_surface_v1_destroy(m_backgroundEffect);
++    m_backgroundEffect = nullptr;
 +  }
  
    const float scale = (m_config != nullptr) ? std::max(0.1F, m_config->config().accessibility.uiScale) : 1.0F;
    const float maxContentWidth = kMaxContentWidth * scale;
+--- a/src/shell/tooltip/tooltip_manager.h
++++ b/src/shell/tooltip/tooltip_manager.h
+@@ -17,6 +17,7 @@
+ class Renderer;
+ class ConfigService;
+ class WaylandConnection;
++struct ext_background_effect_surface_v1;
+ struct wl_output;
+ struct xdg_surface;
+ struct zwlr_layer_surface_v1;
+@@ -93,3 +94,4 @@
+   std::unique_ptr<PopupSurface> m_surface;
++  ext_background_effect_surface_v1* m_backgroundEffect = nullptr;
+   AnimationManager m_animations;
+   std::unique_ptr<Node> m_sceneRoot;

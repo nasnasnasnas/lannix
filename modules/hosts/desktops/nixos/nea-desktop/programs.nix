@@ -23,7 +23,8 @@
       unstable.nodejs_24
       vscode-fhs
       alacritty
-      jetbrains-toolbox
+      # Stable's Toolbox 3.1.0 archive is unavailable; use the locked newer release.
+      unstable.jetbrains-toolbox
       vesktop
       unstable.element-desktop
       unstable.telegram-desktop

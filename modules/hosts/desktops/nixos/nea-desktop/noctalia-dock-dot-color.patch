@@ -1,16 +1,16 @@
 --- a/src/config/config_types.h
 +++ b/src/config/config_types.h
-@@ -761,6 +761,7 @@
-   float activeOpacity = 1.0F;       // focused app icon opacity
-   float inactiveOpacity = 0.85F;    // non-focused app icon opacity
-   bool showDots = false;            // show optional running window dots below app icons
+@@ -779,6 +779,7 @@
+   float iconSaturation = 1.0F;      // app icon saturation (0 = grayscale)
+   bool colorizeIcons = false;
+   bool showDots = false;         // show optional running window dots below app icons
 +  std::optional<ColorSpec> dotColor; // overrides the primary (focused) / secondary running-dot colors
-   bool showInstanceCount = true;    // show a badge with count when app has >1 window
+   bool showInstanceCount = true; // show a badge with count when app has >1 window
    DockLauncherPosition launcherPosition = DockLauncherPosition::None;
    std::string launcherIcon = "grid-dots";   // Tabler glyph name
 --- a/src/config/schema/config_schema.cpp
 +++ b/src/config/schema/config_schema.cpp
-@@ -2517,6 +2517,7 @@
+@@ -2541,6 +2541,7 @@
          field(&DockConfig::activeOpacity, "active_opacity", kUnitRange),
          field(&DockConfig::inactiveOpacity, "inactive_opacity", kUnitRange),
          field(&DockConfig::showDots, "show_dots"),
@@ -20,7 +20,7 @@
          field(&DockConfig::launcherIcon, "launcher_icon"),
 --- a/src/shell/dock/dock_items.cpp
 +++ b/src/shell/dock/dock_items.cpp
-@@ -607,7 +607,7 @@
+@@ -610,7 +610,7 @@
          for (auto& dotIndicator : item.dotIndicators) {
            dotIndicator = static_cast<Box*>(areaNode->addChild(
                ui::box({
@@ -29,7 +29,7 @@
                    .radius = dot * 0.5F,
                    .width = dot,
                    .height = dot,
-@@ -892,7 +892,7 @@
+@@ -895,7 +895,7 @@
            Box* dotNode = item.dotIndicators[dotIndex];
            const bool visible = dotIndex < dotCount;
            dotNode->setVisible(visible);

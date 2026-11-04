@@ -84,8 +84,8 @@ to a `lix` store path.
 - Icons use the light `macOS27` theme from a private archive, packaged in
   `icons.nix` and applied to GTK (GSettings, `settings.ini`), qt6ct, and
   `kdeglobals`. It covers app, place, device, and MIME icons and inherits the
-  rest from Adwaita, which is installed alongside it. Import the archive into
-  each builder's store before building this host:
+  rest from Adwaita, which is installed alongside it. Import the archive before
+  building this host, then follow the CI source caching instructions below:
 
   ```sh
   nix-prefetch-url file://$HOME/Downloads/macOS27.tar.gz
@@ -95,11 +95,16 @@ to a `lix` store path.
 - The top bar's left and right margins match Niri's 8 px window gaps.
 - Noctalia carries two patches: `noctalia-translucent-tooltips.patch` makes
   tooltips follow `shell.panel.transparency_mode` with compositor blur, and
-  `noctalia-dock-dot-color.patch` adds `dock.dot_color`.
+  `noctalia-dock-dot-color.patch` adds `dock.dot_color`. Both patches target
+  the locked Noctalia 5.4.1 source. Tooltips use xdg popups, so the tooltip
+  manager owns their background-effect protocol object and releases it before
+  destroying the popup; blur is not a `PopupSurface` method.
 - The community `vn1k/icons` plugin is enabled; Noctalia exports it on start.
   Open it with `noctalia msg panel-toggle vn1k/icons:manager`.
 - Ghostty's terminal palette follows Noctalia; its window and tabs use light UI.
 - Feishin is installed from nixpkgs-unstable.
+- JetBrains Toolbox comes from nixpkgs-unstable; stable's 3.1.0.62320 archive
+  is no longer available from JetBrains.
 - Spotify comes from `Gerg-L/spicetify-nix` (`spicetify.nix`) with the
   Catppuccin theme in its light `latte` scheme; `pkgs.spotify` must not be
   added elsewhere. Spotify still draws its dark-UI overlays under Latte, so
@@ -134,16 +139,65 @@ to a `lix` store path.
   (`https://api.figma.com/v1/oauth/mcp/register`) returns 403 to every RFC 7591
   `client_name` outside its MCP catalog; `omp-opencode-client.patch` rewrites
   omp's `client_name` and MCP `clientInfo`, which is all Figma checks.
-- Tern uses `theoparis/nix-tern`, overridden to package the downloaded 0.9.8 beta
-  and use Fish. The archive is private and must be imported into each builder's
-  store before building this host:
+  Update this input independently with `nix flake update omp`. Native Rust
+  compilation belongs on the CI runner rather than the desktop.
+- Tern uses `theoparis/nix-tern`, overridden to package the downloaded 0.9.10 beta
+  and use Fish. Import the downloaded archive before building this host, then
+  follow the CI source caching instructions below:
 
   ```sh
-  nix-prefetch-url file://$HOME/Downloads/Tern-0.9.8-linux-x86_64.tar.gz
+  nix-prefetch-url file://$HOME/Downloads/Tern-0.9.10-linux-x86_64.tar.gz
   ```
 
   The expected hash is pinned in `tern.nix`; the archive is not part of this repo.
+  Tern-only upgrades can install the package and its desktop entry into the
+  user Nix profile without rebuilding or activating the desktop system.
 - WinApps credentials remain local: activation preserves the existing config as
   a mode-0600 regular file before retiring the old Home Manager symlink.
 - Existing unmanaged Home Manager files are saved with `.lannix-backup` suffixes
   during migration.
+
+## CI source caching
+
+CI already reads `https://attic.szpunar.cloud/lannix` and trusts its signing
+key through `modules/flake/nix-cache/nix-cache.nix`. Local imports alone do not
+populate that cache. Upload the pinned source archives explicitly: pushing
+the finished Tern package does not include its build-time source archive.
+
+The cache is intentionally public, including these download artifacts; Tern
+still requires its own Stencil account sign-in.
+
+1. Import the downloaded archives using the `nix-prefetch-url` commands above.
+2. Install `attic-client` or enter a Nix shell containing it.
+3. Log in to `https://attic.szpunar.cloud/` using an Attic client token with
+   pull and push permission for `lannix` (the same kind of token as Forgejo's
+   `ATTIC_TOKEN`, not the server's signing secret).
+
+   If a client token needs to be generated, run this on magicplank:
+
+   ```sh
+   docker exec atticd atticadm -f /attic/server.toml make-token \
+     --sub nea --validity 1y --pull lannix --push lannix
+   ```
+
+   On the desktop, this Bash command prompts without putting the token
+   itself in shell history:
+
+   ```sh
+   bash -c 'read -rsp "Attic push token: " token; printf "\n"; attic login personal https://attic.szpunar.cloud/ "$token"'
+   ```
+
+4. Push both pinned source paths:
+
+   ```sh
+   attic push --no-closure personal:lannix \
+     /nix/store/z3lyygh9v13mlrijcgpfg0lc8cylq707-Tern-0.9.10-linux-x86_64.tar.gz \
+     /nix/store/53f03jfyqldh2801kargkg2z9kl6wg7g-macOS27.tar.gz
+   ```
+
+   Here `personal` is the server name chosen during `attic login`. Repeat the
+   upload when an archive pin changes. Retain the local downloads and GC roots
+   as a backup if cache retention eventually removes an unused source.
+
+5. Retry CI. Its existing Attic push step caches successful build outputs;
+   no runner SSH provisioning or new cache is needed.

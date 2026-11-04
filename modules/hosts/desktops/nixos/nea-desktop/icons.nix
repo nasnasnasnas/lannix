@@ -5,8 +5,8 @@
     pkgs,
     ...
   }: let
-    # Import the private archive once with:
-    # nix-prefetch-url file://$HOME/Downloads/macOS27.tar.gz
+    # Import the downloaded archive and push its fixed-output store path to
+    # Attic so CI can substitute it; see README.md.
     macos27-icon-theme = pkgs.stdenvNoCC.mkDerivation {
       pname = "macos27-icon-theme";
       version = "2026-11-02";
@@ -14,7 +14,12 @@
       src = pkgs.requireFile {
         name = "macOS27.tar.gz";
         hash = "sha256-oYdLADXQSwvuutRU1wVtEcthtR5lvuawmzSW6KOSeg0=";
-        message = "Run nix-prefetch-url file://$HOME/Downloads/macOS27.tar.gz";
+        message = ''
+          Import the icon archive with:
+            nix-prefetch-url file://$HOME/Downloads/macOS27.tar.gz
+          Push the imported archive to the lannix Attic cache for CI;
+          see modules/hosts/desktops/nixos/nea-desktop/README.md.
+        '';
       };
       # The archive also carries macOS27-Dark; only the light theme is used.
       sourceRoot = "macOS27";
