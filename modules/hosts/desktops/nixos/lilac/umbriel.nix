@@ -15,7 +15,7 @@
       };
       scratchpadLauncher = pkgs.writeShellApplication {
         name = "umbriel-scratchpad-tern";
-        runtimeInputs = [ pkgs.jq pkgs.coreutils pkgs.tern umbriel ];
+        runtimeInputs = [ pkgs.coreutils pkgs.tern ];
         text = builtins.readFile ./_umbriel-scratchpad-tern.sh;
       };
       # Keep packaged appearance/shell rules, but discard its shortcut table:
@@ -32,8 +32,8 @@
         include.files = [ "${defaults}" ];
         include.optional.files = [ "${hm.config.xdg.configHome}/umbriel/noctalia.toml" ];
         general.autostart = [ "noctalia" "kdeconnect-indicator" ];
-        # Named pads support launch-on-empty; the helper also handles an
-        # already-running Tern process, whose new windows lose launch tokens.
+        # Named pads support launch-on-empty. A separate Tern frontend preserves
+        # the launch token so its window maps directly into the terminal pad.
         scratchpad = [
           # Named pads replace Umbriel's implicit default. Keep a general
           # scratchpad on Mod+Space, separate from the gear-key terminal pad.
@@ -92,6 +92,7 @@
             radius = 3;
             passes = 1;
             saturation = 1.25;
+            brightness = 1;
           };
         };
         colors.border = {
