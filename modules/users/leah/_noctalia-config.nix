@@ -310,6 +310,8 @@
           show_keyboard_layout = true;
           show_login_button = true;
           show_media = true;
+          show_media_controls = true;
+          show_password_reveal = true;
           show_session_buttons = true;
           show_unlock_hint = true;
           show_weather = true;
@@ -337,6 +339,8 @@
           show_keyboard_layout = true;
           show_login_button = true;
           show_media = true;
+          show_media_controls = true;
+          show_password_reveal = true;
           show_session_buttons = true;
           show_unlock_hint = true;
           show_weather = true;
@@ -364,6 +368,8 @@
           show_keyboard_layout = true;
           show_login_button = true;
           show_media = true;
+          show_media_controls = true;
+          show_password_reveal = true;
           show_session_buttons = true;
           show_unlock_hint = true;
           show_weather = true;
@@ -391,6 +397,8 @@
           show_keyboard_layout = true;
           show_login_button = true;
           show_media = true;
+          show_media_controls = true;
+          show_password_reveal = true;
           show_session_buttons = true;
           show_unlock_hint = true;
           show_weather = true;
@@ -418,6 +426,8 @@
           show_keyboard_layout = true;
           show_login_button = true;
           show_media = true;
+          show_media_controls = true;
+          show_password_reveal = true;
           show_session_buttons = true;
           show_unlock_hint = true;
           show_weather = true;
@@ -445,6 +455,8 @@
           show_keyboard_layout = true;
           show_login_button = true;
           show_media = true;
+          show_media_controls = true;
+          show_password_reveal = true;
           show_session_buttons = true;
           show_unlock_hint = true;
           show_weather = true;
@@ -538,7 +550,6 @@
   };
   plugins = {
     enabled = [
-      "noctalia/bongocat"
       "noctalia/screen_recorder"
       "noctalia/timer"
       "harveywuk/airpods"
@@ -564,11 +575,18 @@
     password_style = "random";
     polkit_agent = true;
     screen_time_enabled = true;
+    screenshot = {
+      annotate = true;
+      copy_on_close = true;
+    };
     settings_expand_all_groups = true;
     settings_show_advanced = true;
     settings_window_translucent = true;
     telemetry_enabled = true;
     ui_scale = 1.05;
+    umbriel_audio_provider_enabled = true;
+    umbriel_overview_close_on_launch_enabled = true;
+    umbriel_overview_type_to_launch_enabled = true;
     window_switcher = {
       mru = true;
     };
@@ -586,7 +604,7 @@
         "ghostty"
         "niri"
         "qt"
-        "starship"
+        "umbriel"
       ];
       community_ids = [
         "antigravity"
@@ -603,24 +621,29 @@
     wallpaper_scheme = "m3-content";
   };
   wallpaper = {
+    automation = {
+      enabled = true;
+      interval_seconds = 300;
+    };
     default = {};
     directory = "/home/leah/Pictures/Wallpapers";
     fillColor = "#b89cff";
     last = {
-      path = "/home/leah/Pictures/Wallpapers/wallhaven-e8vl8o.jpg";
+      path = "/home/leah/Pictures/Wallpapers/wallhaven-21gek6.png";
     };
     monitors = {
       DP-2 = {
-        path = "/home/leah/Pictures/Wallpapers/wallhaven-e8vl8o.jpg";
+        path = "/home/leah/Pictures/Wallpapers/wallhaven-21gek6.png";
       };
       DP-7 = {
-        path = "/home/leah/Pictures/Wallpapers/wallhaven-e8vl8o.jpg";
+        path = "/home/leah/Pictures/Wallpapers/wallhaven-21gek6.png";
       };
       eDP-1 = {
-        path = "/home/leah/Pictures/Wallpapers/wallhaven-e8vl8o.jpg";
+        path = "/home/leah/Pictures/Wallpapers/wallhaven-21gek6.png";
       };
     };
     overviewEnabled = true;
+    sync_transitions = false;
     transition_on_startup = true;
   };
   weather = {
