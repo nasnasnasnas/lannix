@@ -13,7 +13,7 @@
   },
   "dock.mau.dev/mautrix/signal": {
     "tag": "latest",
-    "digest": "sha256:2bf73d7345355e7d5073731bdf45ce8caf0774fc89daf8a4c16f6b439cfec8f6"
+    "digest": "sha256:f4ecae3d751e441e91ed442f90038cc68ca48e9608e642d08a8b37ab62554803"
   },
   "dock.mau.dev/mautrix/telegram": {
     "tag": "latest",
