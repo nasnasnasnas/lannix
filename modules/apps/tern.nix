@@ -3,13 +3,13 @@
     packages.tern =
       inputs.tern.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs
         (old: {
-          version = "0.9.11";
+          version = "0.9.12";
           src = pkgs.requireFile {
-            name = "Tern-0.9.11-linux-x86_64.tar.gz";
-            hash = "sha256-rWHPGiz4l9/leuC/LmSp6MJSk2DBTc4lGFC+KOdg2+c=";
+            name = "Tern-0.9.12-linux-x86_64.tar.gz";
+            hash = "sha256-9n6MK/9DfzNlrjpHi7wY9jr7blO9bnzVVrrHziTRNpM=";
             message = ''
-              Download Tern 0.9.11 from https://build.stencil.so/ and run:
-                nix-prefetch-url file://$HOME/Downloads/Tern-0.9.11-linux-x86_64.tar.gz
+              Download Tern 0.9.12 from https://build.stencil.so/ and run:
+                nix-prefetch-url file://$HOME/Downloads/Tern-0.9.12-linux-x86_64.tar.gz
               Push the imported archive to the lannix Attic cache for CI;
               see modules/hosts/desktops/nixos/nea-desktop/README.md.
             '';

@@ -141,19 +141,19 @@ to a `lix` store path.
   (`https://api.figma.com/v1/oauth/mcp/register`) returns 403 to every RFC 7591
   `client_name` outside its MCP catalog; `omp-opencode-client.patch` rewrites
   omp's `client_name` and MCP `clientInfo`, which is all Figma checks.
-  `omp-compiled-code-skew.patch` prevents freshly extracted native addons
-  from being mistaken for changed source in standalone binaries. Source/npm
-  installs retain worker code-skew detection, and install checks stay enabled.
+  Upstream excludes native addons from worker code-skew detection, including
+  freshly extracted addons in standalone binaries; no local workaround is
+  needed. JavaScript code-skew detection and install checks stay enabled.
   Update this input independently with `nix flake update omp`. Native Rust
   compilation belongs on the CI runner rather than the desktop.
 - Tern is shared with `lilac` through `modules/apps/tern.nix`, which defines
   `packages.tern` and the common NixOS desktop integration. It uses
-  `theoparis/nix-tern`, overridden to package the downloaded 0.9.11 beta and use
+  `theoparis/nix-tern`, overridden to package the downloaded 0.9.12 beta and use
   Fish. Import the downloaded archive before building, then follow the CI
   source caching instructions below:
 
   ```sh
-  nix-prefetch-url file://$HOME/Downloads/Tern-0.9.11-linux-x86_64.tar.gz
+  nix-prefetch-url file://$HOME/Downloads/Tern-0.9.12-linux-x86_64.tar.gz
   ```
 
   The expected hash is pinned in `modules/apps/tern.nix`; the archive is not
@@ -222,7 +222,7 @@ still requires its own Stencil account sign-in.
 
    ```sh
    attic push --no-closure personal:lannix \
-     /nix/store/pixbx6han9kf1rhdw2y8gdxasyfv0dgb-Tern-0.9.11-linux-x86_64.tar.gz \
+     /nix/store/03x5k70db4v66hsg735whxmk81ryynvc-Tern-0.9.12-linux-x86_64.tar.gz \
      /nix/store/53f03jfyqldh2801kargkg2z9kl6wg7g-macOS27.tar.gz
    ```
 
