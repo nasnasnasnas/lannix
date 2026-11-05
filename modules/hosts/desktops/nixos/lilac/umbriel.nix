@@ -53,8 +53,16 @@
             scale = 1.7;
             position = [ 2560 1100 ];
           };
-          "ASUSTek COMPUTER INC ASUS PA279CV W2LMTR019526".position = [ 0 0 ];
-          "LG Electronics LG HDR 4K 0x00045AC9".position = [ 2560 (-340) ];
+          "ASUSTek COMPUTER INC ASUS PA279CV W2LMTR019526" = {
+            mode = "3840x2160@60.000";
+            scale = 1.5;
+            position = [ 0 0 ];
+          };
+          "LG Electronics LG HDR 4K 0x00045AC9" = {
+            mode = "3840x2160@59.997";
+            scale = 1.5;
+            position = [ 2560 (-340) ];
+          };
         };
         input = {
           keyboard.numlock_toggle = true;
