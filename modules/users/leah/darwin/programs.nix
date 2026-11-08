@@ -18,7 +18,7 @@ in {
       git
       ghostty-bin
       unstable.obsidian
-      vscode
+      unstable.vscode
       nil
       nodejs
 

@@ -61,7 +61,7 @@ in
         gh
         unstable.bun
         unstable.nodejs_24
-        vscode-fhs
+        unstable.vscode-fhs
         ghostty
         alacritty
         unstable.element-desktop
