@@ -83,7 +83,7 @@
         bun
         opencode
         git-credential-oauth
-        fresh-editor
+        # fresh-editor
       ]);
 
     nix.gc = {
