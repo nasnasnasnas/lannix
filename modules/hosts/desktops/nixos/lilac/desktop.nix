@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  flake.modules.nixos.lilac-desktop = { pkgs, ... }: {
+  flake.modules.nixos.lilac = { pkgs, ... }: {
     imports = [
       inputs.nix-flatpak.nixosModules.nix-flatpak
       inputs.solaar.nixosModules.default

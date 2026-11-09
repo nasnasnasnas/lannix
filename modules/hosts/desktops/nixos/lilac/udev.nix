@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  flake.modules.nixos.lilac-udev = {
+  flake.modules.nixos.lilac = {
     services.udev.extraRules = ''
       # Give the active local user access to iFixit FixHub serial devices.
 

@@ -1,5 +1,5 @@
 { ... }: {
-  flake.modules.nixos.lilac-networking = { pkgs, ... }: {
+  flake.modules.nixos.lilac = { pkgs, ... }: {
     networking.networkmanager.enable = true;
     networking.networkmanager.wifi.backend = "iwd";
     networking.networkmanager.wifi.powersave = true;

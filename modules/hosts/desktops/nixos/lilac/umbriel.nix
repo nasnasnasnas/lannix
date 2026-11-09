@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  flake.modules.nixos.lilac-umbriel = {
+  flake.modules.nixos.lilac = {
     imports = [ inputs.umbriel.nixosModules.default ];
     programs.umbriel.enable = true;
   };

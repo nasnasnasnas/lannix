@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  flake.modules.nixos.lilac-system = { pkgs, ... }: {
+  flake.modules.nixos.lilac = { pkgs, ... }: {
     imports = [ inputs.bootvine.nixosModules.default ];
     nix.settings.trusted-users = [ "leah" ];
     users.users.root.openssh.authorizedKeys.keys = [

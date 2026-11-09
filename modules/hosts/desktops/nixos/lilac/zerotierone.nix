@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  flake.modules.nixos.lilac-zerotierone = {
+  flake.modules.nixos.lilac = {
     services.zerotierone = {
       enable = true;
       joinNetworks = [

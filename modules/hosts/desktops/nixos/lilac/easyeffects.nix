@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  flake.modules.nixos.lilac-easyeffects = {
+  flake.modules.nixos.lilac = {
     programs.dconf.enable = true;
   };
   flake.modules.homeManager.leah-lilac-easyeffects = { pkgs, ... }: {
