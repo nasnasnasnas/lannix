@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  flake.modules.nixos.lilac =
+  flake.modules.nixos.lilac-hardware =
     {
       pkgs,
       modulesPath,
@@ -25,7 +25,7 @@
         "usb_storage"
         "sd_mod"
       ];
-      boot.initrd.kernelModules = [ ];
+      boot.initrd.kernelModules = [ "amdgpu" ];
       boot.kernelModules = [ "kvm-amd" ];
       boot.extraModulePackages = [ ];
 
@@ -62,5 +62,25 @@
 
       nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
       hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+      services.fwupd.enable = true;
+      hardware.framework.enableKmod = true;
+      services.fprintd.enable = true;
+      services.xserver.videoDrivers = [ "amdgpu" ];
+      hardware.i2c.enable = true;
+      boot.loader.systemd-boot.memtest86.enable = true;
+      boot.loader.grub.memtest86.enable = true;
+      services.tlp.enable = false;
+      services.power-profiles-daemon.enable = true;
+      hardware.logitech.wireless = {
+        enable = true;
+        enableGraphical = true;
+      };
+      services.solaar.enable = true;
+      hardware.keyboard.qmk.enable = true;
+      services.geoclue2 = {
+        submitData = true;
+        submissionNick = "puppyleah";
+      };
+      services.hardware.bolt.enable = true;
     };
 }

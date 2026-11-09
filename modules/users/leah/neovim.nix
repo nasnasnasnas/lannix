@@ -1,7 +1,9 @@
-{inputs, ...}: let
+{ inputs, ... }:
+let
   username = "leah";
-in {
-  flake.modules.homeManager."${username}" = {pkgs, ...}: {
+in
+{
+  flake.modules.homeManager.leah-editor = { pkgs, ... }: {
     imports = [
       inputs.lazyvim.homeManagerModules.default
     ];

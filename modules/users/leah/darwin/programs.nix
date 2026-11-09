@@ -1,46 +1,19 @@
-{inputs, ...}: let
-  username = "lavender";
-in {
-  flake.modules.darwin."${username}" = {
-    pkgs,
-    lib,
-    ...
-  }:
-    let
-      agents = inputs.llm-agents.packages.${pkgs.stdenv.hostPlatform.system};
-    in {
-    programs.direnv.enable = true;
-
+{ ... }: {
+  flake.modules.darwin.lavender = { pkgs, ... }: {
     environment.systemPackages = with pkgs; [
       _1password-gui
-      _1password-cli
-      unstable.bun
-      git
-      ghostty-bin
+      tailscale-gui
+    ];
+  };
+  flake.modules.homeManager.leah-desktop-darwin = { pkgs, ... }: {
+    home.packages = with pkgs; [
       unstable.obsidian
       unstable.vscode
-      nil
-      nodejs
-
-      agents.claude-code
-      inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.omp
-      agents.opencode2
-      agents.junie
-      agents.herdr
-
       prismlauncher
       vesktop
-
       unstable.jetbrains.webstorm
       unstable.jetbrains.idea
       unstable.jetbrains.rust-rover
-
-      hyfetch
-      fastfetch
-
-      tailscale-gui
-
-      jujutsu
     ];
   };
 }

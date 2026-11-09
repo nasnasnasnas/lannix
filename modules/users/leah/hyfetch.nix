@@ -1,7 +1,9 @@
-{inputs, ...}: let
+{ inputs, ... }:
+let
   username = "leah";
-in {
-  flake.modules.homeManager."${username}" = {pkgs, ...}: {
+in
+{
+  flake.modules.homeManager.leah-fetch = { pkgs, ... }: {
     programs.fastfetch.enable = true;
     programs.hyfetch = {
       enable = true;

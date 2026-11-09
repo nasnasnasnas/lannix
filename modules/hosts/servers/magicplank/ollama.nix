@@ -1,5 +1,5 @@
-{inputs, ...}: {
-  flake.modules.nixos.magicplank = {pkgs, ...}: {
+{ inputs, ... }: {
+  flake.modules.nixos.magicplank-ollama = { pkgs, ... }: {
     services.ollama.enable = true;
     services.ollama.package = pkgs.unstable.ollama-vulkan;
     services.ollama.host = "0.0.0.0";
@@ -13,6 +13,6 @@
     services.ollama.environmentVariables = {
       OLLAMA_JINA = "true";
     };
-    networking.firewall.allowedTCPPorts = [11434];
+    networking.firewall.allowedTCPPorts = [ 11434 ];
   };
 }

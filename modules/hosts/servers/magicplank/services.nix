@@ -1,18 +1,20 @@
-{inputs, ...}: let
+{ inputs, ... }:
+let
   ingestionAuthFiles = [
     "/etc/caddy/observability/magicbox.auth"
     "/etc/caddy/observability/magicplank.auth"
     "/etc/caddy/observability/remotebox.auth"
   ];
-in {
-  flake.modules.nixos.magicplank = inputs.self.lib.mkHostServices {
-    publicIPs = ["107.219.61.126"];
-    caddyExtraBackends = ["auth-service"];
+in
+{
+  flake.modules.nixos.magicplank-services = inputs.self.lib.mkHostServices {
+    publicIPs = [ "107.219.61.126" ];
+    caddyExtraBackends = [ "auth-service" ];
     caddy = {
       # Expose TURNS and terminate its TLS at layer4, proxying plain to livekit:5349
       # (livekit.yaml has external_tls: true). The cert is provisioned by the cert-primer
       # site in the livekit caddyRaw block.
-      extraPorts = ["5349:5349"];
+      extraPorts = [ "5349:5349" ];
       globalConfig = ''
         {
             layer4 {
@@ -42,32 +44,35 @@ in {
         CF_API_TOKEN = "op://Secrets/Caddy Cloudflare Token for HTTPS/password";
       };
       fileSecrets = {
-        "/etc/caddy/observability/magicbox.auth" = "op://Secrets/Observability Ingestion magicbox/caddy-auth";
-        "/etc/caddy/observability/magicplank.auth" = "op://Secrets/Observability Ingestion magicplank/caddy-auth";
-        "/etc/caddy/observability/remotebox.auth" = "op://Secrets/Observability Ingestion remotebox/caddy-auth";
+        "/etc/caddy/observability/magicbox.auth" =
+          "op://Secrets/Observability Ingestion magicbox/caddy-auth";
+        "/etc/caddy/observability/magicplank.auth" =
+          "op://Secrets/Observability Ingestion magicplank/caddy-auth";
+        "/etc/caddy/observability/remotebox.auth" =
+          "op://Secrets/Observability Ingestion remotebox/caddy-auth";
       };
     };
     projects = with inputs.self.services; {
       nextcloud = {
         services = [
-          (nextcloud {domains = ["https://next.szpunar.cloud"];})
-          (nextcloud-cron {})
+          (nextcloud { domains = [ "https://next.szpunar.cloud" ]; })
+          (nextcloud-cron { })
         ];
       };
       forgejo = {
         services = [
-          (forgejo {domains = ["https://git.szpunar.cloud"];})
+          (forgejo { domains = [ "https://git.szpunar.cloud" ]; })
         ];
       };
       attic = {
         services = [
-          (atticd {domains = ["https://attic.szpunar.cloud"];})
+          (atticd { domains = [ "https://attic.szpunar.cloud" ]; })
         ];
       };
       gomuks = {
         services = [
           (gomuks {
-            domains = ["https://leah.gomuks.szpunar.cloud"];
+            domains = [ "https://leah.gomuks.szpunar.cloud" ];
             dataDir = "/home/magicbox/data/gomuks-leah";
           })
         ];
@@ -75,7 +80,7 @@ in {
       open-webui = {
         services = [
           (open-webui {
-            domains = ["https://ai.szpunar.cloud"];
+            domains = [ "https://ai.szpunar.cloud" ];
             envSecrets = {
               OAUTH_CLIENT_ID = "op://Secrets/Open WebUI OAuth/client id";
               OAUTH_CLIENT_SECRET = "op://Secrets/Open WebUI OAuth/client secret";
@@ -92,7 +97,10 @@ in {
       observability = {
         services = [
           (grafana {
-            domains = ["https://grafana.szpunar.cloud" "https://grafana.nea.rip"];
+            domains = [
+              "https://grafana.szpunar.cloud"
+              "https://grafana.nea.rip"
+            ];
             dataDir = "/home/magicbox/data/grafana";
             envSecrets = {
               GF_SECURITY_ADMIN_PASSWORD = "op://Secrets/Magicbox Grafana/password";
@@ -107,18 +115,27 @@ in {
 
           (victoriametrics {
             inherit ingestionAuthFiles;
-            domains = ["https://victoriametrics.szpunar.cloud" "https://victoriametrics.nea.rip"];
+            domains = [
+              "https://victoriametrics.szpunar.cloud"
+              "https://victoriametrics.nea.rip"
+            ];
             dataDir = "/home/magicbox/data/victoriametrics";
           })
 
           (victorialogs {
             inherit ingestionAuthFiles;
-            domains = ["https://victorialogs.szpunar.cloud" "https://victorialogs.nea.rip"];
+            domains = [
+              "https://victorialogs.szpunar.cloud"
+              "https://victorialogs.nea.rip"
+            ];
             dataDir = "/home/magicbox/data/victorialogs";
           })
 
           (pyroscope {
-            domains = ["https://pyroscope.szpunar.cloud" "https://pyroscope.nea.rip"];
+            domains = [
+              "https://pyroscope.szpunar.cloud"
+              "https://pyroscope.nea.rip"
+            ];
             dataDir = "/home/magicbox/data/pyroscope";
           })
         ];
@@ -127,11 +144,14 @@ in {
       # Synapse / Matrix
 
       matrix-core = {
-        networks = ["synapse-net"];
+        networks = [ "synapse-net" ];
         services = [
           (synapse {
-            domains = ["https://matrix.szp.lol" "https://szp.lol"];
-            networks = ["synapse-net"];
+            domains = [
+              "https://matrix.szp.lol"
+              "https://szp.lol"
+            ];
+            networks = [ "synapse-net" ];
             dataDir = "/home/magicbox/data/synapse";
             secretsFragment = "op://Secrets/Synapse Config Secrets/notesPlain";
             signingKeySecret = "op://Secrets/Synapse Signing Key/notesPlain";
@@ -145,7 +165,7 @@ in {
 
           (dedicated-postgres {
             container_name = "synapse-db";
-            networks = ["synapse-net"];
+            networks = [ "synapse-net" ];
             dataDir = "/home/magicbox/data/synapse-db";
             db = "synapse";
             user = "synapse";
@@ -156,33 +176,33 @@ in {
           })
 
           (heisenbridge {
-            networks = ["synapse-net"];
+            networks = [ "synapse-net" ];
             dataDir = "/home/magicbox/data/heisenbridge";
             configSecret = "op://Secrets/Heisenbridge Registration/notesPlain";
           })
           (heisenbridge {
             media = true;
-            domains = ["https://heisenbridge.szp.lol"];
-            networks = ["synapse-net"];
+            domains = [ "https://heisenbridge.szp.lol" ];
+            networks = [ "synapse-net" ];
             dataDir = "/home/magicbox/data/heisenbridge";
             configSecret = "op://Secrets/Heisenbridge Registration/notesPlain";
           })
 
           (mautrix {
             bridge = "telegram";
-            networks = ["synapse-net"];
+            networks = [ "synapse-net" ];
             dataDir = "/home/magicbox/data/mautrix-telegram";
           })
           (mautrix {
             bridge = "signal";
-            networks = ["synapse-net"];
+            networks = [ "synapse-net" ];
             dataDir = "/home/magicbox/data/mautrix-signal";
           })
           (mautrix {
             bridge = "discord";
-            domains = ["https://mautrix-discord.szp.lol"];
+            domains = [ "https://mautrix-discord.szp.lol" ];
             webPort = 29334;
-            networks = ["synapse-net"];
+            networks = [ "synapse-net" ];
             dataDir = "/home/magicbox/data/mautrix-discord";
           })
         ];
@@ -201,7 +221,10 @@ in {
             };
           })
           (livekit {
-            domains = ["https://matrix-rtc.szp.lol" "https://turn.matrix-rtc.szp.lol"];
+            domains = [
+              "https://matrix-rtc.szp.lol"
+              "https://turn.matrix-rtc.szp.lol"
+            ];
             configSecret = "op://Secrets/LiveKit Config/notesPlain";
           })
         ];
@@ -210,18 +233,18 @@ in {
       # Sharkey
 
       sharkey = {
-        networks = ["sharkey-net"];
+        networks = [ "sharkey-net" ];
         services = [
           (sharkey {
-            domains = ["https://social.szp.lol"];
-            networks = ["sharkey-net"];
+            domains = [ "https://social.szp.lol" ];
+            networks = [ "sharkey-net" ];
             dataDir = "/home/magicbox/data/sharkey/files";
             configSecret = "op://Secrets/Sharkey Config/notesPlain";
           })
           (dedicated-postgres {
             container_name = "sharkey-db";
             image = "groonga/pgroonga:4.0.1-alpine-17";
-            networks = ["sharkey-net"];
+            networks = [ "sharkey-net" ];
             dataDir = "/home/magicbox/data/sharkey-db";
             db = "misskey";
             user = "example-misskey-user";
@@ -231,25 +254,25 @@ in {
           })
           (redis {
             container_name = "sharkey-redis";
-            networks = ["sharkey-net"];
+            networks = [ "sharkey-net" ];
             dataDir = "/home/magicbox/data/sharkey-redis";
           })
         ];
       };
 
       immich = {
-        networks = ["immich-net"];
+        networks = [ "immich-net" ];
         services = [
           (immich {
-            domains = ["https://immich.szpunar.cloud"];
-            networks = ["immich-net"];
+            domains = [ "https://immich.szpunar.cloud" ];
+            networks = [ "immich-net" ];
             dataDir = "/home/magicbox/data/immich";
             dbPasswordSecret = "op://Secrets/Immich DB/password";
-            devices = ["/dev/dri:/dev/dri"];
-            volumes = ["/home/magicbox/data/immich-external:/external-libraries"];
+            devices = [ "/dev/dri:/dev/dri" ];
+            volumes = [ "/home/magicbox/data/immich-external:/external-libraries" ];
           })
           (immich-machine-learning {
-            networks = ["immich-net"];
+            networks = [ "immich-net" ];
             cacheDir = "/home/magicbox/data/immich-model-cache";
             environment = {
               MACHINE_LEARNING_MODEL_REVISION = "v2";
@@ -258,7 +281,7 @@ in {
           (dedicated-postgres {
             container_name = "immich-db";
             image = inputs.self.lib.image "ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0";
-            networks = ["immich-net"];
+            networks = [ "immich-net" ];
             dataDir = "/home/magicbox/data/immich-db";
             db = "immich";
             user = "immich";
@@ -273,14 +296,16 @@ in {
               {
                 type = "tmpfs";
                 target = "/dev/shm";
-                tmpfs = {size = 134217728;};
+                tmpfs = {
+                  size = 134217728;
+                };
               }
             ];
           })
           (redis {
             container_name = "immich-redis";
             image = inputs.self.lib.image "valkey/valkey";
-            networks = ["immich-net"];
+            networks = [ "immich-net" ];
             dataDir = "/home/magicbox/data/immich-redis";
           })
         ];

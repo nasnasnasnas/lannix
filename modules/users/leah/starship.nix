@@ -1,10 +1,12 @@
-{inputs, ...}: let
+{ inputs, ... }:
+let
   username = "leah";
-in {
-  flake.modules.homeManager."${username}" = {...}: {
+in
+{
+  flake.modules.homeManager.leah-shell = { ... }: {
     programs.starship = {
       enable = true;
-      presets = ["catppuccin-powerline"];
+      presets = [ "catppuccin-powerline" ];
       settings = {
         palette = "catppuccin_macchiato";
         cmd_duration.show_notifications = false;

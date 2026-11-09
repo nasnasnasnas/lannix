@@ -1,22 +1,26 @@
-{inputs, ...}: let
+{ inputs, ... }:
+let
   username = "leah";
-in {
-  flake.modules.homeManager."${username}-linux" = {
-    lib,
-    pkgs,
-    ...
-  }: {
-    imports = [
-      inputs.noctalia.homeModules.default
-    ];
+in
+{
+  flake.modules.homeManager.leah-desktop-linux =
+    {
+      lib,
+      pkgs,
+      ...
+    }:
+    {
+      imports = [
+        inputs.noctalia.homeModules.default
+      ];
 
-    home.packages = [pkgs.noctalia-config-sync];
+      home.packages = [ pkgs.noctalia-config-sync ];
 
-    programs.noctalia.enable = true;
-    programs.noctalia.checkConfig = true;
-    programs.noctalia.settings = lib.recursiveUpdate (import ./_noctalia-config.nix) {
-      shell.avatar_path = ./pfp.jpg;
-      wallpaper.default.path = ./nas-flag-wallpaper.png;
+      programs.noctalia.enable = true;
+      programs.noctalia.checkConfig = true;
+      programs.noctalia.settings = lib.recursiveUpdate (import ./_noctalia-config.nix) {
+        shell.avatar_path = ./pfp.jpg;
+        wallpaper.default.path = ./nas-flag-wallpaper.png;
+      };
     };
-  };
 }

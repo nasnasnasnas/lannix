@@ -1,7 +1,9 @@
-{inputs, ...}: let
+{ inputs, ... }:
+let
   username = "leah";
-in {
-  flake.modules.homeManager."${username}-darwin" = {lib, ...}: {
+in
+{
+  flake.modules.homeManager.leah-desktop-darwin = { lib, ... }: {
     targets.darwin = {
       search = "Ecosia";
       defaults."com.apple.Safari" = {

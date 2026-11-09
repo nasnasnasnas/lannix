@@ -1,6 +1,6 @@
 { inputs, ... }: {
   # Save niri windows every five minutes and restore their workspaces at login.
-  flake.modules.nixos.lilac = {
+  flake.modules.nixos.lilac-nirinit = {
     imports = [ inputs.nirinit.nixosModules.nirinit ];
 
     services.nirinit = {

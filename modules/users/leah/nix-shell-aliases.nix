@@ -1,7 +1,9 @@
-{inputs, ...}: let
+{ inputs, ... }:
+let
   username = "leah";
-in {
-  flake.modules.homeManager."${username}" = {pkgs, ...}: {
+in
+{
+  flake.modules.homeManager.leah-nix-shells = { pkgs, ... }: {
     nix.registry = {
       nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
       nixpkgs-master.flake = inputs.nixpkgs-master;

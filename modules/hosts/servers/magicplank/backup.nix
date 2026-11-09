@@ -1,12 +1,13 @@
-{inputs, ...}: {
-  flake.modules.nixos.magicplank = {pkgs, ...}: {
-    imports = [inputs.self.modules.nixos.rsync-net-backup];
+{ inputs, ... }: {
+  flake.modules.nixos.magicplank-backup = { pkgs, ... }: {
+    imports = [ inputs.self.modules.nixos.rsync-net-backup ];
 
     backup.rsyncNet = {
       enable = true;
       pulseSecretReference = "op://Secrets/updown.io pulse endpoints for backups/MagicPlank";
       sourceDirectories = [
         "/home/magicbox/data"
+        "/srv/shared"
       ];
       excludePatterns = [
         # Metrics, logs, and profiles are disposable and could exceed the shared quota.
@@ -24,10 +25,19 @@
         "/home/magicbox/data/attic/server.db*"
         "/home/magicbox/data/attic/storage"
       ];
-      afterServices = ["postgresql.service" "docker.service"];
+      afterServices = [
+        "postgresql.service"
+        "docker.service"
+      ];
       sqliteDatabases = [
-        {name = "attic-server"; path = "/home/magicbox/data/attic/server.db";}
-        {name = "grafana"; path = "/home/magicbox/data/grafana/grafana.db";}
+        {
+          name = "attic-server";
+          path = "/home/magicbox/data/attic/server.db";
+        }
+        {
+          name = "grafana";
+          path = "/home/magicbox/data/grafana/grafana.db";
+        }
       ];
       postgresqlDatabases = [
         {

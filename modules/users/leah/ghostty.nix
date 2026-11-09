@@ -1,7 +1,9 @@
-{inputs, ...}: let
+{ inputs, ... }:
+let
   username = "leah";
-in {
-  flake.modules.homeManager."${username}" = {pkgs, ...}: {
+in
+{
+  flake.modules.homeManager.leah-desktop = { pkgs, ... }: {
     programs.ghostty = {
       enable = true;
       settings = {
@@ -10,11 +12,11 @@ in {
     };
   };
 
-  flake.modules.homeManager."${username}-linux" = {
+  flake.modules.homeManager.leah-desktop-linux = {
     programs.ghostty.settings.theme = "noctalia";
   };
 
-  flake.modules.homeManager."${username}-darwin" = {
-    programs.ghostty.package = null;
+  flake.modules.homeManager.leah-desktop-darwin = { pkgs, ... }: {
+    programs.ghostty.package = pkgs.ghostty-bin;
   };
 }
