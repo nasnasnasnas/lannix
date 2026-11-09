@@ -205,8 +205,8 @@ jobs:
             --eval-workers 2 \
             -j 4 \
             --skip-cached \
-            --no-nom \
             --option fallback true \
+            --option cores 6 \
             --attic-cache "$ATTIC_CACHE" \
             --flake ".#checks.x86_64-linux"
 

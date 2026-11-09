@@ -16,7 +16,7 @@
         # pipefail propagates authentication cancellation and rebuild failures.
         text = ''
           /run/wrappers/bin/pkexec ${privilegedRebuild} \
-            switch --flake /home/leah/lannix --log-format internal-json 2>&1 | nom --json
+            switch --flake /home/leah/lannix --log-format internal-json -j 4 --cores 8 2>&1 | nom --json
         '';
       })
       pkgs.nix-output-monitor
