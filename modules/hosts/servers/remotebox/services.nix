@@ -125,6 +125,12 @@
             domains = ["https://uptime-kuma.system-151.szpunar.cloud"];
             dataDir = "/home/magicbox/data/uptime-kuma-system-151";
           })
+
+          (uptime-kuma {
+            container_name = "uptime-kuma";
+            domains = ["https://status.szpunar.cloud"];
+            dataDir = "/home/magicbox/data/uptime-kuma";
+          })
         ];
       };
     };
