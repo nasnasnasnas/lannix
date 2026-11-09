@@ -7,7 +7,7 @@ let
   ];
 in
 {
-  flake.modules.nixos.magicplank-services = inputs.self.lib.mkHostServices {
+  flake.modules.nixos.magicplank = inputs.self.lib.mkHostServices {
     publicIPs = [ "107.219.61.126" ];
     caddyExtraBackends = [ "auth-service" ];
     caddy = {

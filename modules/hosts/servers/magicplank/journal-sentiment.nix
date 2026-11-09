@@ -1,5 +1,5 @@
 { ... }: {
-  flake.modules.nixos.magicplank-journal-sentiment =
+  flake.modules.nixos.magicplank =
     {
       lib,
       pkgs,

@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  flake.modules.nixos.magicplank-backup = { pkgs, ... }: {
+  flake.modules.nixos.magicplank = { pkgs, ... }: {
     imports = [ inputs.self.modules.nixos.rsync-net-backup ];
 
     backup.rsyncNet = {

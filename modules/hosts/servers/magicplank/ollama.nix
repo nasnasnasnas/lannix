@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  flake.modules.nixos.magicplank-ollama = { pkgs, ... }: {
+  flake.modules.nixos.magicplank = { pkgs, ... }: {
     services.ollama.enable = true;
     services.ollama.package = pkgs.unstable.ollama-vulkan;
     services.ollama.host = "0.0.0.0";

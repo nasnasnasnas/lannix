@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  flake.modules.nixos.magicplank-hardware =
+  flake.modules.nixos.magicplank =
     {
       pkgs,
       modulesPath,

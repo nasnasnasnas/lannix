@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  flake.modules.nixos.magicplank-observability-auth =
+  flake.modules.nixos.magicplank =
     {
       lib,
       pkgs,

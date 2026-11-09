@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  flake.modules.nixos.magicplank-forgejo-runner = { pkgs, ... }: {
+  flake.modules.nixos.magicplank = { pkgs, ... }: {
     services.onepassword-secrets = {
       enable = true;
       secrets = {

@@ -11,7 +11,7 @@
     };
   };
 
-  flake.modules.nixos.magicplank-steam =
+  flake.modules.nixos.magicplank =
     {
       pkgs,
       lib,

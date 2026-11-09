@@ -1,16 +1,7 @@
 { inputs, ... }: {
+  # Host-local files contribute directly to magicplank; imports select shared features.
   flake.modules.nixos.magicplank = {
     imports = with inputs.self.modules.nixos; [
-      magicplank-platform
-      magicplank-hardware
-      magicplank-services
-      magicplank-forgejo-runner
-      magicplank-backup
-      magicplank-steam
-      magicplank-samba
-      magicplank-ollama
-      magicplank-journal-sentiment
-      magicplank-observability-auth
       lavender-server
       server-shared-workspace
     ];

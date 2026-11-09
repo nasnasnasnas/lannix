@@ -1,5 +1,5 @@
 { inputs, ... }: {
-  flake.modules.nixos.magicplank-samba = { pkgs, ... }: {
+  flake.modules.nixos.magicplank = { pkgs, ... }: {
     services.avahi = {
       publish.enable = true;
       publish.userServices = true;
