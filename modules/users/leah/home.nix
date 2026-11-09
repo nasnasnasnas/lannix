@@ -14,7 +14,7 @@ in {
     programs.eza = {
       enable = true;
       enableFishIntegration = true;
-      icons = true;
+      icons = "auto";
     };
     programs.git = {
       enable = true;
