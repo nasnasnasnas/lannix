@@ -95,11 +95,11 @@ to a `lix` store path.
 - The top bar's left and right margins match Niri's 8 px window gaps.
 - Noctalia carries two patches: `noctalia-translucent-tooltips.patch` makes
   tooltips follow `shell.panel.transparency_mode` with compositor blur, and
-  `noctalia-dock-dot-color.patch` adds `dock.dot_color`. Both patches target
-  the locked Noctalia source (`b096daa50f842c22332a04dbafd7d561d15825be`);
-  the dock schema now lives in `config_schema_dock.cpp`. Tooltips use xdg popups, so the tooltip
-  manager owns their background-effect protocol object and releases it before
-  destroying the popup; blur is not a `PopupSurface` method.
+  `noctalia-dock-dot-color.patch` adds `dock.dot_color`. The dock schema hunk
+  targets `config_schema_dock.cpp` after upstream's schema split. Tooltips use
+  xdg popups, so the tooltip manager owns their background-effect protocol
+  object and releases it before destroying the popup; blur is not a
+  `PopupSurface` method.
 - The community `vn1k/icons` plugin is enabled; Noctalia exports it on start.
   Open it with `noctalia msg panel-toggle vn1k/icons:manager`.
 - Ghostty's terminal palette follows Noctalia; its window and tabs use light UI.

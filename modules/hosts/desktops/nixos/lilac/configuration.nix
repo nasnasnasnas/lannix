@@ -128,7 +128,7 @@
       passwordless-sync-users = [ "leah" ];
 
       # Optional configuration
-      greeter-args = "--session Niri";
+      greeter-args = "--session Umbriel";
     };
     hardware.i2c.enable = true;
     boot.loader.systemd-boot.memtest86.enable = true;
