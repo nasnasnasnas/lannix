@@ -8,9 +8,9 @@
    bool showInstanceCount = true; // show a badge with count when app has >1 window
    DockLauncherPosition launcherPosition = DockLauncherPosition::None;
    std::string launcherIcon = "grid-dots";   // Tabler glyph name
---- a/src/config/schema/config_schema.cpp
-+++ b/src/config/schema/config_schema.cpp
-@@ -2553,6 +2553,7 @@
+--- a/src/config/schema/config_schema_dock.cpp
++++ b/src/config/schema/config_schema_dock.cpp
+@@ -151,6 +151,7 @@
          field(&DockConfig::activeOpacity, "active_opacity", kUnitRange),
          field(&DockConfig::inactiveOpacity, "inactive_opacity", kUnitRange),
          field(&DockConfig::showDots, "show_dots"),
