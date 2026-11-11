@@ -96,7 +96,8 @@ to a `lix` store path.
 - Noctalia carries two patches: `noctalia-translucent-tooltips.patch` makes
   tooltips follow `shell.panel.transparency_mode` with compositor blur, and
   `noctalia-dock-dot-color.patch` adds `dock.dot_color`. Both patches target
-  the locked Noctalia 5.4.1 source. Tooltips use xdg popups, so the tooltip
+  the locked Noctalia 5.4.1 source (`316b4ee37014fa6891a49d3611a63dfc7a9aa813`)
+  with zero-offset, zero-fuzz hunks. Tooltips use xdg popups, so the tooltip
   manager owns their background-effect protocol object and releases it before
   destroying the popup; blur is not a `PopupSurface` method.
 - The community `vn1k/icons` plugin is enabled; Noctalia exports it on start.
@@ -148,12 +149,12 @@ to a `lix` store path.
   compilation belongs on the CI runner rather than the desktop.
 - Tern is shared with `lilac` through `modules/apps/tern.nix`, which defines
   `packages.tern` and the common NixOS desktop integration. It uses
-  `theoparis/nix-tern`, overridden to package the downloaded 0.9.12 beta and use
+  `theoparis/nix-tern`, overridden to package the downloaded 0.9.16 beta and use
   Fish. Import the downloaded archive before building, then follow the CI
   source caching instructions below:
 
   ```sh
-  nix-prefetch-url file://$HOME/Downloads/Tern-0.9.12-linux-x86_64.tar.gz
+  nix-prefetch-url file://$HOME/Downloads/Tern-0.9.16-linux-x86_64.tar.gz
   ```
 
   The expected hash is pinned in `modules/apps/tern.nix`; the archive is not
@@ -222,13 +223,19 @@ still requires its own Stencil account sign-in.
 
    ```sh
    attic push --no-closure personal:lannix \
-     /nix/store/03x5k70db4v66hsg735whxmk81ryynvc-Tern-0.9.12-linux-x86_64.tar.gz \
+     /nix/store/bggs36hwvx75hsd8kcazafd67ffvpxph-Tern-0.9.16-linux-x86_64.tar.gz \
      /nix/store/53f03jfyqldh2801kargkg2z9kl6wg7g-macOS27.tar.gz
    ```
 
    Here `personal` is the server name chosen during `attic login`. Repeat the
    upload when an archive pin changes. Retain the local downloads and GC roots
    as a backup if cache retention eventually removes an unused source.
+
+   To cache the finished shared Tern package and its runtime closure as well:
+
+   ```sh
+   nix build .#tern --no-link --print-out-paths | xargs attic push personal:lannix
+   ```
 
 5. Retry CI. Its existing Attic push step caches successful build outputs;
    no runner SSH provisioning or new cache is needed.

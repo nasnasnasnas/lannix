@@ -1,6 +1,6 @@
 --- a/src/config/config_types.h
 +++ b/src/config/config_types.h
-@@ -779,6 +779,7 @@
+@@ -792,6 +792,7 @@
    float iconSaturation = 1.0F;      // app icon saturation (0 = grayscale)
    bool colorizeIcons = false;
    bool showDots = false;         // show optional running window dots below app icons
@@ -10,7 +10,7 @@
    std::string launcherIcon = "grid-dots";   // Tabler glyph name
 --- a/src/config/schema/config_schema.cpp
 +++ b/src/config/schema/config_schema.cpp
-@@ -2541,6 +2541,7 @@
+@@ -2553,6 +2553,7 @@
          field(&DockConfig::activeOpacity, "active_opacity", kUnitRange),
          field(&DockConfig::inactiveOpacity, "inactive_opacity", kUnitRange),
          field(&DockConfig::showDots, "show_dots"),
@@ -20,7 +20,7 @@
          field(&DockConfig::launcherIcon, "launcher_icon"),
 --- a/src/shell/dock/dock_items.cpp
 +++ b/src/shell/dock/dock_items.cpp
-@@ -610,7 +610,7 @@
+@@ -659,7 +659,7 @@
          for (auto& dotIndicator : item.dotIndicators) {
            dotIndicator = static_cast<Box*>(areaNode->addChild(
                ui::box({
@@ -29,7 +29,7 @@
                    .radius = dot * 0.5F,
                    .width = dot,
                    .height = dot,
-@@ -895,7 +895,7 @@
+@@ -942,7 +942,7 @@
            Box* dotNode = item.dotIndicators[dotIndex];
            const bool visible = dotIndex < dotCount;
            dotNode->setVisible(visible);

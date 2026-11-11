@@ -84,8 +84,11 @@
  struct wl_output;
  struct xdg_surface;
  struct zwlr_layer_surface_v1;
-@@ -93,3 +94,4 @@
+@@ -91,6 +92,7 @@
+   wl_output* m_activeOutput = nullptr;
+ 
    std::unique_ptr<PopupSurface> m_surface;
 +  ext_background_effect_surface_v1* m_backgroundEffect = nullptr;
    AnimationManager m_animations;
    std::unique_ptr<Node> m_sceneRoot;
+   AnimationManager::Id m_fadeAnimId = 0;
