@@ -1,6 +1,7 @@
 # Native Polyphony package for Leah's Linux profile; no Flatpak runtime required.
-# Playback requires a paid Apple Music subscription. Keep the orchestrator pin in
-# polyphony/_orchestrator.nix aligned with upstream's python3-orchestrator.json.
+# Playback requires a paid Apple Music subscription. Update both source pins
+# together, using this Polyphony revision's python3-orchestrator.json rather than
+# orchestrator's HEAD for polyphony/_orchestrator.nix.
 { ... }: {
   perSystem = { pkgs, lib, ... }: {
     packages = lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
@@ -24,11 +25,11 @@
         in
         pkgs.stdenv.mkDerivation {
           pname = "polyphony";
-          version = "1-unstable-2026-11-11";
+          version = "1-unstable-2026-11-12";
           src = pkgs.fetchgit {
             url = "https://gitlab.gnome.org/jannuary/polyphony.git";
-            rev = "c84db8633b0eec40ec9ff109ecfab2b530b78c86";
-            hash = "sha256-yX7IB2pvX0Ll0bZRA7jDagO42yVGT6exURMXxS4wo1g=";
+            rev = "5fa22378055aa0ffccce5b3de5c23978e2c3b8ce";
+            hash = "sha256-3w+mk9q40cuqHgWxHOYwVEFa+S3gdmEizrx9rC9ym6o=";
           };
           # XDG_DATA_HOME is optional outside Flatpak; GLib supplies its default.
           postPatch = ''

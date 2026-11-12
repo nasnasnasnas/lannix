@@ -64,13 +64,13 @@ let
 in
 python3Packages.buildPythonPackage {
   pname = "orchestrator";
-  version = "0.1.0-unstable-2026-11-11";
+  version = "0.1.0-unstable-2026-11-12";
   pyproject = true;
   src = fetchFromGitHub {
     owner = "jannuary";
     repo = "orchestrator";
-    rev = "536e1a1404e3687f62794127c8300fb6c6eace6b";
-    hash = "sha256-lHrA4VoOeJAMs6r8XZZyVvjxYG5pMi1pOxLqQ8ma0ak=";
+    rev = "e9240e45d8bd4e155ae10c0287e3402796a89eaf";
+    hash = "sha256-9yFry6CEAdS56rPNJg3mxb1vbhoJMUC6sZpLkGJrOlA=";
   };
   build-system = [ python3Packages.setuptools ];
   dependencies = [
