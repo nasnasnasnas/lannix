@@ -3,6 +3,7 @@
 in {
   flake.modules.homeManager."${username}" = {pkgs, ...}: {
     programs.ssh = {
+      includes = ["~/.ssh/1Password/config"];
       settings = {
         "*" = {
           IdentityAgent = "~/.1password/agent.sock";
