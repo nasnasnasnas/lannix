@@ -55,6 +55,8 @@
             libsoup_3
             libglycin
             libglycin-gtk4
+            # Glycin's setup hook adds decoder configs to the app's XDG_DATA_DIRS.
+            glycin-loaders
             glib-networking
             gst_all_1.gstreamer
             gst_all_1.gst-plugins-base

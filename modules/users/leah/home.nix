@@ -45,6 +45,13 @@ in
       # Tern uses Zenity for close-confirmation dialogs on Linux.
       pkgs.zenity
     ];
+    gtk = {
+      enable = true;
+      iconTheme = {
+        name = "Adwaita";
+        package = pkgs.adwaita-icon-theme;
+      };
+    };
     programs.fish.interactiveShellInit = ''
       # Tern passes WAYLAND_DISPLAY to new shells but drops NIRI_SOCKET.
       if not set -q NIRI_SOCKET
