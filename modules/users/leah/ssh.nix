@@ -3,6 +3,7 @@
 in {
   flake.modules.homeManager."${username}" = {pkgs, ...}: {
     programs.ssh = {
+      enable = true;
       includes = ["~/.ssh/1Password/config"];
       settings = {
         "*" = {
