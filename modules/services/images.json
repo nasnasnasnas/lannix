@@ -17,7 +17,7 @@
   },
   "dock.mau.dev/mautrix/telegram": {
     "tag": "latest",
-    "digest": "sha256:2c62cc6c757c29c1d50c006276a0592e1264e7ed14a4266f1524e573b3d3e354"
+    "digest": "sha256:4f6cee1be3753d414622e5082d26bdeca4143d24f4008db2f9e1d8281c8f8946"
   },
   "dock.mau.dev/gomuks/gomuks": {
     "tag": "latest",
