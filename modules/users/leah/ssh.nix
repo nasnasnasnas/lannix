@@ -5,6 +5,7 @@ in {
     programs.ssh = {
       enable = true;
       includes = ["~/.ssh/1Password/config"];
+      enableDefaultConfig = false;
       settings = {
         "*" = {
           IdentityAgent = "~/.1password/agent.sock";
