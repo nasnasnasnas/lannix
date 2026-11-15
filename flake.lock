@@ -31,11 +31,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1794668284,
-        "narHash": "sha256-maMtdOgjIRWUpsNEPvmhmR0iHPAGy45IMUjBKImYZFU=",
+        "lastModified": 1794730498,
+        "narHash": "sha256-pwzcPy/J/zeOVRfUZgcPgBWFaSnnH7GQlGoOfBfX3eQ=",
         "ref": "refs/heads/main",
-        "rev": "b13a132a95c8792756d64853c490787f0ae08d5f",
-        "revCount": 134,
+        "rev": "91b7cd28c25d339d79f83956ba7d6ba99fdbe0d3",
+        "revCount": 135,
         "type": "git",
         "url": "https://codeberg.org/wvhulle/bootvine"
       },
@@ -676,11 +676,11 @@
     "homebrew-cask": {
       "flake": false,
       "locked": {
-        "lastModified": 1794717155,
-        "narHash": "sha256-ptXFicZDaOBLc0pIO1I1o9vqv5u00QYx/WNfU1XzSe8=",
+        "lastModified": 1794734498,
+        "narHash": "sha256-4R5OfTtLDyVLjEuHM7cx+OYFvLlUxA9I9MRQlFxE2i8=",
         "owner": "homebrew",
         "repo": "homebrew-cask",
-        "rev": "74bbd4adc72eda687cc3644fcd68fd1aaff1e15c",
+        "rev": "5e7642544043a7a51120b11b4ae153b5e6f84257",
         "type": "github"
       },
       "original": {
@@ -692,11 +692,11 @@
     "homebrew-core": {
       "flake": false,
       "locked": {
-        "lastModified": 1794718351,
-        "narHash": "sha256-0Qpkcf/j6mAvBBdtpGaMINal5Q9Pvfiutm1C5Yerwiw=",
+        "lastModified": 1794743514,
+        "narHash": "sha256-9qeDOUbly4KMsEfuxe9aY6vdC2PN3JjxlpgmCpFpo/Q=",
         "owner": "homebrew",
         "repo": "homebrew-core",
-        "rev": "55ad94ccaf4529406a0285dd18226e164f351843",
+        "rev": "75d7b10c36f56dc32d3429263d3b3a412b3ce97c",
         "type": "github"
       },
       "original": {
@@ -1060,11 +1060,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1794720972,
-        "narHash": "sha256-C4G0wF8nIdLzKzzF3uSh2H+22YHDg8Wcqe4C+btKjDc=",
+        "lastModified": 1794743438,
+        "narHash": "sha256-tbxN9wTqIfNMnEnW3khAGMBacKDzL/17Dw9sAGyo9do=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "716d65bf6ed91da85f983f87a8361f3550544dc3",
+        "rev": "8e6b289988e7219b4f0a1682f751c114d474db1f",
         "type": "github"
       },
       "original": {
@@ -1076,11 +1076,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1794386569,
-        "narHash": "sha256-x9sADJvoVG0L6RejZB+/BB4YiGZFBZrfTlhF4uBq1tQ=",
+        "lastModified": 1794537146,
+        "narHash": "sha256-Wpz/7x/YWnDIBu7yj6ixe8j6fIMsidd9Y+o1PqPF3iM=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d4f25a3e562008648d45bcf2d70bcc7422cad84e",
+        "rev": "d5cc6833999746cffdfe0598f7bc801a57b887a9",
         "type": "github"
       },
       "original": {
@@ -1749,11 +1749,11 @@
         "xdg-desktop-portal-umbriel": "xdg-desktop-portal-umbriel"
       },
       "locked": {
-        "lastModified": 1794712577,
-        "narHash": "sha256-nLcyRJOZ1eMphbtmwkxg0gl+VVmCfIWCZM/EyjcUyrQ=",
+        "lastModified": 1794741281,
+        "narHash": "sha256-+MmRT3zLrNUhd1Dl/jBHqPO14bNNgtQzuFIWwLN9Qig=",
         "owner": "noctalia-dev",
         "repo": "umbriel",
-        "rev": "ae3472d7546d45576a3540969786ddc83bb1ac08",
+        "rev": "2572005a9fe5505618f783534ca0ca6d0e745090",
         "type": "github"
       },
       "original": {
