@@ -1,4 +1,4 @@
-{inputs, ...}: {
+{ inputs, ... }: {
   flake-file.inputs = {
     arion = {
       url = "github:hercules-ci/arion";
@@ -81,6 +81,12 @@
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";
       # master tracks nixos-unstable.
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    # Use the archive to avoid Lix 2.94's Git fetcher failing on packed refs.
+    sable = {
+      url = "https://git.sable.moe/SableClient/sable-next/archive/main.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
   };

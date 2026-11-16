@@ -90,6 +90,10 @@
       url = "github:nealol/procon-scrape";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sable = {
+      url = "https://git.sable.moe/SableClient/sable-next/archive/main.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     solaar.url = "https://flakehub.com/f/Svenum/Solaar-Flake/*.tar.gz";
     spicetify-nix = {
       url = "github:Gerg-L/spicetify-nix";

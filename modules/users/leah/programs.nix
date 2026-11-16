@@ -176,6 +176,8 @@ in
         freecad
 
         unstable.signal-desktop
+
+        inputs.sable.packages.${pkgs.stdenv.hostPlatform.system}.sable-desktop
       ];
 
       programs.zsh.enable = true;
