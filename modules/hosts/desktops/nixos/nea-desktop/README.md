@@ -106,6 +106,18 @@ to a `lix` store path.
 - Feishin is installed from nixpkgs-unstable.
 - JetBrains Toolbox comes from nixpkgs-unstable; stable's 3.1.0.62320 archive
   is no longer available from JetBrains.
+- RustRover is installed system-wide from nixpkgs-unstable
+  (`jetbrains.rust-rover`).
+- Obsidian is installed system-wide at 1.15.1, the latest public release.
+  `programs.nix` overrides the locked unstable package's version and source;
+  remove the override once nixpkgs-unstable includes this release or newer.
+- Kache is installed as binaries only from nixpkgs-unstable (locked at 2.0.1).
+  `programs.nix` supplies the package's missing pkg-config, zstd, and SQLite
+  build dependencies. No `kache init`, Cargo wrapper configuration, compiler
+  shims, or daemon service is enabled; ordinary Cargo builds are unchanged.
+  If installed in the user profile before a system rebuild, remove that copy
+  with `nix profile remove kache` after switching to the system package so it
+  does not shadow later system updates.
 - Spotify comes from `Gerg-L/spicetify-nix` (`spicetify.nix`) with the
   Catppuccin theme in its light `latte` scheme; `pkgs.spotify` must not be
   added elsewhere. Spotify still draws its dark-UI overlays under Latte, so
@@ -149,12 +161,12 @@ to a `lix` store path.
   compilation belongs on the CI runner rather than the desktop.
 - Tern is shared with `lilac` through `modules/apps/tern.nix`, which defines
   `packages.tern` and the common NixOS desktop integration. It uses
-  `theoparis/nix-tern`, overridden to package the downloaded 0.9.16 beta and use
+  `theoparis/nix-tern`, overridden to package the downloaded 0.9.25 beta and use
   Fish. Import the downloaded archive before building, then follow the CI
   source caching instructions below:
 
   ```sh
-  nix-prefetch-url file://$HOME/Downloads/Tern-0.9.16-linux-x86_64.tar.gz
+  nix-prefetch-url file://$HOME/Downloads/Tern-0.9.25-linux-x86_64.tar.gz
   ```
 
   The expected hash is pinned in `modules/apps/tern.nix`; the archive is not
@@ -188,6 +200,69 @@ to a `lix` store path.
   a mode-0600 regular file before retiring the old Home Manager symlink.
 - Existing unmanaged Home Manager files are saved with `.lannix-backup` suffixes
   during migration.
+
+## Remote desktop over Tailscale
+
+`wayvnc.nix` installs WayVNC for Nea and starts its user service with Niri's
+`graphical-session.target`; logout stops it. It shares an existing monitor,
+not a separate desktop or the login greeter. Keep the desktop awake and logged
+into Niri.
+
+Apply the configuration, then start it in the current session:
+
+```sh
+sudo nixos-rebuild switch --flake path:.#nea-desktop
+systemctl --user daemon-reload
+systemctl --user start wayvnc
+```
+
+The `path:.` flake reference includes the new module even before Git tracks it.
+Subsequent Niri logins start WayVNC automatically.
+
+From another device connected to the same tailnet:
+
+1. Install a VNC viewer, such as TigerVNC on a computer or AVNC on Android.
+2. Connect to **100.116.128.43**, TCP port **5900**, with no VNC password.
+   For TigerVNC, the explicit-port syntax is:
+
+   ```sh
+   vncviewer 100.116.128.43::5900
+   ```
+
+3. Use the existing Niri desktop with remote keyboard and pointer input.
+   A viewer that requires VNC-layer encryption/passwords must allow a
+   connection with no VNC authentication; Tailscale encrypts the transport.
+   macOS's built-in Screen Sharing does not support this no-auth setup;
+   use TigerVNC instead.
+
+WayVNC binds only this host's Tailscale IPv4, never `0.0.0.0`. The firewall
+opens 5900 only on `tailscale0`; no router forwarding, Funnel, or Serve is
+needed. **Every peer permitted by Tailscale ACLs/grants to reach this port can
+control Nea's session.** Restrict that access to trusted devices/users.
+If the node is deleted and re-enrolled with a different Tailscale IPv4,
+update `services.wayvnc.settings.address` in `wayvnc.nix`.
+
+WayVNC initially shares its first available output. List and switch monitors
+from a terminal on the desktop (or an existing SSH session as Nea):
+
+```sh
+wayvncctl output-list
+wayvncctl output-set DP-2
+```
+
+Service controls and diagnostics:
+
+```sh
+systemctl --user status wayvnc
+journalctl --user -u wayvnc -n 50 --no-pager
+systemctl --user stop wayvnc
+systemctl --user start wayvnc
+```
+
+Stopping the service disconnects viewers; the next Niri login starts it again.
+If a connection fails, check Tailscale connectivity and that the tailnet policy
+allows TCP 5900 to this desktop. Use the IPv4 above rather than a hostname that
+may resolve to an IPv6 address, since this listener is IPv4-only.
 
 ## CI source caching
 
@@ -223,7 +298,7 @@ still requires its own Stencil account sign-in.
 
    ```sh
    attic push --no-closure personal:lannix \
-     /nix/store/bggs36hwvx75hsd8kcazafd67ffvpxph-Tern-0.9.16-linux-x86_64.tar.gz \
+     /nix/store/nxd402rynndmjg83rg1c4920lhcif2l6-Tern-0.9.25-linux-x86_64.tar.gz \
      /nix/store/53f03jfyqldh2801kargkg2z9kl6wg7g-macOS27.tar.gz
    ```
 

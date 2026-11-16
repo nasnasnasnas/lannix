@@ -15,6 +15,19 @@
             --prefix LD_LIBRARY_PATH : ${lib.makeLibraryPath [pkgs.unstable.libGL]}:${pkgs.addDriverRunpath.driverLink}/lib
         '';
     });
+    # The locked package omits its zstd and SQLite build dependencies.
+    kache = pkgs.unstable.kache.overrideAttrs (old: {
+      nativeBuildInputs = (old.nativeBuildInputs or []) ++ [pkgs.unstable.pkg-config];
+      buildInputs = (old.buildInputs or []) ++ [pkgs.unstable.zstd pkgs.unstable.sqlite];
+    });
+    # The latest release is newer than the locked nixpkgs package.
+    obsidian = pkgs.unstable.obsidian.overrideAttrs (_: rec {
+      version = "1.15.1";
+      src = pkgs.fetchurl {
+        url = "https://github.com/obsidianmd/obsidian-releases/releases/download/v${version}/obsidian-${version}.tar.gz";
+        hash = "sha256-CQdPBjXs82YwfYCND+wGwBqHoLzGbabTQSbO7ODrhRk=";
+      };
+    });
   in {
     environment.systemPackages = with pkgs; [
       git
@@ -25,7 +38,9 @@
       alacritty
       # Stable's Toolbox 3.1.0 archive is unavailable; use the locked newer release.
       unstable.jetbrains-toolbox
-      vesktop
+      unstable.jetbrains.rust-rover
+      # Stable predates --repair; keep Vencord recovery available on the desktop.
+      unstable.vesktop
       unstable.element-desktop
       unstable.telegram-desktop
       unstable.signal-desktop
@@ -35,6 +50,9 @@
       lunar-client
       powertop
       rustup
+      # Install only the binaries; compiler wrappers remain opt-in.
+      kache.out
+      obsidian
       epiphany
       seahorse
       unstable.kdePackages.kamoso
