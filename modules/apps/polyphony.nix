@@ -25,11 +25,11 @@
         in
         pkgs.stdenv.mkDerivation {
           pname = "polyphony";
-          version = "1-unstable-2026-11-12";
+          version = "1-unstable-2026-11-14";
           src = pkgs.fetchgit {
             url = "https://gitlab.gnome.org/jannuary/polyphony.git";
-            rev = "5fa22378055aa0ffccce5b3de5c23978e2c3b8ce";
-            hash = "sha256-3w+mk9q40cuqHgWxHOYwVEFa+S3gdmEizrx9rC9ym6o=";
+            rev = "c703c030931ddb8c264b5d47e1430202cc1532dc";
+            hash = "sha256-BQ0EflrAXGZB8bukAVM2No3BtrZfoMxBWmUxO2B0lmg=";
           };
           # XDG_DATA_HOME is optional outside Flatpak; GLib supplies its default.
           postPatch = ''

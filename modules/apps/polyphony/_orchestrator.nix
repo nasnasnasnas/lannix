@@ -1,10 +1,14 @@
 {
   lib,
   fetchFromGitHub,
+  fetchurl,
   fetchPypi,
   python3Packages,
   llvmPackages,
   openssl,
+  libplist,
+  ldc,
+  dub,
   cargo,
   rustc,
   stdenv,
@@ -61,16 +65,27 @@ let
       inherit platforms;
     };
   };
+
+  # Pinned Git LFS assets from Polyphony's matching Flatpak manifest.
+  assetBase = "https://gitlab.gnome.org/jannuary/polyphony/-/raw/c703c030931ddb8c264b5d47e1430202cc1532dc";
+  vendor = fetchurl {
+    url = "${assetBase}/apple-music-vendor.tar.xz";
+    hash = "sha256-+09RuOK7VZJdzIQco89Fuzd0jAtBuAzrkiP3RGUfWHg=";
+  };
+  dubDeps = fetchurl {
+    url = "${assetBase}/dub-deps.tar.xz";
+    hash = "sha256-EWNos0s47VPex+O8HYQmfxYjQGrj27A03DSWDmyPCUo=";
+  };
 in
 python3Packages.buildPythonPackage {
   pname = "orchestrator";
-  version = "0.1.0-unstable-2026-11-12";
+  version = "0.1.0-unstable-2026-11-14";
   pyproject = true;
   src = fetchFromGitHub {
     owner = "jannuary";
     repo = "orchestrator";
-    rev = "e9240e45d8bd4e155ae10c0287e3402796a89eaf";
-    hash = "sha256-9yFry6CEAdS56rPNJg3mxb1vbhoJMUC6sZpLkGJrOlA=";
+    rev = "ef4d2d138c66d9f9f7b47e7522927a845089dacb";
+    hash = "sha256-ZBx1ekXW83sjMi6j12nos+RpHc781569NLr7pmsD0RQ=";
   };
   build-system = [ python3Packages.setuptools ];
   dependencies = [
@@ -80,6 +95,8 @@ python3Packages.buildPythonPackage {
   nativeBuildInputs = [
     llvmPackages.clang
     python3Packages.pip
+    ldc
+    dub
   ];
 
   # The generated FairPlay C sources use Clang's -Oz optimization option.
@@ -107,6 +124,16 @@ python3Packages.buildPythonPackage {
       --no-cache-dir --no-deps --no-index --no-build-isolation \
       --wheel-dir apple-music-source/dist ./apple-music-source
     ${python3Packages.python.interpreter} scripts/build_source_native.py
+
+    # Build provisioning offline; never reuse the archive's foreign static libs.
+    export DUB_HOME="$TMPDIR/dub-home"
+    mkdir -p "$DUB_HOME"
+    tar -xJf ${dubDeps} -C "$DUB_HOME"
+    chmod -R u+w "$DUB_HOME"
+    find "$DUB_HOME" -name '*.a' -delete
+    provision=apple-music-source/src/apple_music_source/_native/auth/provision_loader
+    find "$provision" -name '*.a' -delete
+    DC=ldc2 dub build --build=release --force --skip-registry=all --root="$provision"
   '';
   postInstall = ''
     ${python3Packages.python.interpreter} -m pip install \
@@ -117,6 +144,19 @@ python3Packages.buildPythonPackage {
       "$out/share/orchestrator/apple-music-source/src/apple_music_source/_native/r1_probe.so"
     install -Dm644 certs/fps-certificate.bin \
       "$out/share/orchestrator/certs/fps-certificate.bin"
+    provision=src/apple_music_source/_native/auth/provision_loader
+    install -Dm755 "apple-music-source/$provision/build/libams_provision.so" \
+      "$out/share/orchestrator/apple-music-source/$provision/build/libams_provision.so"
+    # Provision's D bindings dlopen OpenSSL and libplist by SONAME.
+    patchelf --add-rpath "${
+      lib.makeLibraryPath [
+        openssl
+        libplist
+        ldc
+      ]
+    }" \
+      "$out/share/orchestrator/apple-music-source/$provision/build/libams_provision.so"
+    tar -xJf ${vendor} -C "$out/share/orchestrator/apple-music-source"
   '';
   doCheck = false;
   pythonImportsCheck = [
@@ -125,9 +165,13 @@ python3Packages.buildPythonPackage {
   ];
   passthru = { inherit temari; };
   meta = {
-    description = "Apple Music playback and source-built FairPlay service";
+    description = "Apple Music playback service with native provisioning";
     homepage = "https://github.com/jannuary/orchestrator";
-    license = lib.licenses.mit;
+    license = with lib.licenses; [
+      mit
+      lgpl21Plus
+      unfree
+    ];
     inherit platforms;
   };
 }
