@@ -105,7 +105,7 @@
   },
   "linuxserver/prowlarr": {
     "tag": "latest",
-    "digest": "sha256:f9151e5bc1025c6d0a630d503210cdcb6bb55a7cc098562609d96a408d838902"
+    "digest": "sha256:45117ba8439e2337a92ffe38a451a4dafc0be771754d05d88cdf102419d09646"
   },
   "linuxserver/radarr": {
     "tag": "latest",
