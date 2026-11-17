@@ -161,12 +161,12 @@ to a `lix` store path.
   compilation belongs on the CI runner rather than the desktop.
 - Tern is shared with `lilac` through `modules/apps/tern.nix`, which defines
   `packages.tern` and the common NixOS desktop integration. It uses
-  `theoparis/nix-tern`, overridden to package the downloaded 0.9.25 beta and use
+  `theoparis/nix-tern`, overridden to package the downloaded 0.9.26 beta and use
   Fish. Import the downloaded archive before building, then follow the CI
   source caching instructions below:
 
   ```sh
-  nix-prefetch-url file://$HOME/Downloads/Tern-0.9.25-linux-x86_64.tar.gz
+  nix-prefetch-url file://$HOME/Downloads/Tern-0.9.26-linux-x86_64.tar.gz
   ```
 
   The expected hash is pinned in `modules/apps/tern.nix`; the archive is not
@@ -298,7 +298,7 @@ still requires its own Stencil account sign-in.
 
    ```sh
    attic push --no-closure personal:lannix \
-     /nix/store/nxd402rynndmjg83rg1c4920lhcif2l6-Tern-0.9.25-linux-x86_64.tar.gz \
+     /nix/store/glhx2mi85c45pw65b7h74m25wrkzznsv-Tern-0.9.26-linux-x86_64.tar.gz \
      /nix/store/53f03jfyqldh2801kargkg2z9kl6wg7g-macOS27.tar.gz
    ```
 
