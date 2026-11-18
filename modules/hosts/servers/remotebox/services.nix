@@ -139,7 +139,11 @@
           (mollysocket {
             domains = ["https://mollysocket.szpunar.cloud"];
             dataDir = "/home/magicbox/data/mollysocket";
-            environment = {};
+            environment = {
+              MOLLY_ALLOWED_UUIDS = ''
+                ["6473b563-46c7-4656-8b6f-04c9862da699"]
+              '';
+            };
             envSecrets = {
               MOLLY_VAPID_PRIVKEY = "op://Secrets/MollySocket Secrets/VAPID Key";
             };
