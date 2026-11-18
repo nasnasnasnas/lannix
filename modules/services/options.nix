@@ -476,7 +476,7 @@ in {
                 name = lib.escapeShellArg n;
               in ''
                 if ! ${pkgs.docker}/bin/docker network inspect ${name} >/dev/null 2>&1; then
-                  if ${pkgs.docker}/bin/docker network inspect ${name} 2>&1 | ${pkgs.gnugrep}/bin/grep -q 'No such network'; then
+                  if ${pkgs.docker}/bin/docker network inspect ${name} 2>&1 | ${pkgs.gnugrep}/bin/grep -q 'network ${name} not found'; then
                     ${pkgs.docker}/bin/docker network create ${name}
                   else
                     echo "docker network inspect ${name} failed unexpectedly" >&2
