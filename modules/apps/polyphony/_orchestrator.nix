@@ -9,6 +9,7 @@
   libplist,
   ldc,
   dub,
+  patchelfUnstable,
   cargo,
   rustc,
   stdenv,
@@ -147,16 +148,48 @@ python3Packages.buildPythonPackage {
     provision=src/apple_music_source/_native/auth/provision_loader
     install -Dm755 "apple-music-source/$provision/build/libams_provision.so" \
       "$out/share/orchestrator/apple-music-source/$provision/build/libams_provision.so"
-    # Provision's D bindings dlopen OpenSSL and libplist by SONAME.
+    # glibc refuses dlopen of LDC's executable-stack-marked druntime. Bundle
+    # private non-executable-stack copies and bind both direct/transitive users.
+    provisionDir="$out/share/orchestrator/apple-music-source/$provision/build"
+    for runtime in ${ldc}/lib/lib{druntime,phobos2}-ldc-shared.so; do
+      soname=$(${patchelfUnstable}/bin/patchelf --print-soname "$runtime")
+      install -m755 "$runtime" "$provisionDir/$soname"
+      ${patchelfUnstable}/bin/patchelf --clear-execstack "$provisionDir/$soname"
+    done
+    for library in "$provisionDir"/*.so*; do
+      for needed in $(patchelf --print-needed "$library"); do
+        case "$needed" in
+          libdruntime-ldc-shared.so.*|libphobos2-ldc-shared.so.*)
+            patchelf --replace-needed "$needed" "$provisionDir/$needed" "$library"
+            ;;
+        esac
+      done
+    done
+    tar -xJf ${vendor} -C "$out/share/orchestrator/apple-music-source"
+  '';
+  postFixup = ''
+    # These are dlopen dependencies, so add them after automatic RPATH shrinking.
     patchelf --add-rpath "${
       lib.makeLibraryPath [
         openssl
         libplist
-        ldc
       ]
     }" \
-      "$out/share/orchestrator/apple-music-source/$provision/build/libams_provision.so"
-    tar -xJf ${vendor} -C "$out/share/orchestrator/apple-music-source"
+      "$out/share/orchestrator/apple-music-source/src/apple_music_source/_native/auth/provision_loader/build/libams_provision.so"
+    # Offline regression check: exercise native initialization, not just imports.
+    PYTHONPATH="$out/share/orchestrator/apple-music-source/src" \
+      ${python3Packages.python.interpreter} - <<'PY'
+    import tempfile
+    from apple_music_source.auth.provision_source import ProvisionCoreADI
+
+    with tempfile.TemporaryDirectory(prefix="polyphony-provisioning-") as directory:
+        backend = ProvisionCoreADI(
+            provisioning_path=directory, identifier="0123456789abcdef")
+        try:
+            assert backend.is_provisioned(-1) is False
+        finally:
+            backend.close()
+    PY
   '';
   doCheck = false;
   pythonImportsCheck = [

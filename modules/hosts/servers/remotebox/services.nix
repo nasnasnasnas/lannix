@@ -133,6 +133,16 @@
           })
         ];
       };
+
+      mollysocket = {
+        services = with inputs.self.services; [
+          (mollysocket {
+            domains = ["https://mollysocket.szpunar.cloud"];
+            dataDir = "/home/magicbox/data/mollysocket";
+            environment = {};
+          })
+        ];
+      };
     };
   };
 }

@@ -193,5 +193,9 @@
   "louislam/uptime-kuma": {
     "tag": "2",
     "digest": "sha256:8e4b6bef96417ec98a35dc103c99cc64fc229a01e584e56d95d9004d2003c02a"
+  },
+  "ghcr.io/mollyim/mollysocket": {
+    "tag": "latest",
+    "digest": "sha256:6a0582fca97cd83f2b62dc9a8dea2506baec456ebe053e1259e7adf0d84299ea"
   }
 }
