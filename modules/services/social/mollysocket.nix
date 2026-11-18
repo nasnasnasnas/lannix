@@ -5,11 +5,14 @@
     container_name ? "mollysocket",
     restart ? "always",
     image ? config.flake.lib.image "ghcr.io/mollyim/mollysocket",
+    envSecrets ? {},
     environment ? {},
+    env_file ? [],
     volumes ? [],
     dataDir,
   }: {
     inherit domains;
+    inherit envSecrets;
     inherit container_name;
     inherit image;
     inherit restart;
@@ -22,5 +25,10 @@
       MOLLY_DB="/data/mollysocket.db";
     } // environment;
     volumes = volumes ++ ["${dataDir}:/data"];
-  };
+  }
+    // (
+      if env_file == []
+      then {}
+      else {inherit env_file;}
+    );
 }
