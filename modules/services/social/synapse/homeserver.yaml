@@ -29,11 +29,20 @@ extra_well_known_client_content:
       "livekit_service_url": "https://matrix-rtc.szp.lol"
     }
   ]
+# Stable clients use homeserver-mediated authorization; older clients still discover
+# the standalone endpoint above or the legacy transport below.
+matrix_rtc:
+  transports:
+    - type: m.livekit
+      url: wss://matrix-rtc.szp.lol/livekit/sfu
+    - type: livekit
+      livekit_service_url: https://matrix-rtc.szp.lol
 app_service_config_files:
   - /data/heisenbridge.yaml
   - /data/mautrix-telegram.yaml
   - /data/mautrix-signal.yaml
   - /data/mautrix-discord.yaml
+  - /data/lk-jwt.yaml
 url_preview_enabled: true
 url_preview_ip_range_blacklist:
   - '127.0.0.0/8'
@@ -58,7 +67,11 @@ url_preview_ip_range_blacklist:
 experimental_features:
   msc3266_enabled: true
   msc4222_enabled: true
-  msc4140_enabled: true
+  # Retain the unstable transport registry for clients predating Synapse 1.165.
+  msc4143_enabled: true
+  # Membership lookup and C-S/S-S request delegation for lk-jwt-service.
+  msc4502_enabled: true
+  msc4512_enabled: true
 max_event_delay_duration: 24h
 report_stats: true
 rc_message:
