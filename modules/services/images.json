@@ -196,6 +196,6 @@
   },
   "ghcr.io/mollyim/mollysocket": {
     "tag": "latest",
-    "digest": "sha256:6a0582fca97cd83f2b62dc9a8dea2506baec456ebe053e1259e7adf0d84299ea"
+    "digest": "sha256:cdd4da322100fa3774a0f55bb5571340156f84bdae3b29d2eefb7b4139aa4eec"
   }
 }
