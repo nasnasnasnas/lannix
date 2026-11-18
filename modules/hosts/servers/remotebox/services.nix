@@ -140,6 +140,9 @@
             domains = ["https://mollysocket.szpunar.cloud"];
             dataDir = "/home/magicbox/data/mollysocket";
             environment = {};
+            envSecrets = {
+              MOLLY_VAPID_PRIVKEY = "op://Secrets/MollySocket Secrets/VAPID Key";
+            };
           })
         ];
       };
