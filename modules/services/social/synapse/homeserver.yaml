@@ -8,7 +8,7 @@ listeners:
     tls: false
     type: http
     x_forwarded: true
-    bind_addresses: ['0.0.0.0']
+    bind_addresses: ["0.0.0.0"]
     resources:
       - names: [client, federation]
         compress: false
@@ -22,12 +22,8 @@ extra_well_known_client_content:
   "org.matrix.msc2965.authentication":
     issuer: https://matrix-auth.szp.lol/
     account: https://matrix-auth.szp.lol/account/
-  "org.matrix.msc4143.rtc_foci": [
-    {
-      "type": "livekit",
-      "livekit_service_url": "https://matrix-rtc.szp.lol"
-    }
-  ]
+  "org.matrix.msc4143.rtc_foci":
+    [{ "type": "livekit", "livekit_service_url": "https://matrix-rtc.szp.lol" }]
 matrix_rtc:
   transports:
     - type: m.livekit
@@ -42,25 +38,25 @@ app_service_config_files:
   - /data/lk-jwt.yaml
 url_preview_enabled: true
 url_preview_ip_range_blacklist:
-  - '127.0.0.0/8'
-  - '10.0.0.0/8'
-  - '172.16.0.0/12'
-  - '192.168.0.0/16'
-  - '100.64.0.0/10'
-  - '192.0.0.0/24'
-  - '169.254.0.0/16'
-  - '192.88.99.0/24'
-  - '198.18.0.0/15'
-  - '192.0.2.0/24'
-  - '198.51.100.0/24'
-  - '203.0.113.0/24'
-  - '224.0.0.0/4'
-  - '::1/128'
-  - 'fe80::/10'
-  - 'fc00::/7'
-  - '2001:db8::/32'
-  - 'ff00::/8'
-  - 'fec0::/10'
+  - "127.0.0.0/8"
+  - "10.0.0.0/8"
+  - "172.16.0.0/12"
+  - "192.168.0.0/16"
+  - "100.64.0.0/10"
+  - "192.0.0.0/24"
+  - "169.254.0.0/16"
+  - "192.88.99.0/24"
+  - "198.18.0.0/15"
+  - "192.0.2.0/24"
+  - "198.51.100.0/24"
+  - "203.0.113.0/24"
+  - "224.0.0.0/4"
+  - "::1/128"
+  - "fe80::/10"
+  - "fc00::/7"
+  - "2001:db8::/32"
+  - "ff00::/8"
+  - "fec0::/10"
 experimental_features:
   msc3266_enabled: true
   msc4222_enabled: true
@@ -69,6 +65,7 @@ experimental_features:
   # Membership lookup and C-S/S-S request delegation for lk-jwt-service.
   msc4502_enabled: true
   msc4512_enabled: true
+  msc4354_enabled: true
 max_event_delay_duration: 24h
 report_stats: true
 rc_message:
