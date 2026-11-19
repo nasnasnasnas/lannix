@@ -197,5 +197,17 @@
   "ghcr.io/mollyim/mollysocket": {
     "tag": "latest",
     "digest": "sha256:cdd4da322100fa3774a0f55bb5571340156f84bdae3b29d2eefb7b4139aa4eec"
+  },
+  "ghcr.io/element-hq/matrix-authentication-service": {
+    "tag": "latest",
+    "digest": "sha256:9247315c9e86096aaaa393c7b4b685dc506010e09ff4b89331ef2ed4854167af"
+  },
+  "oci.element.io/element-admin": {
+    "tag": "latest",
+    "digest": "sha256:b40bc2714505a49877673d1424233bffd9c0c0beade649d5d699b83b6a5c030a"
+  },
+  "ghcr.io/etkecc/ketesa": {
+    "tag": "latest",
+    "digest": "sha256:20bf3915b1f8895c98ade7223fb9ce0a17851f37cbb5c859873e5a54f282173e"
   }
 }

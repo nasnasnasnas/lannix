@@ -1,6 +1,6 @@
-{inputs, ...}: {
-  flake.modules.nixos.magicplank = {pkgs, ...}: {
-    imports = [inputs.self.modules.nixos.rsync-net-backup];
+{ inputs, ... }: {
+  flake.modules.nixos.magicplank = { pkgs, ... }: {
+    imports = [ inputs.self.modules.nixos.rsync-net-backup ];
 
     backup.rsyncNet = {
       enable = true;
@@ -18,16 +18,26 @@
         "/home/magicbox/data/victoriametrics"
         # Consistent logical dumps below replace these live PostgreSQL files.
         "/home/magicbox/data/synapse-db"
+        "/home/magicbox/data/mas-db"
         "/home/magicbox/data/sharkey-db"
         "/home/magicbox/data/immich-db"
         "/home/magicbox/data/sharkey-redis"
         "/home/magicbox/data/attic/server.db*"
         "/home/magicbox/data/attic/storage"
       ];
-      afterServices = ["postgresql.service" "docker.service"];
+      afterServices = [
+        "postgresql.service"
+        "docker.service"
+      ];
       sqliteDatabases = [
-        {name = "attic-server"; path = "/home/magicbox/data/attic/server.db";}
-        {name = "grafana"; path = "/home/magicbox/data/grafana/grafana.db";}
+        {
+          name = "attic-server";
+          path = "/home/magicbox/data/attic/server.db";
+        }
+        {
+          name = "grafana";
+          path = "/home/magicbox/data/grafana/grafana.db";
+        }
       ];
       postgresqlDatabases = [
         {
@@ -41,6 +51,14 @@
           pg_dump_command = "${pkgs.docker}/bin/docker exec -u postgres synapse-db pg_dump";
           pg_restore_command = "${pkgs.docker}/bin/docker exec -i -u postgres synapse-db pg_restore";
           psql_command = "${pkgs.docker}/bin/docker exec -i -u postgres synapse-db psql";
+        }
+        {
+          name = "mas";
+          label = "mas-db";
+          username = "mas";
+          pg_dump_command = "${pkgs.docker}/bin/docker exec -u postgres mas-db pg_dump";
+          pg_restore_command = "${pkgs.docker}/bin/docker exec -i -u postgres mas-db pg_restore";
+          psql_command = "${pkgs.docker}/bin/docker exec -i -u postgres mas-db psql";
         }
         {
           name = "misskey";

@@ -5,6 +5,12 @@ let
     "/etc/caddy/observability/magicplank.auth"
     "/etc/caddy/observability/remotebox.auth"
   ];
+  matrixAuth = {
+    networks = [ "synapse-net" ];
+    configSecret = "op://Secrets/Matrix Authentication Service/notesPlain";
+    databasePasswordSecret = "op://Secrets/Matrix Authentication Service/database-password";
+    sharedSecret = "op://Secrets/Matrix Authentication Service/matrix-secret";
+  };
 in
 {
   flake.modules.nixos.magicplank = inputs.self.lib.mkHostServices {
@@ -160,6 +166,11 @@ in
             dataDir = "/home/magicbox/data/synapse";
             secretsFragment = "op://Secrets/Synapse Config Secrets/notesPlain";
             signingKeySecret = "op://Secrets/Synapse Signing Key/notesPlain";
+            masSharedSecret = matrixAuth.sharedSecret;
+            depends_on = {
+              synapse-db.condition = "service_healthy";
+              matrix-auth.condition = "service_started";
+            };
             appserviceRegistrations = {
               "/data/heisenbridge.yaml" = "op://Secrets/Heisenbridge Registration/notesPlain";
               "/data/mautrix-telegram.yaml" = "op://Secrets/Mautrix Telegram Registration/notesPlain";
@@ -179,6 +190,28 @@ in
             envSecrets = {
               POSTGRES_PASSWORD = "op://Secrets/Synapse DB/password";
             };
+          })
+
+          (matrix-auth (
+            matrixAuth
+            // {
+              domains = [ "https://matrix-auth.szp.lol" ];
+            }
+          ))
+          (dedicated-postgres {
+            container_name = "mas-db";
+            networks = [ "synapse-net" ];
+            dataDir = "/home/magicbox/data/mas-db";
+            db = "mas";
+            user = "mas";
+            envSecrets.POSTGRES_PASSWORD = matrixAuth.databasePasswordSecret;
+          })
+
+          (element-admin {
+            domains = [ "https://element-admin.szp.lol" ];
+          })
+          (ketesa {
+            domains = [ "https://ketesa.szp.lol" ];
           })
 
           (heisenbridge {

@@ -1,0 +1,49 @@
+http:
+  public_base: https://matrix-auth.szp.lol/
+  issuer: https://matrix-auth.szp.lol/
+  listeners:
+    - name: web
+      binds:
+        - address: "0.0.0.0:8080"
+      resources:
+        - name: discovery
+        - name: human
+        - name: oauth
+        - name: compat
+        - name: graphql
+        - name: assets
+        - name: adminapi
+    - name: internal
+      binds:
+        - address: "127.0.0.1:8081"
+      resources:
+        - name: health
+
+database:
+  host: mas-db
+  port: 5432
+  username: mas
+  database: mas
+  password_file: /run/secrets/database-password
+
+matrix:
+  kind: synapse
+  homeserver: szp.lol
+  endpoint: http://synapse:8008/
+  secret_file: /run/secrets/matrix-secret
+
+# Imported Synapse hashes use bcrypt; new passwords use argon2id.
+passwords:
+  enabled: true
+  schemes:
+    - version: 1
+      algorithm: bcrypt
+      unicode_normalization: true
+    - version: 2
+      algorithm: argon2id
+
+account:
+  # No SMTP configured.
+  password_registration_enabled: false
+  password_recovery_enabled: false
+  email_change_allowed: false

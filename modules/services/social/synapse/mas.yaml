@@ -1,0 +1,6 @@
+# MAS is authoritative for accounts and sessions; reverting to native Synapse
+# authentication requires reconciling both databases, not just a config rollback.
+matrix_authentication_service:
+  enabled: true
+  endpoint: http://matrix-auth:8080/
+  secret_path: /run/secrets/mas-shared-secret

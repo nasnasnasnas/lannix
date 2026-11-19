@@ -1,8 +1,4 @@
-# Synapse homeserver config — repo-managed, NON-secret half.
-# Loaded as part of the SYNAPSE_CONFIG_PATH=/config directory together with the opnix-managed
-# zz-secrets.yaml fragment. Synapse merges config files SHALLOWLY by top-level key, so the
-# secret-bearing top-level keys (`database`, `registration_shared_secret`, `macaroon_secret_key`,
-# `form_secret`) live ENTIRELY in zz-secrets.yaml and must NOT appear here.
+# Secret-bearing top-level keys belong in zz-secrets.yaml; Synapse merges shallowly.
 
 server_name: "szp.lol"
 public_baseurl: https://matrix.szp.lol/
@@ -23,14 +19,15 @@ trusted_key_servers:
   - server_name: "matrix.org"
 serve_server_wellknown: true
 extra_well_known_client_content:
+  "org.matrix.msc2965.authentication":
+    issuer: https://matrix-auth.szp.lol/
+    account: https://matrix-auth.szp.lol/account/
   "org.matrix.msc4143.rtc_foci": [
     {
       "type": "livekit",
       "livekit_service_url": "https://matrix-rtc.szp.lol"
     }
   ]
-# Stable clients use homeserver-mediated authorization; older clients still discover
-# the standalone endpoint above or the legacy transport below.
 matrix_rtc:
   transports:
     - type: m.livekit
