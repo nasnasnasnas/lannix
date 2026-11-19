@@ -99,7 +99,8 @@ to a `lix` store path.
   targets `config_schema_dock.cpp` after upstream's schema split. Tooltips use
   xdg popups, so the tooltip manager owns their background-effect protocol
   object and releases it before destroying the popup; blur is not a
-  `PopupSurface` method.
+  `PopupSurface` method. The tooltip patch leaves upstream's radius fields
+  untouched, including the style-managed radii introduced after 5.5.0.
 - The community `vn1k/icons` plugin is enabled; Noctalia exports it on start.
   Open it with `noctalia msg panel-toggle vn1k/icons:manager`.
 - Ghostty's terminal palette follows Noctalia; its window and tabs use light UI.

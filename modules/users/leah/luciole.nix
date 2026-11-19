@@ -2,9 +2,11 @@
   inputs,
   self,
   ...
-}: let
+}:
+let
   username = "leah";
-in {
+in
+{
   flake-file.inputs = {
     luciole = {
       url = "github:noctalia-dev/luciole";
@@ -14,22 +16,48 @@ in {
     };
   };
 
-  flake.modules.nixos."${username}" = {pkgs, ...}: {
+  flake.modules.nixos."${username}" = {
     services.gvfs.enable = true;
+    environment.pathsToLink = [
+      "/share/xdg-desktop-portal"
+      "/share/applications"
+    ];
   };
 
-  flake.modules.homeManager."${username}-linux" = {pkgs, ...}: {
-    imports = [ inputs.luciole.homeModules.default ];
+  flake.modules.homeManager."${username}-linux" =
+    { pkgs, osConfig, ... }:
+    {
+      imports = [ inputs.luciole.homeModules.default ];
 
-    programs.luciole = {
-      enable = true;
-      checkConfig = true;
-      settings = {
-        browser = {
-          view_mode = "grid";
-          show_hidden = false;
+      xdg.portal = {
+        enable = true;
+        # Home Manager's discovery path must retain the host's other backends.
+        extraPortals = [
+          inputs.luciole.packages.${pkgs.stdenv.hostPlatform.system}.default
+        ]
+        ++ osConfig.xdg.portal.extraPortals;
+        configPackages = osConfig.xdg.portal.configPackages;
+        config = {
+          common."org.freedesktop.impl.portal.FileChooser" = [
+            "luciole"
+            "gtk"
+          ];
+          niri."org.freedesktop.impl.portal.FileChooser" = [
+            "luciole"
+            "gtk"
+          ];
+        };
+      };
+
+      programs.luciole = {
+        enable = true;
+        checkConfig = true;
+        settings = {
+          browser = {
+            view_mode = "grid";
+            show_hidden = false;
+          };
         };
       };
     };
-  };
 }

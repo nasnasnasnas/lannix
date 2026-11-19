@@ -26,8 +26,7 @@
    m_activeLayerParent = nullptr;
    m_activeXdgParent = nullptr;
    m_activeOutput = nullptr;
-@@ -691,15 +698,44 @@
-   m_sceneRoot->setHitTestVisible(false);
+@@ -692,4 +699,7 @@
    m_surface->setSceneRoot(m_sceneRoot.get());
  
 +  // Follow the panel transparency mode (solid/soft/glass) and blur what lies beneath when translucent.
@@ -35,10 +34,10 @@
 +  const float radius = Style::scaledRadiusMd();
    m_sceneRoot->addChild(
        ui::box({
+@@ -696 +706 @@
 -          .fill = colorSpecFromRole(ColorRole::Surface),
--          .radius = Style::scaledRadiusMd(),
 +          .fill = scaleAlpha(colorSpecFromRole(ColorRole::Surface), backgroundOpacity),
-+          .radius = radius,
+@@ -698,8 +708,34 @@
            .width = w,
            .height = h,
 -          .configure = [](Box& box) { box.setBorder(colorSpecFromRole(ColorRole::OutlineVariant), kBorder); },
