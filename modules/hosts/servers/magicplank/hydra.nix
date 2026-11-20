@@ -1,5 +1,5 @@
-{ inputs, ... }: {
-  flake.modules.nixos.magicplank = { pkgs, ... }: {
+{inputs, ...}: {
+  flake.modules.nixos.magicplank = {pkgs, ...}: {
     services.onepassword-secrets = {
       enable = true;
       tokenFile = "/etc/op-token";
@@ -23,6 +23,7 @@
       # you will probably also want this, otherwise *everything* will be built from scratch
       useSubstitutes = true;
       extraConfig = ''
+        allow_import_from_derivation = true
         <oidc>
           <provider puppy-id>
             display_name = "Puppy ID"
@@ -41,10 +42,10 @@
       '';
     };
 
-    host.caddyDomains = [ "https://hydra.szpunar.cloud" ];
+    host.caddyDomains = ["https://hydra.szpunar.cloud"];
 
     # Allow container-to-host access without exposing Hydra on public interfaces.
-    networking.firewall.interfaces."br+".allowedTCPPorts = [ 3000 ];
+    networking.firewall.interfaces."br+".allowedTCPPorts = [3000];
 
     virtualisation.arion.projects.magicplank-caddy.settings.services.caddy.service.extra_hosts = [
       "host.docker.internal:host-gateway"
