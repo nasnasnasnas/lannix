@@ -7,7 +7,7 @@ let
 in
 {
   flake.hydraJobs = {
-    packages = lib.mapAttrs filterBroken self.packages;
+    packages = lib.mapAttrs filterBroken { inherit (self.packages) x86_64-linux; };
     nixosConfigurations.x86_64-linux = lib.flip lib.genAttrs getTopLevel [
       "lilac"
       "magicplank"
