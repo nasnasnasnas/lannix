@@ -13,6 +13,8 @@
       };
     };
 
+    nix.settings.allow-import-from-derivation = true;
+
     services.hydra = {
       enable = true;
       # Caddy reaches the host through Docker's gateway, not loopback.
