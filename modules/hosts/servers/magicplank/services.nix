@@ -47,6 +47,16 @@ in
                 resolvers 1.1.1.1
             }
         }
+
+        # Hydra runs on the host; localhost here would be the Caddy container.
+        hydra.szpunar.cloud {
+            reverse_proxy host.docker.internal:3000
+
+            tls {
+                dns cloudflare {env.CF_API_TOKEN}
+                resolvers 1.1.1.1
+            }
+        }
       '';
       envSecrets = {
         CF_API_TOKEN = "op://Secrets/Caddy Cloudflare Token for HTTPS/password";
