@@ -7,7 +7,8 @@
         hydraOidcClientSecret = {
           reference = "op://Secrets/Hydra OIDC/client secret";
           path = "/var/lib/hydra/secrets/puppy-id-client-secret";
-          mode = "0600";
+          group = "hydra";
+          mode = "0640";
         };
       };
     };
