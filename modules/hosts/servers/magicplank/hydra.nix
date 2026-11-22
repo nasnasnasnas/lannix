@@ -17,6 +17,7 @@
 
     services.hydra = {
       enable = true;
+      package = pkgs.unstable.hydra;
       # Caddy reaches the host through Docker's gateway, not loopback.
       listenHost = "0.0.0.0";
       port = 3000;
