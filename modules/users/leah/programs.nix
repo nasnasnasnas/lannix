@@ -155,6 +155,7 @@ in
         unstable.jetbrains.phpstorm
         unstable.jetbrains.goland
         unstable.antigravity-ide-fhs
+        unstable.antigravity-hub
 
         btop
         unstable.typst
