@@ -208,6 +208,6 @@
   },
   "ghcr.io/etkecc/ketesa": {
     "tag": "latest",
-    "digest": "sha256:20bf3915b1f8895c98ade7223fb9ce0a17851f37cbb5c859873e5a54f282173e"
+    "digest": "sha256:02ad03975d8cfaa34f1af4e9544162fb652919edfbd8332f143dd45c316dd13d"
   }
 }
