@@ -162,13 +162,20 @@ to a `lix` store path.
   compilation belongs on the CI runner rather than the desktop.
 - Tern is shared with `lilac` through `modules/apps/tern.nix`, which defines
   `packages.tern` and the common NixOS desktop integration. It uses
-  `theoparis/nix-tern`, overridden to package the downloaded 0.9.26 beta and use
-  Fish. Import the downloaded archive before building, then follow the CI
-  source caching instructions below:
+  `theoparis/nix-tern`, overridden to package the Stencil Linux x86_64
+  archive and use Fish. To update the pin, sign in to
+  [Stencil Builds](https://build.stencil.so/) in Helium’s Default profile,
+  then run from the repo root:
 
   ```sh
-  nix-prefetch-url file://$HOME/Downloads/Tern-0.9.26-linux-x86_64.tar.gz
+  ./download-tern.mjs
   ```
+
+  The script needs Node.js 24+ and access to Helium’s GNOME keyring. It checks
+  the archive against Stencil’s SHA-256, saves it under `~/Downloads` (or an
+  optional output directory), and prints JSON with its `version`, `path`, and
+  Nix `hash`. Update the version and hash in `modules/apps/tern.nix`, then
+  import and upload the archive as described below.
 
   The expected hash is pinned in `modules/apps/tern.nix`; the archive is not
   part of this repo. `nix build .#tern` builds the shared package without a
@@ -275,7 +282,9 @@ the finished Tern package does not include its build-time source archive.
 The cache is intentionally public, including these download artifacts; Tern
 still requires its own Stencil account sign-in.
 
-1. Import the downloaded archives using the `nix-prefetch-url` commands above.
+1. Import Tern’s downloaded archive using `nix store add-file` with the
+   printed `path`. Save the resulting Nix store path for the push below.
+   For other archives, use their import commands above.
 2. Install `attic-client` or enter a Nix shell containing it.
 3. Log in to `https://attic.szpunar.cloud/` using an Attic client token with
    pull and push permission for `lannix` (the same kind of token as Forgejo's
@@ -295,12 +304,11 @@ still requires its own Stencil account sign-in.
    bash -c 'read -rsp "Attic push token: " token; printf "\n"; attic login personal https://attic.szpunar.cloud/ "$token"'
    ```
 
-4. Push both pinned source paths:
+4. Push each changed source path. For Tern, use the path printed by
+   `nix store add-file`:
 
    ```sh
-   attic push --no-closure personal:lannix \
-     /nix/store/glhx2mi85c45pw65b7h74m25wrkzznsv-Tern-0.9.26-linux-x86_64.tar.gz \
-     /nix/store/53f03jfyqldh2801kargkg2z9kl6wg7g-macOS27.tar.gz
+   attic push --no-closure personal:lannix /nix/store/<imported-Tern-archive>
    ```
 
    Here `personal` is the server name chosen during `attic login`. Repeat the

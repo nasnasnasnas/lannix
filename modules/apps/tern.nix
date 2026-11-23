@@ -2,16 +2,17 @@
   perSystem = { pkgs, lib, ... }: {
     packages.tern =
       inputs.tern.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs
-        (old: {
-          version = "0.9.26";
+        (old: rec {
+          version = "0.9.32";
           src = pkgs.requireFile {
-            name = "Tern-0.9.26-linux-x86_64.tar.gz";
-            hash = "sha256-X8Dn6DRfr4BtImP6QBOtcOA0Z/XuJf0m2jwsCM2yna0=";
+            name = "Tern-${version}-linux-x86_64.tar.gz";
+            hash = "sha256-qMq86ra+NbQB5pdn9RYB5/hC6vAB/OZVozR3E/jFH3Q=";
             message = ''
-              Download Tern 0.9.26 from https://build.stencil.so/ and run:
-                nix-prefetch-url file://$HOME/Downloads/Tern-0.9.26-linux-x86_64.tar.gz
-              Push the imported archive to the lannix Attic cache for CI;
-              see modules/hosts/desktops/nixos/nea-desktop/README.md.
+              From the repo root, run ./download-tern.mjs while signed in to
+              https://build.stencil.so/ in Helium. Import the pinned archive:
+                nix store add-file "$HOME/Downloads/Tern-${version}-linux-x86_64.tar.gz"
+              For CI, also push the imported archive to Attic; see
+              modules/hosts/desktops/nixos/nea-desktop/README.md.
             '';
           };
           # Retain upstream's WebKit/GIO environment, including its matching TLS backend.

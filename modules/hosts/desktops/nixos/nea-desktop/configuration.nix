@@ -17,6 +17,9 @@
     users.users.nea = {
       description = "Nea Szpunar";
       extraGroups = ["networkmanager" "wheel" "kvm" "libvirtd"];
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM+9gEtoUZS0D6LAu7Jz8WnIRrKNna2zfH6F7QxzaeZa"
+      ];
     };
     users.users.leah = {
       isNormalUser = true;
@@ -34,9 +37,21 @@
       dns = "none";
     };
     networking.nameservers = ["1.1.1.1" "1.0.0.1"];
+
+    # LAN/key-based access. Over the tailnet, Tailscale SSH (--ssh) intercepts
+    # port 22 on the 100.x address and authenticates via the tailnet ACL's
+    # `ssh` rules instead of authorized_keys.
+    services.openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "no";
+      };
+    };
     services.tailscale = {
       enable = true;
-      extraSetFlags = ["--operator=nea"];
+      extraSetFlags = ["--operator=nea" "--ssh"];
     };
     time.timeZone = "America/Indiana/Indianapolis";
     i18n.defaultLocale = "en_US.UTF-8";
