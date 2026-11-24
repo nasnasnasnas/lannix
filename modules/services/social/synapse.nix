@@ -17,6 +17,7 @@
       image ? config.flake.lib.image "docker.io/matrixdotorg/synapse",
       restart ? "unless-stopped",
       port ? 8008,
+      metricsPort,
       depends_on ? {
         "synapse-db" = {
           condition = "service_healthy";
@@ -62,6 +63,7 @@
         "/run/secrets/mas-shared-secret" = masSharedSecret;
       }
       // appserviceRegistrations;
+      ports = if metricsPort != null then ["127.0.0.1:${toString metricsPort}:9000"] else [];
       volumes = [
         "${dataDir}:/data"
         "${homeserverConfig}:/config/homeserver.yaml:ro"

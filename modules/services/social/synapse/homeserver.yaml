@@ -10,8 +10,12 @@ listeners:
     x_forwarded: true
     bind_addresses: ["0.0.0.0"]
     resources:
-      - names: [client, federation, metrics]
+      - names: [client, federation]
         compress: false
+  # beginning of the new metrics listener
+  - port: 9000
+    type: metrics
+    bind_addresses: ['::1', '0.0.0.0']
 log_config: "/data/szp.lol.log.config"
 media_store_path: /data/media_store
 signing_key_path: "/data/szp.lol.signing.key"

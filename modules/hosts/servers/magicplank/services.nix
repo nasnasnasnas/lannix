@@ -173,6 +173,7 @@ in
               "synapse-net"
               "matrix-rtc-net"
             ];
+            metricsPort = 19000;
             dataDir = "/home/magicbox/data/synapse";
             secretsFragment = "op://Secrets/Synapse Config Secrets/notesPlain";
             signingKeySecret = "op://Secrets/Synapse Signing Key/notesPlain";
