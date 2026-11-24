@@ -21,7 +21,7 @@
           targetLabels = config.server-observability.extraPrometheusScrapeTargetLabels.${jobName} or {};
           renderTarget = target: "${renderAlloyAttrs (
             targetLabels
-            // (if lib.strings.hasInfix "/" target then let parts = lib.strings.splitString "/" target; in {"__address__" = builtins.head parts; "__metrics_path__" = lib.join "/" (builtins.tail parts); } else {"__address__" = target;})
+            // (if lib.strings.hasInfix "/" target then let parts = lib.strings.splitString "/" target; in {"__address__" = builtins.head parts; "__metrics_path__" = "/${lib.join "/" (builtins.tail parts)}"; } else {"__address__" = target;})
           )},";
         in ''
           prometheus.scrape ${builtins.toJSON jobName} {

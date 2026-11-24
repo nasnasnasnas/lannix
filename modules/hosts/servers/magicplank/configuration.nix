@@ -17,7 +17,7 @@
     server-observability = {
       enable = true;
       extraPrometheusScrapeTargets = {
-        synapse = ["127.0.0.1:19000"];
+        synapse = ["127.0.0.1:19000/_synapse/metrics"];
       };
     };
 
