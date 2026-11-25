@@ -97,7 +97,7 @@
   },
   "linuxserver/lidarr": {
     "tag": "latest",
-    "digest": "sha256:67887807b13ae025c0fe979da298347c8609969087ab064c81d8e9acc1e06bbf"
+    "digest": "sha256:c4285344c994b34e1ae7db8d57c1702dcfe88b8e10c98a0cdf0f74aba8b58b9c"
   },
   "linuxserver/mylar": {
     "tag": "latest",
