@@ -204,7 +204,7 @@
   },
   "oci.element.io/element-admin": {
     "tag": "latest",
-    "digest": "sha256:42e524903ed751c087c90800422b3c8c0dfcfd44392cece3595bc1f9cfb068a8"
+    "digest": "sha256:76b1273e2e321f733acff62d3126ce514498c47c768acace7f0949f89dccb032"
   },
   "ghcr.io/etkecc/ketesa": {
     "tag": "latest",
