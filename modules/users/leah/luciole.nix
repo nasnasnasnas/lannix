@@ -16,12 +16,30 @@ in
     };
   };
 
-  flake.modules.nixos."${username}" = {
+  flake.modules.nixos."${username}" = {pkgs, ...}: {
     services.gvfs.enable = true;
     environment.pathsToLink = [
       "/share/xdg-desktop-portal"
       "/share/applications"
     ];
+
+    xdg.portal = {
+      enable = true;
+      # Home Manager's discovery path must retain the host's other backends.
+      extraPortals = [
+        inputs.luciole.packages.${pkgs.stdenv.hostPlatform.system}.default
+      ];
+      config = {
+        common."org.freedesktop.impl.portal.FileChooser" = [
+          "luciole"
+          "gtk"
+        ];
+        niri."org.freedesktop.impl.portal.FileChooser" = [
+          "luciole"
+          "gtk"
+        ];
+      };
+    };
   };
 
   flake.modules.homeManager."${username}-linux" =

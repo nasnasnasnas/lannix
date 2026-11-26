@@ -16,7 +16,7 @@
     nix.settings.allow-import-from-derivation = true;
 
     services.hydra = {
-      enable = true;
+      # enable = true;
       package = pkgs.unstable.hydra;
       # Caddy reaches the host through Docker's gateway, not loopback.
       listenHost = "0.0.0.0";
