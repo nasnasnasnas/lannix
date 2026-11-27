@@ -18,6 +18,7 @@ in
       enableFishIntegration = true;
       icons = "auto";
     };
+    programs.zed-editor.enable = true;
     programs.git = {
       enable = true;
       signing = {

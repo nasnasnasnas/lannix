@@ -27,8 +27,9 @@ in {
       # Additional packages (optional)
       extraPackages = with pkgs; [
         nil # Nix LSP
-        nixd # Other nix LSP
+        nixd # Other Nix LSP
         alejandra # Nix formatter
+        statix # Nix linter
       ];
 
       # Only needed for languages not covered by LazyVim extras
