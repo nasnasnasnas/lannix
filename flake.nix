@@ -1,7 +1,7 @@
 # DO-NOT-EDIT. This file was auto-generated using github:denful/flake-file.
 # Use `nix run .#write-flake` to regenerate it.
 {
-  outputs = inputs: inputs.flake-parts.lib.mkFlake { inherit inputs; } (inputs.import-tree ./modules);
+  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} (inputs.import-tree ./modules);
 
   inputs = {
     arion = {
@@ -58,7 +58,7 @@
       url = "github:ChrisOboe/json2steamshortcut";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    lazyvim.url = "github:pfassina/lazyvim-nix";
+    lazyvim.url = "github:pfassina/lazyvim-nix/v16.0.1"; # TODO: Go back to main once #117 is resolved
     llm-agents.url = "github:numtide/llm-agents.nix";
     luciole = {
       url = "github:noctalia-dev/luciole";
