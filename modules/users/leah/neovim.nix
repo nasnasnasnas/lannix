@@ -10,7 +10,10 @@ in {
       enable = true;
 
       extras = {
-        lang.nix.enable = true;
+        lang.nix = {
+          enable = true;
+          installDependencies = true;
+        };
         lang.python = {
           enable = true;
         };
@@ -24,6 +27,7 @@ in {
       # Additional packages (optional)
       extraPackages = with pkgs; [
         nil # Nix LSP
+        nixd # Other nix LSP
         alejandra # Nix formatter
       ];
 
