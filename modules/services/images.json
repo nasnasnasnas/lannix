@@ -196,7 +196,7 @@
   },
   "ghcr.io/mollyim/mollysocket": {
     "tag": "latest",
-    "digest": "sha256:cdd4da322100fa3774a0f55bb5571340156f84bdae3b29d2eefb7b4139aa4eec"
+    "digest": "sha256:1e6db765321dbf52b2da0d2c2878cdf400504e5fe6293b3e215e8e4f70187153"
   },
   "ghcr.io/element-hq/matrix-authentication-service": {
     "tag": "latest",
