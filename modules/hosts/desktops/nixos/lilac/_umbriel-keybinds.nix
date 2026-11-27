@@ -117,7 +117,6 @@ in
   "Mod+V" = once "spawn noctalia msg panel-toggle clipboard";
   "Mod+Shift+L" = once "spawn noctalia msg session lock";
   "Mod+Shift+Space" = once "spawn 1password --quick-access";
-  "Ctrl+Shift+Space" = once "spawn 1password --quick-access";
   "Alt+Tab" = once "spawn noctalia msg window-switcher hold";
   # Framework gear key controls the auto-launching terminal scratchpad.
   "XF86AudioMedia" = once "scratchpad-toggle terminal";
